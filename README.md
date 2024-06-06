@@ -16,7 +16,7 @@
 | Student      | Student Full Name |Student SFSU Email | GitHub Username |  Discord Username  |           Role           |
 |    :---:     |   :---:           |       :---:       |     :---:       |        :---:       |          :---:           | 
 |      #1      |                   |                   |                 |                    |       Team-lead          |
-|      #2      |                   |                   |                 |                    |       Frontend-lead      |
+|      #2      |    Donovan Taylor |dvelasquez1@sfsu.edu|   donnyJVT     |    dognovan        |       Frontend-lead      |
 |      #3      |                   |                   |                 |                    |       Backend-lead       |
 |      #4      |                   |                   |                 |                    |       Database-admin     |
 |      #5      |                   |                   |                 |                    |       Github-master      |
