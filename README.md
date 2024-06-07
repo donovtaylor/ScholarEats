@@ -13,17 +13,19 @@
 3. Fill this table out with all your team's members info. Note that roles are only representative of the main responsability that students will perform in their teams. However, every students ***MUST*** contribute to ***ALL*** the aspects of the project and docs for this course. 
 
 
-| Student      | Student Full Name |Student SFSU Email | GitHub Username |  Discord Username  |           Role           |
-|    :---:     |   :---:           |       :---:       |     :---:       |        :---:       |          :---:           | 
-|      #1      |                   |                   |                 |                    |       Team-lead          |
-|      #2      |    Donovan Taylor |dvelasquez1@sfsu.edu|   donnyJVT     |    dognovan        |       Frontend-lead      |
-|      #3      |                   |                   |                 |                    |       Backend-lead       |
-|      #4      |                   |                   |                 |                    |       Database-admin     |
-|      #5      |                   |                   |                 |                    |       Github-master      |
-|      #6      |                   |                   |                 |                    |       Docs-editor        |
+| Student      | Student Full Name    |Student SFSU Email    | GitHub Username |  Discord Username  |           Role           |
+|    :---:     |   :---:              |       :---:          |     :---:       |        :---:       |          :---:           | 
+|      #1      |    Angelo Arriaga    |aarriaga1@sfsu.edu    |   DeadMartyr    |     DeadMartyr     |       Team-lead          |
+|      #2      |    Donovan Taylor    |dvelasquez1@sfsu.edu  |   donnyJVT      |    dognovan        |       Frontend-lead      |
+|      #3      |    Hancun Guo        |hguo4@sfsu.edu        |    EclipseHC    |   eclipse9876      |       Backend-lead       |
+|      #4      |    Edward Mcdonald   |emcdonald1@sfsu.edu   |  MooseGBT       |   moosegbt         |       Database-admin     |
+|      #5      |    Maeve Fitzpatrick |mfitzpatrick@sfsu.edu |maeve-fitzpatrick|  maevefitzpatrick  |       Github-master      |
+|      #6      |    Sai Bavisetti     |sbavisetti@sfsu.edu   | BAVISETTISAKETH |    skyper_007      |       Docs-editor        |
+|      #7      |    Karl Carsola      |kcarsola@mail.sfsu.edu|    kcarsola     | kinqmax            |       TBD                |
+|      #8      |    Sabrina Diaz-Erazo|sdiazerazo@sfsu.edu   |    sderazo      |  sabreenz          |       TBD                |
 
 
-4. All the team's members ***MUST*** sign the follwing [team's contract](https://forms.gle/dxATAsa9isXKbcBn7). Missing signatures from students will result in these students being dropped from the course. 
+4. All the team's members ***MUST*** sign the following [team's contract](https://forms.gle/dxATAsa9isXKbcBn7). Missing signatures from students will result in these students being dropped from the course. 
 
 4. Please when ready, add your application's name and URL or IP to the following table. It is the responsibility of the team lead to keep this up to date during the whole semester because we'll use this URL to test all your prototypes and final version of your project. 
 
