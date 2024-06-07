@@ -18,7 +18,7 @@
 |      #1      |    Angelo Arriaga    |aarriaga1@sfsu.edu    |   DeadMartyr    |     DeadMartyr     |       Team-lead          |
 |      #2      |    Donovan Taylor    |dvelasquez1@sfsu.edu  |   donnyJVT      |    dognovan        |       Frontend-lead      |
 |      #3      |    Hancun Guo        |hguo4@sfsu.edu        |    EclipseHC    |   eclipse9876      |       Backend-lead       |
-|      #4      |    Edward Mcdonald   |emcdonald1@sfsu.edu   |  MooseGBT       |   moosegbt         |       Database-admin     |
+|      #4      |    Edward Mcdonald   |emcdonald1@sfsu.edu   |  EdwardMcD       |   moosegbt         |       Database-admin     |
 |      #5      |    Maeve Fitzpatrick |mfitzpatrick@sfsu.edu |maeve-fitzpatrick|  maevefitzpatrick  |       Github-master      |
 |      #6      |    Sai Bavisetti     |sbavisetti@sfsu.edu   | BAVISETTISAKETH |    skyper_007      |       Docs-editor        |
 |      #7      |    Karl Carsola      |kcarsola@mail.sfsu.edu|    kcarsola     | kinqmax            |       TBD                |
