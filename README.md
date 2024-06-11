@@ -17,12 +17,12 @@
 |    :---:     |   :---:              |       :---:          |     :---:       |        :---:       |          :---:           | 
 |      #1      |    Angelo Arriaga    |aarriaga1@sfsu.edu    |   DeadMartyr    |     DeadMartyr     |       Team-lead          |
 |      #2      |    Donovan Taylor    |dvelasquez1@sfsu.edu  |   donnyJVT      |    dognovan        |       Frontend-lead      |
-|      #3      |    Hancun Guo        |hguo4@sfsu.edu        |    EclipseHC    |   eclipse9876      |       Backend-lead       |
-|      #4      |    Edward Mcdonald   |emcdonald1@sfsu.edu   |  EdwardMcD       |   moosegbt         |       Database-admin     |
-|      #5      |    Maeve Fitzpatrick |mfitzpatrick@sfsu.edu |maeve-fitzpatrick|  maevefitzpatrick  |       Github-master      |
-|      #6      |    Sai Bavisetti     |sbavisetti@sfsu.edu   | BAVISETTISAKETH |    skyper_007      |       Docs-editor        |
-|      #7      |    Karl Carsola      |kcarsola@mail.sfsu.edu|    kcarsola     | kinqmax            |       TBD                |
-|      #8      |    Sabrina Diaz-Erazo|sdiazerazo@sfsu.edu   |    sderazo      |  sabreenz          |       TBD                |
+|      #3      |    Hancun Guo        |hguo4@sfsu.edu        |    EclipseHC    |   eclipse9876      |       Frontend           |
+|      #4      |    Edward Mcdonald   |emcdonald1@sfsu.edu   |  EdwardMcD      |   moosegbt         |       Backend-lead       |
+|      #5      |    Karl Carsola      |kcarsola@mail.sfsu.edu|    kcarsola     | kinqmax            |       Backend            |
+|      #6      |    Sai Bavisetti     |sbavisetti@sfsu.edu   | BAVISETTISAKETH |    skyper_007      |       Database           |
+|      #7      |    Maeve Fitzpatrick |mfitzpatrick@sfsu.edu |maeve-fitzpatrick|  maevefitzpatrick  |       Docs-editor        |
+|      #8      |    Sabrina Diaz-Erazo|sdiazerazo@sfsu.edu   |    sderazo      |  sabreenz          |       GitHub Master      |
 
 
 4. All the team's members ***MUST*** sign the following [team's contract](https://forms.gle/dxATAsa9isXKbcBn7). Missing signatures from students will result in these students being dropped from the course. 
