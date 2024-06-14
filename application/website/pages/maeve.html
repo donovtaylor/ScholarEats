@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <style>
+	body {  
+            display:grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            align-items:start;
+            justify-content: left;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+	header {
+            display:grid;
+            grid-area:a;
+            font-size: 2em;
+            margin: 40px;
+            justify-self:center;
+        }
+	img {
+        display:grid;
+            max-width: 300px;
+            justify-self:center;
+        }
+    .container {
+        display: grid;
+        grid-template-areas:
+        "a ."
+        "b c";
+    }
+    .border {
+        display:grid;
+        grid-area:b;
+        width: 100%;
+        border-right-style: solid;
+
+    }
+	p {
+            grid-area:c;
+            max-width: 600px;
+            justify-self:center;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="spacer"></div>
+    <div class="container">
+    <header><u>About Maeve</u></header>
+    <div class="border"><img src="images/maeve.jpg" alt="Maeve's Photo"></div>
+    <p>Maeve is a student at SFSU from San Francisco who loves spending time with family and helping others.</p>
+    </div>
+    <div class="spacer"></div>
+</body>
+</html>
