@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
     <style>
 	body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
+            display: grid;
+           
             font-family: Arial, sans-serif;
+            margin:20px;
+            padding:20px;
         }
 	header {
+            display:inline;
             font-size: 2em;
             margin-bottom: 20px;
         }
 	a {
+            align-content:start;
             text-decoration: none;
             font-size: 1.2em;
             color: blue;
@@ -31,10 +31,52 @@
             background-color: blue;
             color: white;
         }
+    .list {
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+        grid-template-areas:
+        "header header"
+        ". ."
+        ". ."
+        ". ."
+        ". .";
+        justify-content: left;
+        width:100%;
+    }
+    
+    .list > a {
+        display: inline-flex;
+        justify-content:space-between;
+        margin: 5px;
+        padding: 5px;
+        height: 100px;
+    }
+    img {
+        max-height: 100px;
+    }
     </style>
 </head>
 <body>
     <header>Team's About Page</header>
-    <a href="angelo.html">Team Lead: Angelo Arriaga</a>
+    <div class="list">
+        <a href="angelo.html"><img src="images/angelo.jpg">
+            Team Lead: Angelo Arriaga</a>
+        <a href="donovan.html"><img src="images/donovan.jpg">
+            Frontend Lead: Donovan Taylor</a>
+        <a href="hancun.html"><img src="images/hancun.jpg">
+            Frontend: Hancun Guo</a>
+        <a href="edward.html"><img src="images/edward.jpg">
+            Team Lead: Edward Mcdonald</a>
+        <a href="karl.html"><img src="images/karl.jpg">
+            Team Lead: Karl Carsola</a>
+        <a href="sai.html"><img src="images/sai.jpg">
+            Team Lead: Sai Bavisetti</a>
+        <a href="maeve.html"><img src="images/maeve.jpg">
+            Team Lead: Maeve Fitzpatrick</a>
+        <a href="sabrina.html"><img src="images/sabrina.jpg">
+            Team Lead: Sabrina Diaz-Erazo</a>
+    </div>
+
 </body>
 </html>
