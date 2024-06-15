@@ -16,7 +16,8 @@
             grid-column: 1 / 3;
             display:block;
             font-size: 2em;
-            margin-top: 40px;
+            justify-self:left;
+            align-self:center;
         }
 	a {
             display:grid;
@@ -28,6 +29,10 @@
             transition: background-color 0.3s, color 0.3s;
             
         }
+    a > div {
+        padding-left: 40px;
+        padding-top: 40px;
+    }
 	a:hover {
             background-color: blue;
             color: white;
@@ -45,11 +50,9 @@
         justify-content:space-between;
         margin: 5px;
         padding: 5px;
-        height: 100px;
     }
     img {
-        display: block;
-        overflow:hidden;
+        object-fit:cover;
     }
     </style>
 </head>
@@ -58,28 +61,28 @@
     <div class="container">
     <header>Team's About Page</header>
         <a href="angelo.html">
-            <img src="images/angelo.jpg" alt="angelo.jpg" width="100" height="100">
-            Team Lead: Angelo Arriaga</a>
+            <img src="images/angelo.jpg" alt="angelo.jpg" width="150" height="150">
+            <div>Team Lead: Angelo Arriaga</div></a>
         <a href="donovan.html">
-            <img src="images/donovan.jpg" alt="donovan.jpg" width="100" height="100">
-            Frontend Lead: Donovan Taylor</a>
+            <img src="images/donovan.jpg" alt="donovan.jpg" width="150" height="150">
+            <div>Frontend Lead: Donovan Taylor</div></a>
         <a href="hancun.html">
-            <img src="images/hancun.jpg" alt="hancun.jpg" width="100" height="100">
+            <img src="images/hancun.jpg" alt="hancun.jpg" width="150" height="150">
             <div>Frontend: Hancun Guo</div></a>
         <a href="edward.html">
-            <img src="images/edward.jpg" alt="edward.jpg" width="100" height="100">
+            <img src="images/edward.jpg" alt="edward.jpg" width="150" height="150">
             <div>Backend Lead: Edward Mcdonald</div></a>
         <a href="karl.html">
-            <img src="images/karl.jpg" alt="karl.jpg" width="100" height="100">
+            <img src="images/karl.jpg" alt="karl.jpg" width="150" height="150">
             <div>Backend: Karl Carsola</div></a>
         <a href="Saketh.html">
-            <img src="images/sai.jpg" alt="sai.jpg" width="100" height="100">
+            <img src="images/sai.jpg" alt="sai.jpg" width="150" height="150">
             <div>Database: Sai Bavisetti</div></a>
         <a href="maeve.html">
-            <img src="images/maeve.jpg" alt="maeve.jpg" width="100" height="100">
+            <img src="images/maeve.jpg" alt="maeve.jpg" width="150" height="150">
             <div>Docs-Editor: Maeve Fitzpatrick</div></a>
         <a href="sabrina.html">
-            <img src="images/sabrina.jpg" alt="sabrina.jpg" width="100" height="100">
+            <img src="images/sabrina.jpg" alt="sabrina.jpg" width="150" height="150">
             <div>GitHub Master: Sabrina Diaz-Erazo</div></a>
     </div>
     <div class="spacer"></div>
