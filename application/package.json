@@ -1,11 +1,12 @@
 {
-  "name":"ScholarEats",
+  "name": "ScholarEats",
   "version": "1.0.0",
   "description": "nodejs image demo",
   "main": "app.js",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "express": "^4.19.2",
+    "express-handlebars": "^7.1.2",
     "handlebars": "^4.7.8",
     "mysql-server": "^1.0.5"
   }
