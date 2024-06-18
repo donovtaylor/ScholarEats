@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
 
+//this is so images will load in our website
 app.use(express.static('website/pages'));
 
+//serve the about page
 app.get("/", (req,res) => {
   res.sendFile(__dirname + '/website/pages/index.html');
 });
