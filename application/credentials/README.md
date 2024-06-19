@@ -9,6 +9,9 @@ using MySQLWorkbench.
 Points will be deducted if teams do not add their credentials here once they have chosen their 
 technology stack or if their step-by-step descriptions are not clear enough. You have been warned! 
 -------------------------------------------------------------------------------------
+# Credentials
+
+# Tutorials
 ## Tutorial on How to Use .ssh keys to Connect to AWS Instance:
 1. Open up a terminal and cd into the directory where the .ssh key is located.
 2. Enter in the command `chmod 400 <name of your .ssh key>` . As an example, we named our key CSC648KeyPair.pem, so in the terminal 
