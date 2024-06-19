@@ -25,21 +25,21 @@ This key is not known by any other names
 Are you sure you want to continue connecting (yes/no/[fingerprint])?
 
 Enter `yes`
+
 5. The following lines will then print to the terminal:
 
 ![alt text](awsBird.png)
 
 6. To get root user, type in the command `sudo -i`, as shown in the picture above.
 Execute the following commands in the order given:
-To get root user, type in the command sudo -i, as shown in the picture above.
-Execute the following commands in the order given:
-`cd ../` (to get out into the "/" directory)
-`cd home/ec2-user` (to get into where we cloned the repo)
-`cd [repo name]` (repo name is sfsu-joseo/csc648-848-05-sw-engineering-su24-T4)
-`git fetch`
-`git pull` (this is to update the instance to most modern version of the repo)
-`cd application` (this is where the node package is)
-`npm install` (this will install all dependencies listed inside of the package.json)
-`node app.js` (this opens node listening on port 3000)
+
+- `cd ../` (to get out into the "/" directory)
+- `cd home/ec2-user` (to get into where we cloned the repo)
+- `cd [repo name]` (repo name is sfsu-joseo/csc648-848-05-sw-engineering-su24-T4)
+- `git fetch`
+- `git pull` (this is to update the instance to most modern version of the repo)
+- `cd application` (this is where the node package is)
+- `npm install` (this will install all dependencies listed inside of the package.json)
+- `node app.js` (this opens node listening on port 3000)
 
 
