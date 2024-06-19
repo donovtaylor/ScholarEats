@@ -10,6 +10,13 @@ Points will be deducted if teams do not add their credentials here once they hav
 technology stack or if their step-by-step descriptions are not clear enough. You have been warned! 
 -------------------------------------------------------------------------------------
 # Credentials
+- Website URL:
+- SSH URL:
+- SSH Username:
+- SSH Password/Key:
+- Database URL:
+- Database Username:
+- Database Password:
 
 # Tutorials
 ## Tutorial on How to Use .ssh keys to Connect to AWS Instance:
