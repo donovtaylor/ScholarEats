@@ -5,7 +5,7 @@ const exphbs = require('express-handlebars'); // Import express-handlebars
 const app = express();
 
 // Serve static files from the 'website' directory (for existing HTML files)
-app.use(express.static(path.join(__dirname, 'website')));
+app.use(express.static(path.join(__dirname, 'website/pages')));
 
 // Middleware to configure Handlebars
 app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
@@ -21,7 +21,7 @@ app.get('/example', (req, res) => {
 // Add more routes as needed for your existing HTML files
 app.get('/', (req, res) => {
     // Serve your existing index.html file
-    res.sendFile(path.join(__dirname, 'website', 'index.html'));
+    res.sendFile(path.join(__dirname, 'website/pages', 'index.html'));
 });
 
 // 404 Error handling
