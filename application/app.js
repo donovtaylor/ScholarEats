@@ -1,33 +1,36 @@
-const express = require("express");
-const handlebars = require("express-handlebars");
-const path = require("path");
-const indexRouter = require("./routes/index");
+const express = require('express');
+const path = require('path');
+const exphbs = require('express-handlebars'); // Import express-handlebars
 
 const app = express();
 
-// Set up Handlebars view engine
-app.engine("handlebars", handlebars());
-app.set("view engine", "handlebars");
+// Serve static files from the 'website' directory (for existing HTML files)
+app.use(express.static(path.join(__dirname, 'website')));
 
-// Serve static files from the "public" directory
-app.use("/public", express.static(path.join(__dirname, "public")));
+// Middleware to configure Handlebars
+app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
+app.set('view engine', '.hbs');
+app.set('views', path.join(__dirname, 'views')); // Specify the directory for Handlebars views
 
-// Middleware to log session info and set response locals
-app.use(function(req, res, next) {
-    console.log(req.session);
-    if (req.session.user) {
-        res.locals.isLoggedIn = true;
-        res.locals.user = req.session.user;
-    }
-    next();
+// Example route using Handlebars (not converting existing HTML)
+app.get('/example', (req, res) => {
+    // Render a Handlebars template
+    res.render('example', { title: 'Handlebars Example' });
 });
 
-// Use the router middleware from ./routes/index.js
-app.use("/", indexRouter);
+// Add more routes as needed for your existing HTML files
+app.get('/', (req, res) => {
+    // Serve your existing index.html file
+    res.sendFile(path.join(__dirname, 'website', 'index.html'));
+});
 
-// 404 error handling middleware
+// 404 Error handling
 app.use((req, res, next) => {
-    next(createError(404, `The route ${req.method} : ${req.url} does not exist.`));
+    res.status(404).send('404 Page Not Found');
 });
 
-module.exports = app;
+// Start server
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
