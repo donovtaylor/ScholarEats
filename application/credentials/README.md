@@ -1,20 +1,18 @@
-In this file, write all the credentials needed to access to your application. For example, your app and database credentials.
-This information will be used by your CTO and leads to have access some components of your app. 
-
-In addition, you should provide short tutorials to teach people how to access to all the 
-components of your application. For instance, if you created a MySQL instance, you must provide 
-a short description of how to use the credentials provided here to access to your database instance via ssh or 
-using MySQLWorkbench. 
-
-Points will be deducted if teams do not add their credentials here once they have chosen their 
-technology stack or if their step-by-step descriptions are not clear enough. You have been warned! 
 -------------------------------------------------------------------------------------
 # Credentials
-- Website URL:
-- SSH URL:
-- SSH Username:
-- SSH Password/Key:
-- Database URL:
+- Updated DNS: ec2-3-145-110-171.us-east-2.compute.amazonaws.com
+- Updated IP: 3.145.110.171
+- Updated IP (with port): 3.145.110.171:3000 
+- Key Pair (name): CSC648KeyPair.pem 
+
+## App:
+- Updated Website URL: http://3.145.110.171:3000/
+- SSH URL: ec2-user@ec2-3-145-110-171.us-east-2.compute.amazonaws.com
+- SSH Username: ec2-user
+- SSH Password/Key: .pem file uploaded to credentials folder
+
+## Database:
+- Database URL: csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com
 - Database Username: admin
 - Database Password: vdpE9YYQiaGl6VWibkiO
 
@@ -23,9 +21,9 @@ technology stack or if their step-by-step descriptions are not clear enough. You
 1. Open up a terminal and cd into the directory where the .ssh key is located.
 2. Enter in the command `chmod 400 <name of your .ssh key>` . As an example, we named our key CSC648KeyPair.pem, so in the terminal 
 we enter `chmod 400 CSC648KeyPair.pem`
-3. Next, you are going to use the `ssh -i` command along with your .ssh key, followed by your DNS. It should look like the following: `ssh -i CSC648KeyPair.pem ec2-user@ec2-18-117-106-171.us-east-2.compute.amazonaws.com`
+3. Next, you are going to use the `ssh -i` command along with your .ssh key, followed by your DNS (located in **Credentials** section as 'Updated DNS'). It should look like the following: `ssh -i CSC648KeyPair.pem ec2-user@ec2-18-117-106-171.us-east-2.compute.amazonaws.com`
 
-**Note to user: DNS is different every time**
+**Note to user: DNS is different every time server is up**
 
 4. The following lines are going to print to the terminal:
 
@@ -56,9 +54,9 @@ Execute the following commands in the order given:
 1. Open up a terminal and cd into the directory where the .ssh key is located.
 2. Enter in the command `chmod 400 <name of your .ssh key>` . As an example, we named our key CSC648KeyPair.pem, so in the terminal 
 we enter `chmod 400 CSC648KeyPair.pem`
-3. Next, you are going to use the `ssh -i` command along with your .ssh key, followed by your Public IPv4 address. It should look like the following: `ssh -i CSC648KeyPair.pem ec2-user@3.145.110.171`
+3. Next, you are going to use the `ssh -i` command along with your .ssh key, followed by `ec2-user` + your Public IPv4 address (located in **Credentials** section as 'Updated IP'). It should look like the following: `ssh -i CSC648KeyPair.pem ec2-user@3.145.110.171`
 
-**Note to user: Public IPv4 address is different every time**
+**Note to user: Public IPv4 address is different every time server is up**
 
 4. The following lines are going to print to the terminal:
 
