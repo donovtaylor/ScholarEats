@@ -56,7 +56,7 @@ Execute the following commands in the order given:
 1. Open up a terminal and cd into the directory where the .ssh key is located.
 2. Enter in the command `chmod 400 <name of your .ssh key>` . As an example, we named our key CSC648KeyPair.pem, so in the terminal 
 we enter `chmod 400 CSC648KeyPair.pem`
-3. Next, you are going to use the `ssh -i` command along with your .ssh key, followed by your Public IPv4 address. It should look like the following: `ssh -i CSC648KeyPair.pem ec2-user@3.145.110.171'
+3. Next, you are going to use the `ssh -i` command along with your .ssh key, followed by your Public IPv4 address. It should look like the following: `ssh -i CSC648KeyPair.pem ec2-user@3.145.110.171`
 
 **Note to user: Public IPv4 address is different every time**
 
@@ -68,7 +68,7 @@ This host key is known by the following other names/addresses:
     ~/.ssh/known_hosts:6: ec2-18-117-106-171.us-east-2.compute.amazonaws.com
     ~/.ssh/known_hosts:8: ec2-3-137-213-220.us-east-2.compute.amazonaws.com
     ~/.ssh/known_hosts:9: ec2-3-145-110-171.us-east-2.compute.amazonaws.com
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
 
 Enter `yes`
 
