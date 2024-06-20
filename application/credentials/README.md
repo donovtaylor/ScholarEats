@@ -15,8 +15,8 @@ technology stack or if their step-by-step descriptions are not clear enough. You
 - SSH Username:
 - SSH Password/Key:
 - Database URL:
-- Database Username:
-- Database Password:
+- Database Username: admin
+- Database Password: vdpE9YYQiaGl6VWibkiO
 
 # Tutorials
 ## Tutorial on How to Use .ssh keys to Connect to AWS Instance:
