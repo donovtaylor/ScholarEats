@@ -74,15 +74,24 @@ Enter `yes`
 
 ![alt text](awsBirdRDS.png)
 
-6. Enter the following command to connect with the MySQL instance:
+6. Enter in the following commands to install the MySQL command line client:
+
+**Note: To run the second command, 'Complete!' has to print to the screen first**
+
+`sudo dnf update -y`
+`sudo dnf install mariadb105-server`
+
+**Note: Enter `y` when the following prints to the screen: `Is this ok [y/N]:`**
+
+7. Enter the following command once 'Complete!' has print to the screen to connect with the MySQL instance:
 
 `mysql -h csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com -P 3306 -u admin -p`
 
 **Note to user: `csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com` is the endpoint of the DB instance**
 
-7. Enter the master password (located under **Credentials** section as 'Database Password') when prompted `Enter password:`.
+8. Enter the master password (located under **Credentials** section as 'Database Password') when prompted `Enter password:`.
 
-8. The following lines will then print to the terminal:
+9. The following lines will then print to the terminal:
 
 ![alt text](connectEC2ToRDS.png)
 
