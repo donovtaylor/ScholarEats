@@ -79,6 +79,7 @@ Enter `yes`
 **Note: To run the second command, 'Complete!' has to print to the screen first**
 
 `sudo dnf update -y`
+
 `sudo dnf install mariadb105-server`
 
 **Note: Enter `y` when the following prints to the screen: `Is this ok [y/N]:`**
