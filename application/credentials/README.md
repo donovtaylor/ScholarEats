@@ -41,14 +41,20 @@ Enter `yes`
 6. To get root user, type in the command `sudo -i`, as shown in the picture above.
 Execute the following commands in the order given:
 
-- `cd ../` (to get out into the "/" directory)
-- `cd home/ec2-user` (to get into where we cloned the repo)
+- `sudo npm install -g pm2`
 - `cd [repo name]` (repo name is sfsu-joseo/csc648-848-05-sw-engineering-su24-T4)
 - `git fetch`
 - `git pull` (this is to update the instance to most modern version of the repo)
 - `cd application` (this is where the node package is)
 - `npm install` (this will install all dependencies listed inside of the package.json)
-- `node app.js` (this opens node listening on port 3000)
+- `pm2 start app.js --[app-name]` (replace [app-name] with ScholarEats)
+- `pm2 startup` (this command will generate a command. run the command.)
+- `pm2 save`
+
+Now, our website can be accessed through the following link:
+
+http://3.145.110.171:3000/ 
+
 
 ## Tutorial on How to Access Database Instance via ssh:
 1. Open up a terminal and cd into the directory where the .ssh key is located.
