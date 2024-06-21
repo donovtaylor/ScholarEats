@@ -1,8 +1,25 @@
 const express = require('express');
+const mysql = require('mysql');
 const path = require('path');
 const exphbs = require('express-handlebars'); // Import express-handlebars
 
 const app = express();
+
+// Going to need to create a .env file for this, need to rename this
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'student',
+    password: 'student',
+    database: 'testdb'
+});
+
+// Queries all users from the database and outputs it to console
+pool.query('SELECT * FROM users',(err, results)=>{
+    if(err){
+        return console.error(err.message);
+    }
+    console.log(results)
+});
 
 // Serve static files from the 'website' directory (for existing HTML files)
 app.use(express.static(path.join(__dirname, 'website/pages')));
