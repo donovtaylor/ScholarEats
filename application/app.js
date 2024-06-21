@@ -13,7 +13,7 @@ const pool = mysql.createPool({
     database: 'testdb'
 });
 
-// Queries all users from the database and outputs it to console
+// Queries all users from the database and outputs it to the console
 pool.query('SELECT * FROM users',(err, results)=>{
     if(err){
         return console.error(err.message);
