@@ -8,9 +8,14 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'website/pages')));
 
 // Middleware to configure Handlebars
-app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
-app.set('view engine', '.hbs');
-app.set('views', path.join(__dirname, 'views')); // Specify the directory for Handlebars views
+app.engine('hbs', exphbs.engine({
+  extname: 'hbs',
+  layoutsDir: path.join(__dirname, '/views/layouts'),
+  partialsDir: path.join(__dirname, 'views/partials'),
+  defaultLayout:'defaultLayout'
+}));
+
+app.set('view engine', 'hbs');
 
 // Example route using Handlebars (not converting existing HTML)
 app.get('/example', (req, res) => {
@@ -21,7 +26,7 @@ app.get('/example', (req, res) => {
 // Add more routes as needed for your existing HTML files
 app.get('/', (req, res) => {
     // Serve your existing index.html file
-    res.sendFile(path.join(__dirname, 'website/pages', 'index.html'));
+    res.render('index');
 });
 
 // 404 Error handling
