@@ -30,7 +30,9 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+//serve angelo's about page
 app.get('/angelo', (req, res) => {
+  //uses the 'about.hbs' template
   res.render('about', {
     layout:'aboutPageLayout', 
     FName:'Angelo',
