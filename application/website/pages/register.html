@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Register</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    </head>
+    <body>
+        <div class="register-container">
+            <form id="register-form" class="register-form">
+                <h2>Register</h2>
+                <label for="email">Email</label>
+                <input id="email" type="email" name="email" placeholder="Email" required>
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" placeholder="Username" required>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" required>
+                <div>
+                    <p>Already Have an Account? <a href="login.html">Login</a></p>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+        <script src="./routes/register.js"></script>
+    </body>
+</html>

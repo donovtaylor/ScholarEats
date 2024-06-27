@@ -1,25 +1,63 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
 const path = require('path');
 const exphbs = require('express-handlebars'); // Import express-handlebars
-
 const app = express();
 
-// Going to need to create a .env file for this, need to rename this
+//Middleware Functions to parse json
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+
+// Going to need to create a .env file for this.
+// If you are in your local machine, edit these host, user, password, and database for your needs
 const pool = mysql.createPool({
+    connectionLimit: 100,
     host: 'localhost',
     user: 'student',
     password: 'student',
     database: 'testdb'
 });
 
-// Queries all users from the database and outputs it to the console
-pool.query('SELECT * FROM users',(err, results)=>{
-    if(err){
-        return console.error(err.message);
-    }
-    console.log(results)
+//Checking if the database is connected
+pool.getConnection( (err)=> {
+    if (err) throw (err)
+    console.log ("DB connected successful!")
+})
+
+app.post('/register', (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    const email = req.body.email;
+
+
+    // Checks if the email/username is already in the database
+    pool.query('SELECT * FROM users WHERE email = ? OR username = ?',[email, username], (err,results) => {
+        if (results.length > 0) {
+            return res.send('Email or username already taken');
+        }
+    });
+
+
+    // Hashes the password using bcrypt
+    bcrypt.hash(password, 10, (err, hash) => {
+        if (err) {
+            console.error('Error hashing password:', err);
+            return (err);
+        }
+        // We insert the information that was given into the database
+        pool.query('INSERT INTO users (user_id, email, username, password) VALUES (UUID(), ?, ?, ?)', [email, username, hash], (err, result) => {
+            if (err) {
+                console.error('Error inserting user:', err);
+                return (err);
+            }
+            res.send('User registered successfully');
+        });
+    });
 });
+
+
 
 // Serve static files from the 'website' directory (for existing HTML files)
 app.use(express.static(path.join(__dirname, 'website/pages')));
