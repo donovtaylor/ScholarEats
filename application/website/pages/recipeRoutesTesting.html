@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe App</title>
+    <style>
+        /* Basic styling for recipe cards */
+        .recipe-card {
+            border: 1px solid #ccc;
+            margin: 10px;
+            padding: 10px;
+            width: 300px;
+            background-color: #f9f9f9;
+        }
+        .recipe-card h3 {
+            margin-top: 0;
+        }
+        .recipe-card p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Recipe App</h1>
+
+    <!-- Buttons for sorting -->
+    <button onclick="sortByCaloriesAsc()">Sort by Calories (Asc)</button>
+    <button onclick="sortByCaloriesDesc()">Sort by Calories (Desc)</button>
+
+    <!-- Dropdown for filtering -->
+    <label for="dietRestriction">Filter by Dietary Restriction:</label>
+    <select id="dietRestriction" onchange="filterByDiet()">
+        <option value="Vegan">Vegan</option>
+        <option value="Keto">Keto</option>
+        <option value="Halal">Halal</option>
+        <!-- Add other options as needed -->
+    </select>
+
+    <!-- Container to display recipes -->
+    <div id="recipeList" class="recipe-container">
+        <!-- Recipes will be dynamically added here -->
+    </div>
+
+    <script>
+        // Function to fetch and display recipes sorted by calories ascending
+        function sortByCaloriesAsc() {
+            fetch('/recipes/sortByCaloriesAsc')
+                .then(response => response.json())
+                .then(recipes => displayRecipes(recipes))
+                .catch(error => console.error('Error fetching recipes:', error));
+        }
+
+        // Function to fetch and display recipes sorted by calories descending
+        function sortByCaloriesDesc() {
+            fetch('/recipes/sortByCaloriesDesc')
+                .then(response => response.json())
+                .then(recipes => displayRecipes(recipes))
+                .catch(error => console.error('Error fetching recipes:', error));
+        }
+
+        // Function to fetch and display recipes filtered by dietary restriction
+        function filterByDiet() {
+            const selectedRestriction = document.getElementById('dietRestriction').value;
+            fetch(`/recipes/filterByDiet/${selectedRestriction}`)
+                .then(response => response.json())
+                .then(recipes => displayRecipes(recipes))
+                .catch(error => console.error('Error fetching recipes:', error));
+        }
+
+        // Function to display fetched recipes on the frontend
+        function displayRecipes(recipes) {
+            const recipeListDiv = document.getElementById('recipeList');
+            recipeListDiv.innerHTML = ''; // Clear previous content
+
+            recipes.forEach(recipe => {
+                const recipeElement = document.createElement('div');
+                recipeElement.classList.add('recipe-card');
+                recipeElement.innerHTML = `
+                    <h3>${recipe.recipe_name}</h3>
+                    <p>Calories: ${recipe.calories}</p>
+                    <p>Protein: ${recipe.protein}</p>
+                    <p>Fat: ${recipe.fat}</p>
+                    <p>Fiber: ${recipe.fiber}</p>
+                    <!-- Add other relevant recipe information -->
+                `;
+                recipeListDiv.appendChild(recipeElement);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -2,7 +2,8 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
 const path = require('path');
-const exphbs = require('express-handlebars'); // Import express-handlebars
+const exphbs = require('express-handlebars');
+const recipeRoutes = require('./routes/recipeRoutes'); // Make sure this path is correct
 const app = express();
 
 //Middleware Functions to parse json
@@ -15,9 +16,9 @@ app.use(express.urlencoded({extended: true}));
 const pool = mysql.createPool({
     connectionLimit: 100,
     host: 'localhost',
-    user: 'student',
-    password: 'student',
-    database: 'testdb'
+    user: 'root',
+    password: 'password',
+    database: 'test_db_scholareats'
 });
 
 //Checking if the database is connected
@@ -72,6 +73,14 @@ app.get('/example', (req, res) => {
     // Render a Handlebars template
     res.render('example', { title: 'Handlebars Example' });
 });
+
+// Serve the main index.html file
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'website/pages', 'index.html'));
+});
+
+// Use the recipe routes
+app.use('/recipes', recipeRoutes);
 
 // Add more routes as needed for your existing HTML files
 app.get('/', (req, res) => {
