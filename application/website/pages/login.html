@@ -16,6 +16,24 @@
                 <button type="submit">Login</button>
             </form>
         </div>
+        <div class="changepass-container">
+            <form id="changepass-form">
+                <label for="current-pass">Current Password:</label>
+                <input type="password" id="current-pass" name="current-passw" required><br>
+                <label for="new-pass">New Password:</label>
+                <input type="password" id="new-pass" name="new-password" required><br>
+                <label for="confirm-pass">Confirm Password:</label>
+                <input type="password" id="confirm-pass" name="confirm-pass" required><br>
+                <button type="submit">Change Password</button>
+            </form>
+        </div>
+        <div class="changeUsername-container">
+            <form id="changeUsername-form">
+                <label for="new-username">New Username:</label>
+                <input type="text" id="new-username" name="new-username" required><br>
+                <button type="submit">Change Username</button>
+            </form>
+        </div>
         <button id="logout-button">Logout</button>
         <script src="./routes/login.js"></script>
     </body>
