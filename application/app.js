@@ -105,14 +105,77 @@ app.post('/logout', (req, res) => {
     });
 });
 
+
+app.post('/change-password',(req, res) =>{
+    const newPass = req.body.newPass;
+    const currentPass = req.body.currentPass;
+    const confirmPass = req.body.confirmPass;
+
+    
+
+    pool.query('SELECT * FROM users WHERE username = ?', [req.session.user.username], (err, results) => {
+        if (err) {
+            return err;
+        }
+        const user = results[0];
+        bcrypt.compare(currentPass, user.password, (err, isMatch) =>{
+            if (err){
+                return err;
+            }
+            if (!isMatch){
+                return res.send("Incorrect Password");
+            }
+
+            if(newPass != confirmPass){
+        
+                return res.send("Password Doesn't Match")
+            }
+
+            bcrypt.hash(newPass, 10, (err, hash) => {
+                if (err){
+                    return err;
+                }
+            
+                pool.query("UPDATE users SET password = ? WHERE username = ?", [hash, req.session.user.username], (err, result) =>{
+                    if (err){
+                        return err;
+                    }
+                    res.send("successfully changed password!");
+                });
+            });
+        });
+
+
+    });
+});
+
+// NOTE: NEED TO ADD A CHECK IF THE USERNAMEIS TAKEN OR NOT
+app.post("/change-username",(req, res) =>{
+
+    const newUsername = req.body.newUsername;
+    //console.log("Request body:", req.body);
+    //console.log("Session:", req.session);
+
+    pool.query("UPDATE users SET username = ? WHERE email = ?", [newUsername, req.session.user.email], (err, result) => {
+        if (err){
+            return err;
+        }
+        req.session.user.username = newUsername;
+        res.send("successfully changed username!");
+    });
+});
+
+
 // Displays the status wheter if we are logged in or not.
-app.get('/status', (req, res) => {
+app.get("/status", (req, res) => {
     if (req.session.user) {
         res.json({ loggedIn: true, user: req.session.user });
     } else {
         res.json({ loggedIn: false });
     }
 });
+
+
 
 
 // Serve static files from the 'website' directory (for existing HTML files)
