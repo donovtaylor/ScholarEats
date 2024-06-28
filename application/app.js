@@ -4,7 +4,12 @@ const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
 const path = require('path');
 const exphbs = require('express-handlebars');
-const recipeRoutes = require('./routes/recipeRoutes'); // Make sure this path is correct
+const recipeRoutes = require('./routes/recipeRoutes'); // Recipe Routes
+const inventoryRoutes = require('./routes/inventoryRoutes'); // Inventory Routes
+const userRoutes = require('./routes/userRoutes'); // User Routes
+const recipeGeneratorRoutes = require('./routes/recipeGeneratorRoutes'); // Recipe Generation Routes
+
+
 const app = express();
 
 //Middleware Functions to parse json
@@ -22,7 +27,7 @@ app.use(session({
 // If you are in your local machine, edit these host, user, password, and database for your needs
 const pool = mysql.createPool({
     connectionLimit: 100,
-    host: 'localhost',
+    host: 'my_db',
     user: 'student',
     password: 'student',
     database: 'testdb'
@@ -134,8 +139,11 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'website/pages', 'index.html'));
 });
 
-// Use the recipe routes
-// app.use('/recipes', recipeRoutes);
+// Mount routes
+// app.use('/recipes', recipeRoutes); // Recipe Routes
+// app.use('/inventory', inventoryRoutes); // Inventory Routes
+// app.use('/users', userRoutes); // User Routes
+// app.use('/recipes', recipeGeneratorRoutes); // Recipe Generator Routes
 
 // Add more routes as needed for your existing HTML files
 app.get('/', (req, res) => {
