@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
 const path = require('path');
@@ -10,15 +11,21 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: false,
+  }));
+
 
 // Going to need to create a .env file for this.
 // If you are in your local machine, edit these host, user, password, and database for your needs
 const pool = mysql.createPool({
     connectionLimit: 100,
     host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'test_db_scholareats'
+    user: 'student',
+    password: 'student',
+    database: 'testdb'
 });
 
 //Checking if the database is connected
@@ -60,6 +67,54 @@ app.post('/register', (req, res) => {
 
 
 
+app.post('/login', (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    
+    pool.query('SELECT * FROM users WHERE email = ?',[email], (err,results)=>{
+        if (err){
+            return err;
+        }
+        if (results.length == 0){
+            console.log("Invalid Email or Password");
+        }
+        const user = results[0];
+        bcrypt.compare(password, user.password, (err, isMatch) =>{
+            if (err){
+                return err;
+            }
+            if(!isMatch){
+                return res.send("Invalid Email or Password");
+            }
+            req.session.user = { email: user.email, username: user.username };
+            res.send("logged in!");
+            
+        });
+
+    })
+});
+
+app.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return err;
+        }
+        // Clear the session cookie
+        res.clearCookie('connect.sid'); 
+        res.json({ message: 'Logged out successfully' });
+    });
+});
+
+// Displays the status wheter if we are logged in or not.
+app.get('/status', (req, res) => {
+    if (req.session.user) {
+        res.json({ loggedIn: true, user: req.session.user });
+    } else {
+        res.json({ loggedIn: false });
+    }
+});
+
+
 // Serve static files from the 'website' directory (for existing HTML files)
 app.use(express.static(path.join(__dirname, 'website/pages')));
 
@@ -80,7 +135,7 @@ app.get('/', (req, res) => {
 });
 
 // Use the recipe routes
-app.use('/recipes', recipeRoutes);
+// app.use('/recipes', recipeRoutes);
 
 // Add more routes as needed for your existing HTML files
 app.get('/', (req, res) => {

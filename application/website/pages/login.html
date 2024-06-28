@@ -1,1 +1,22 @@
-hello
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    </head>
+    <body>
+        <div id="status">Checking login status...</div>
+        <div class="login-container">
+            <form id="login-form" class="login-form">
+                <h2>Login</h2>
+                <label for="email">Email</label>
+                <input id="email" type="email" name="email" placeholder="Email" required>
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+        <button id="logout-button">Logout</button>
+        <script src="./routes/login.js"></script>
+    </body>
+</html>
