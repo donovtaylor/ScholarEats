@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
 app.get('/angelo', (req, res) => {
   res.render('about', {
     layout:'aboutPageLayout', 
-    FName:'Angelo',
+    fName:'Angelo',
     src:path.join(__dirname, 'public/images/angelo.jpg'),
     alt:'angelo.jpg',
     desc:'Angelo is a student at San Francisco State University. Has an aptitude for many hobbies ranging from sewing and clothesmaking to 3D modelling in Blender. Started at SFSU in January 2023 after finishing an enlistment in the United States Marine Corps and is expecting to graduate Decemeber 2024 with a B.S. in Computer Science and a Minor in Mathematics.'

@@ -1,18 +1,25 @@
 <style>
   .header {
     display: grid;
-    flex-direction: row;
-    position: absolute;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(8,1fr);
+    grid-auto-columns:auto;
+    grid-column: 1/3;
+    margin-bottom: 50px;
+  }
+  .header > a {
+    align-content:center;
+    justify-content:center;
   }
 </style>
 <div class="header">
-  <div>Home</div>
-  <div>Recipes</div>
-  <div>Ingredients</div>
-  <div>About</div>
-  <div>Contact Us</div>
-  <div>Spacer</div>
-  <div>Notifications</div>
-  <div>sign in/up</div>
+  <a href="/">
+    <img src="/images/icon_orange.png" alt="orange icon" width="50px" height="50px">
+  </a>
+  <a href="/">Recipes</a>
+  <a href="/">Ingredients</a>
+  <a href="/">About</a>
+  <a href="/">Contact Us</a>
+  <a href="/">Spacer</a>
+  <a href="/">Notifications</a>
+  <a href="/">sign in/up</a>
 </div>
