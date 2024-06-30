@@ -36,7 +36,7 @@ app.get('/angelo', (req, res) => {
   res.render('about', {
     layout:'aboutPageLayout', 
     fName:'Angelo',
-    src:path.join(__dirname, 'public/images/angelo.jpg'),
+    src:'images/angelo.jpg',
     alt:'angelo.jpg',
     desc:'Angelo is a student at San Francisco State University. Has an aptitude for many hobbies ranging from sewing and clothesmaking to 3D modelling in Blender. Started at SFSU in January 2023 after finishing an enlistment in the United States Marine Corps and is expecting to graduate Decemeber 2024 with a B.S. in Computer Science and a Minor in Mathematics.'
   });
@@ -46,8 +46,8 @@ app.get('/angelo', (req, res) => {
 app.get('/donovan', (req, res) => {
   res.render('about', {
     layout:'aboutPageLayout', 
-    FName:'Donovan',
-    src:path.join(__dirname, 'public/images/donovan.jpg'),
+    fName:'Donovan',
+    src: 'images/donovan.jpg',
     alt:'donovan.jpg',
     desc:'Donovan is a student at SFSU who is passionate about computer science and expanding his teamwork abilities.'
   });
@@ -57,8 +57,8 @@ app.get('/donovan', (req, res) => {
 app.get('/hancun', (req, res) => {
   res.render('about', {
     layout:'aboutPageLayout', 
-    FName:'Hancun',
-    src:path.join(__dirname, 'public/images/hancun.jpg'),
+    fName:'Hancun',
+    src: 'images/hancun.jpg',
     alt:'hancun.jpg',
     desc:'Hancun is a student at SFSU who loves video games.'
   });
@@ -68,8 +68,8 @@ app.get('/hancun', (req, res) => {
 app.get('/edward', (req, res) => {
   res.render('about', {
     layout:'aboutPageLayout', 
-    FName:'Edward',
-    src:path.join(__dirname, 'public/images/edward.jpg'),
+    fName:'Edward',
+    src: 'images/edward.jpg',
     alt:'edward.jpg',
     desc:'Edward is a CS student at SFSU'
   });
@@ -79,8 +79,8 @@ app.get('/edward', (req, res) => {
 app.get('/karl', (req, res) => {
   res.render('about', {
     layout:'aboutPageLayout', 
-    FName:'Karl',
-    src:path.join(__dirname, 'public/images/karl.jpg'),
+    fName:'Karl',
+    src: 'images/karl.jpg',
     alt:'karl.jpg',
     desc:'Karl is currently attending his last year at San Francisco State University majoring in Computer Science and is eager to his expand his knowledge in the field.'
   });
@@ -90,8 +90,8 @@ app.get('/karl', (req, res) => {
 app.get('/sai', (req, res) => {
   res.render('about', {
     layout:'aboutPageLayout', 
-    FName:'Sai',
-    src:path.join(__dirname, 'public/images/sai.jpg'),
+    fName:'Sai',
+    src: 'images/sai.jpg',
     alt:'sai.jpg',
     desc:'I am Sai Saketh Bavisetti, currently pursuing a Masters in Data Science and AI at San Francisco State University. With a background in Computer Science from GITAM, INDIA, I specialize in developing and analyzing complex algorithms and data using a variety of programming languages and machine learning tools.'
   });
@@ -101,8 +101,8 @@ app.get('/sai', (req, res) => {
 app.get('/maeve', (req, res) => {
   res.render('about', {
     layout:'aboutPageLayout', 
-    FName:'Maeve',
-    src:path.join(__dirname, 'public/images/maeve.jpg'),
+    fName:'Maeve',
+    src: 'images/maeve.jpg',
     alt:'maeve.jpg',
     desc:'Maeve is a student at SFSU from San Francisco who loves spending time with family and helping others.'
   });
@@ -112,8 +112,8 @@ app.get('/maeve', (req, res) => {
 app.get('/sabrina', (req, res) => {
   res.render('about', {
     layout:'aboutPageLayout', 
-    FName:'Sabrina',
-    src:path.join(__dirname, 'public/images/sabrina.jpg'),
+    fName:'Sabrina',
+    src: 'images/sabrina.jpg',
     alt:'sabrina.jpg',
     desc:'Sabrina is a student at SFSU who aspires to improve others\' lives through her work.'
   });
@@ -123,8 +123,8 @@ app.get('/sabrina', (req, res) => {
 app.get('/tina', (req, res) => {
   res.render('about', {
     layout:'aboutPageLayout', 
-    FName:'Tina',
-    src:path.join(__dirname, 'public/images/tina.jpg'),
+    fName:'Tina',
+    src: 'images/tina.jpg',
     alt:'tina.jpg',
     desc:''
   });
