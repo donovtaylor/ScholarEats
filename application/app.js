@@ -32,7 +32,9 @@ app.get('/', (req, res) => {
 });
 
 // server angelo's page dynamically using handlebars
+
 app.get('/angelo', (req, res) => {
+  //uses the 'about.hbs' template
   res.render('about', {
     layout:'aboutPageLayout', 
     fName:'Angelo',

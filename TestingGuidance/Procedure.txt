@@ -1,0 +1,18 @@
+First, a task will be created on Notion by the *Team Lead* or *Github Master* and a feature branch 
+corresponding to that task will be created.
+
+Team-members will be assigned to be *maintainers* that task and work on that specific branch.
+
+Once the maintainer(s) believe that the feature has been properly implemented, the maintainer will go
+examine the *current* checklist for testing.
+
+This checklist will be contained in the "TestingGuidance" folder in the repository within "Checklist.txt"
+
+Please note that this checklist will be periodically updated and merged into main via the 
+"testingGuidance" branch.
+
+Once the maintainer(s) has completed the checklist, the maintainer will create a GitHub Pull Request(PR)
+requesting that the feature branch be merged into main.
+
+The PR will be approved and merged by either the Team Lead or the GitHub Master.
+At least (1) approval is required to do any merging into main branch.
