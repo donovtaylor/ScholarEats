@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <style>
+	body {  
+            display:grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            align-items:start;
+            justify-content: left;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+	.header {
+            display:grid;
+            grid-column: 1 / 3;
+            font-size: 2em;
+            align-content:center;
+            justify-content:center;
+            width: 100%;
+            height: 100%;
+        }
+	img {
+            max-width: 300px;
+            border-radius:10px;
+            justify-self:center;
+        }
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        grid-template-rows: 1fr 2fr;
+    }
+    .border {
+        border-right: solid lightgray;
+        justify-self: right;
+        padding-right: 40px;
+    }
+	p {
+            max-width: 600px;
+            justify-self:left;
+            font-size: 1.2em;
+            margin-left: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="spacer"></div>
+    <div class="container">
+    <div class="header">About Donovan</div>
+    <div class="border"><img src="images/donovan.jpg" alt="Donovan's Photo"></div>
+    <p>Donovan is a student at SFSU who is passionate about computer science and expanding his teamwork abilities.</p>
+    </div>
+    <div class="spacer"></div>
+</body>
+</html>
