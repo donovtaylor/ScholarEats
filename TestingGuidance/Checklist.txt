@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 As of June 28th.
 - Does Index Page load?
     - Are Images rendering
     - Does each button either A) Load a new page B) perform an action or C) Report to user that the button has not been implemented
 - No excessive latency
-=======
-- [ ] Sample Checkbox
->>>>>>> 54067f7 (EXAMPLE CHECKBOX)
+
