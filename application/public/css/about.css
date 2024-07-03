@@ -1,0 +1,33 @@
+body {
+  background-color:darkslategray;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  font-size: 2em;
+  margin-top: 20px;
+}
+
+.container > img {
+  max-width: 300px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+p {
+  max-width: 600px;
+  text-align: center;
+  font-size: 1.2em;
+}

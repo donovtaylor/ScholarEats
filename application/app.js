@@ -28,7 +28,9 @@ app.get('/example', (req, res) => {
 // Add more routes as needed for your existing HTML files
 app.get('/', (req, res) => {
     // Serve index.hbs
-    res.render('index');
+    res.render('index', {
+      title:'team\'s about page'
+    });
 });
 
 // server angelo's page dynamically using handlebars
@@ -130,6 +132,11 @@ app.get('/tina', (req, res) => {
     alt:'tina.jpg',
     desc:''
   });
+});
+
+// serve login page
+app.get('/login', (req, res) => {
+  res.render
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
