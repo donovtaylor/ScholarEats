@@ -130,7 +130,7 @@ app.get('/tina', (req, res) => {
     fName:'Tina',
     src: 'images/tina.jpg',
     alt:'tina.jpg',
-    desc:''
+    desc:'Tina is a SFSU student who loves swimming and major is computer science.'
   });
 });
 
