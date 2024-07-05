@@ -136,7 +136,12 @@ app.get('/tina', (req, res) => {
 
 // serve login page
 app.get('/login', (req, res) => {
-  res.render
+  res.render('login');
+});
+
+// serve registration page
+app.get('/register', (req, res) => {
+  res.render('register');
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
