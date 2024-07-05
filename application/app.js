@@ -139,6 +139,11 @@ app.get('/login', (req, res) => {
   res.render
 });
 
+// serve contact us page
+app.get('/contact_us', (req, res) => {
+  res.render
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 404 Error handling
