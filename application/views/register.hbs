@@ -1,0 +1,17 @@
+//registration page
+<div class="spacer"></div>
+<div class="page">
+    {{>navbar}}
+    <div class="container">
+      <header>Register</header>
+      <form action="/register" method="POST">
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <input type="text" name="email" placeholder="Email">
+        <input type="text" name="student id" placeholder="Student ID">
+        <input type="submit" value="Register">
+      </form>
+    </div>
+    {{>footer}}
+</div>
+<div class="spacer"></div>
