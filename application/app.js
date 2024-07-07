@@ -23,7 +23,7 @@ app.route('/')
   .get((req, res) => {
     // Serve index.hbs
     res.render('index', {
-      style: 'default.css',
+      style: ['default.css'],
       title: 'team\'s about page',
       header: 'team\'s about page'
     })
@@ -31,25 +31,66 @@ app.route('/')
   .post((req, res) => {
     var searchInput = req.body.searchInput;
     res.render('index', {
-      style: 'default.css',
+      style: ['default.css'],
       title: 'team\'s about page',
       header: searchInput
     })
   });
 
+
+// serve recipes page
+app.get('/recipes', (req, res) => {
+  res.render('recipes', {
+    style: ['default.css', 'recipes.css'],
+    title: 'Recipes',
+    recipe: [{
+      src: '/images/icon_orange.png',
+      alt: 'potato.jpg',
+      name: 'potato',
+      desc: 'lorem ipsum',
+    },
+    {
+      src: '/images/icon_orange.png',
+      alt: 'potato.jpg',
+      name: 'potato',
+      desc: 'lorem ipsum',
+    }]
+  })
+})
+
+// serve Ingredients page
+app.get('/ingredients', (req, res) => {
+  res.render('ingredients', {
+    style: ['default.css', 'ingredients.css'],
+    title: 'Ingredients',
+    ingredient: [{
+      src: '/images/icon_orange.png',
+      alt: 'potato.jpg',
+      name: 'potato',
+      desc: 'lorem ipsum',
+    },
+    {
+      src: '/images/icon_orange.png',
+      alt: 'potato.jpg',
+      name: 'potato',
+      desc: 'lorem ipsum',
+    }]
+  });
+});
+
 // serve login page
 app.get('/login', (req, res) => {
   res.render('login', {
-    style: 'login.css',
-    title: 'login'
+    style: ['default.css', 'login.css'],
+    title: 'Login'
   });
 });
 
 // serve registration page
 app.get('/register', (req, res) => {
   res.render('register', {
-    style: 'login.css',
-    title: 'login'
+    style: ['default.css', 'register.css'],
+    title: 'Register'
   });
 });
 

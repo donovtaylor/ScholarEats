@@ -3,14 +3,9 @@
   {{>navbar}}
   <div class="container">
     <header>Ingredients {{fName}}</header>
-    <div class="recipe">
-        <img src="{{src1}}" alt="{{alt1}}">
-        <div>{{desc1}}</div>
-    </div>
-    <div class="recipe">
-        <img src="{{src2}}" alt="{{alt2}}">
-        <div>{{desc2}}</div>
-    </div>
+    {{#each ingredient}}
+      {{>partial_ingredient this}}
+    {{/each}}
   </div>
   {{>footer}}
 </div>
