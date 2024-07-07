@@ -11,7 +11,7 @@ header {
   justify-self:left;
   align-self:center;
 }
-a {
+a:not(.no-style) {
   display:grid;
   text-decoration: none;
   font-size: 1.2em;
@@ -29,6 +29,7 @@ a:hover {
   background-color: orange;
   color: white;
 }
+
 .container {
 display:grid;
 grid-template-columns: 1fr 1fr;
@@ -44,4 +45,12 @@ padding: 5px;
 }
 img {
 object-fit:cover;
+}
+
+.no-style {
+  display: flexbox;
+  color: orange;
+  text-decoration: none;
+  border: none;
+  border-radius: none;
 }
