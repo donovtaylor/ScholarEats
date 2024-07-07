@@ -39,12 +39,18 @@ app.route('/')
 
 // serve login page
 app.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login', {
+    style: 'login.css',
+    title: 'login'
+  });
 });
 
 // serve registration page
 app.get('/register', (req, res) => {
-  res.render('register');
+  res.render('register', {
+    style: 'login.css',
+    title: 'login'
+  });
 });
 
 // 404 Error handling
