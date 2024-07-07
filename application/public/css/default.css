@@ -57,7 +57,7 @@ padding-top: 40px;
   width: 100%;
 }
 
-form {
+.navbar form {
   display: grid;
   grid-template-columns: 5fr 1fr;
   justify-content: center;
