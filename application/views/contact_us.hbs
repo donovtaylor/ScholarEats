@@ -3,13 +3,17 @@
   {{>navbar}}
   <div class="container">
     <header>Contact Us</header>
-    <img src={{src}} alt={{alt}}>
-    <p>
-      {{desc}}
-    </p>
-    <p>
-        
-    </p>
+    <div class="team-members">
+        {{#each teamMembers}}
+        <div class="team-member">
+          <h3>{{role}} : {{fName}}</h3>
+          <img src={{src}} alt={{alt}} width="150" height="150">
+          <p>Email: <a class="no-style" href="mailto:{{email}}">{{email}}</a></p>
+        </div>
+      {{/each}}
+
+    </div>
+    
   </div>
   {{>footer}}
 </div>
