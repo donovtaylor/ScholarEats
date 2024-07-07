@@ -172,27 +172,37 @@ app.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   
-  pool.query('SELECT * FROM users WHERE email = ?',[email], (err,results)=>{
-      if (err){
-          return err;
-      }
-      if (results.length == 0){
-          console.log("Invalid Email or Password");
-      }
-      const user = results[0];
-      bcrypt.compare(password, user.password, (err, isMatch) =>{
-          if (err){
-              return err;
-          }
-          if(!isMatch){
-              return res.send("Invalid Email or Password");
-          }
-          req.session.user = { email: user.email, username: user.username };
-          res.send("logged in!");
-          
-      });
+  // Query to find user based on email
+  pool.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+    if (err) {
+      console.error('Error querying database:', err);
+      return res.status(500).send('Database error');
+    }
+    
+    // Check if user exists
+    if (results.length === 0) {
+      return res.send('Invalid Email or Password');
+    }
+    
+    const user = results[0];
 
-  })
+    // Compare password with hashed password in database
+    bcrypt.compare(password, user.password, (err, isMatch) => {
+      if (err) {
+        console.error('Error comparing passwords:', err);
+        return res.status(500).send('Authentication error');
+      }
+      
+      if (!isMatch) {
+        return res.send('Invalid Email or Password');
+      }
+
+      // Store user data in session upon successful login
+      req.session.user = { email: user.email, username: user.username };
+      res.send('Logged in successfully!');
+      res.redirect('/');
+    });
+  });
 });
 
 app.post('/logout', (req, res) => {
@@ -279,10 +289,10 @@ app.get("/status", (req, res) => {
 // Serve static files from the 'website' directory (for existing HTML files)
 app.use(express.static(path.join(__dirname, 'website/pages')));
 
-// Middleware to configure Handlebars
-app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
-app.set('view engine', '.hbs');
-app.set('views', path.join(__dirname, 'views')); // Specify the directory for Handlebars views
+// // Middleware to configure Handlebars
+// app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
+// app.set('view engine', '.hbs');
+// app.set('views', path.join(__dirname, 'views')); // Specify the directory for Handlebars views
 
 // Example route using Handlebars (not converting existing HTML)
 app.get('/example', (req, res) => {
@@ -290,10 +300,11 @@ app.get('/example', (req, res) => {
     res.render('example', { title: 'Handlebars Example' });
 });
 
-// Serve the main index.html file
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'website/pages', 'index.html'));
-});
+// // Serve the main index.html file
+// app.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'website/pages', 'index.html'));
+// });
+// NO LONGER USING HTML
 
 // Mount routes
 app.use('/recipes', recipeRoutes); // Recipe Routes
