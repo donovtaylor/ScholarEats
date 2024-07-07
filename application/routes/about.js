@@ -2,9 +2,6 @@ const express = require("express");
 const path = require("path");
 let router = express.Router();
 
-
-router.use(express.static(path.join(__dirname, 'public')));
-
 // server angelo's page dynamically using handlebars
 router.get('/angelo', (req, res) => {
   //uses the 'about.hbs' template
