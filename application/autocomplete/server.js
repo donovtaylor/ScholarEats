@@ -1,8 +1,11 @@
 const express = require('express');
 const mysql = require('mysql2');
 const path = require('path');
+const cors = require('cors');
 const app = express();
-const port = 3001; // Change to a different port number
+const port = 3000;  // Use a single port for both frontend and backend
+
+app.use(cors());  // Enable CORS for all routes
 
 // Create connection to the database
 const db = mysql.createConnection({
@@ -21,8 +24,8 @@ db.connect(err => {
     console.log('Connected to the database');
 });
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static files from the 'application/views/partials' directory
+app.use(express.static(path.join(__dirname, '../views/partials')));
 
 // Endpoint to get recipe suggestions
 app.get('/suggestions', (req, res) => {
@@ -49,9 +52,9 @@ app.get('/suggestions', (req, res) => {
     });
 });
 
-// Catch-all route to serve the index.html file for any other requests
+// Serve the index.html file for any other requests
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, '../views/partials', 'index.html'));
 });
 
 app.listen(port, () => {

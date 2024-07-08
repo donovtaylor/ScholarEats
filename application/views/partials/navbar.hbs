@@ -6,8 +6,9 @@
   <a href="/ingredients">Ingredients</a>
   <div>
     <form action='/' method='POST'>
-      <input type='text' class="searchbar" name="searchInput">
+      <input type='text' class="searchbar" id="autocomplete-input" name="searchInput">
       <input type='submit' class="submitbutton" value='search'>
+      <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
     </form>
   </div>
   <a href="/">About</a>
@@ -15,3 +16,6 @@
   <a href="/">Notifications</a>
   <a href="/login">sign in/up</a>
 </div>
+
+<!-- Including the autocomplete.js script -->
+<script src="/autocomplete.js"></script>
