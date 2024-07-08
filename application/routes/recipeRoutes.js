@@ -152,100 +152,162 @@ function generateRecommendedRecipes(callback) { // Update parameter
     });
 };
 
+/* Sorting Functions */
+
+// Function to sort recipes by a specified column and order
+function sortRecipes(column, order, callback) {
+    const query = `SELECT * FROM recipes ORDER BY ?? ${order}`;
+    connection.query(query, [column], (err, results) => {
+        if (err) {
+            console.error(`Error sorting recipes by ${column} ${order}:`, err);
+            return callback(err);
+        }
+        callback(null, results);
+    });
+}
+
+/* Filtering Functions */
+
+// Function to filter recipes by a specified column and value
+function filterRecipes(column, value, callback) {
+    const query = `SELECT * FROM recipes WHERE ?? LIKE ?`;
+    connection.query(query, [column, `%${value}%`], (err, results) => {
+        if (err) {
+            console.error(`Error filtering recipes by ${column}:`, err);
+            return callback(err);
+        }
+        callback(null, results);
+    });
+}
+
+// Function to filter recipes by a specified column and exact match value
+function filterRecipesExact(column, value, callback) {
+    const query = `SELECT * FROM recipes WHERE ?? = ?`;
+    connection.query(query, [column, value], (err, results) => {
+        if (err) {
+            console.error(`Error filtering recipes by ${column}:`, err);
+            return callback(err);
+        }
+        callback(null, results);
+    });
+}
+
 /* Sorting Routes */
 
 // Sort recipes by calories (ascending)
-app.get('/recipes/sortByCaloriesAsc', (req, res) => {
-    const query = 'SELECT * FROM recipes ORDER BY calories ASC';
-    executeQuery(query, res);
+router.get('/sortByCaloriesAsc', (req, res) => {
+    sortRecipes('calories', 'ASC', (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.json(results);
+    });
 });
 
 // Sort recipes by calories (descending)
-app.get('/recipes/sortByCaloriesDesc', (req, res) => {
-    const query = 'SELECT * FROM recipes ORDER BY calories DESC';
-    executeQuery(query, res);
+router.get('/sortByCaloriesDesc', (req, res) => {
+    sortRecipes('calories', 'DESC', (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.json(results);
+    });
 });
 
 // Sort recipes by protein (ascending)
-app.get('/recipes/sortByProteinAsc', (req, res) => {
-    const query = 'SELECT * FROM recipes ORDER BY protein ASC';
-    executeQuery(query, res);
+router.get('/sortByProteinAsc', (req, res) => {
+    sortRecipes('protein', 'ASC', (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.json(results);
+    });
 });
 
 // Sort recipes by protein (descending)
-app.get('/recipes/sortByProteinDesc', (req, res) => {
-    const query = 'SELECT * FROM recipes ORDER BY protein DESC';
-    executeQuery(query, res);
+router.get('/sortByProteinDesc', (req, res) => {
+    sortRecipes('protein', 'DESC', (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.json(results);
+    });
 });
 
 // Sort recipes by fat (ascending)
-app.get('/recipes/sortByFatAsc', (req, res) => {
-    const query = 'SELECT * FROM recipes ORDER BY fat ASC';
-    executeQuery(query, res);
+router.get('/sortByFatAsc', (req, res) => {
+    sortRecipes('fat', 'ASC', (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.json(results);
+    });
 });
 
 // Sort recipes by fat (descending)
-app.get('/recipes/sortByFatDesc', (req, res) => {
-    const query = 'SELECT * FROM recipes ORDER BY fat DESC';
-    executeQuery(query, res);
+router.get('/sortByFatDesc', (req, res) => {
+    sortRecipes('fat', 'DESC', (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.json(results);
+    });
 });
 
 // Sort recipes by fiber (ascending)
-app.get('/recipes/sortByFiberAsc', (req, res) => {
-    const query = 'SELECT * FROM recipes ORDER BY fiber ASC';
-    executeQuery(query, res);
+router.get('/sortByFiberAsc', (req, res) => {
+    sortRecipes('fiber', 'ASC', (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.json(results);
+    });
 });
 
 // Sort recipes by fiber (descending)
-app.get('/recipes/sortByFiberDesc', (req, res) => {
-    const query = 'SELECT * FROM recipes ORDER BY fiber DESC';
-    executeQuery(query, res);
+router.get('/sortByFiberDesc', (req, res) => {
+    sortRecipes('fiber', 'DESC', (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.json(results);
+    });
 });
 
 /* Filtering Routes */
 
 // Filter recipes by dietary restrictions
-app.get('/recipes/filterByDiet/:restriction', (req, res) => {
+router.get('/filterByDiet/:restriction', (req, res) => {
     const restriction = req.params.restriction;
-    const query = 'SELECT * FROM recipes WHERE dietary_restrictions LIKE ?';
-    executeQueryWithParam(query, `%${restriction}%`, res);
+    filterRecipes('dietary_restrictions', restriction, (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.json(results);
+    });
 });
 
 // Filter recipes by cooking aids required
-app.get('/recipes/filterByCookingAids/:aid', (req, res) => {
+router.get('/filterByCookingAids/:aid', (req, res) => {
     const aid = req.params.aid;
-    const query = 'SELECT * FROM recipes WHERE cooking_aids LIKE ?';
-    executeQueryWithParam(query, `%${aid}%`, res);
+    filterRecipes('cooking_aids', aid, (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.json(results);
+    });
 });
 
 // Filter recipes by difficulty
-app.get('/recipes/filterByDifficulty/:level', (req, res) => {
+router.get('/filterByDifficulty/:level', (req, res) => {
     const level = req.params.level;
-    const query = 'SELECT * FROM recipes WHERE difficulty = ?';
-    executeQueryWithParam(query, level, res);
+    filterRecipesExact('difficulty', level, (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.json(results);
+    });
 });
-
-/* Helper function to execute SQL query */
-function executeQuery(query, res) {
-    connection.query(query, (err, results) => {
-        if (err) {
-            console.error('Error fetching recipes:', err);
-            return res.status(500).json({ message: 'Database error' });
-        }
-        res.json(results);
-    });
-}
-
-/* Helper function to execute SQL query with parameter */
-function executeQueryWithParam(query, param, res) {
-    connection.query(query, param, (err, results) => {
-        if (err) {
-            console.error('Error fetching recipes:', err);
-            return res.status(500).json({ message: 'Database error' });
-        }
-        res.json(results);
-    });
-}
 
 /* 404 Error handling */
 app.use((req, res, next) => {
