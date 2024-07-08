@@ -1,0 +1,22 @@
+
+body {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    font-family: Arial, sans-serif;
+    background-color: darkslategray;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    font-size: 2em;
+    margin-top: 20px;
+}
