@@ -14,7 +14,6 @@ const connection = mysql.createPool({
 router.use(express.json());
 router.use(express.urlencoded({extended: true}));
 
-
 // Function to automatically enroll users in university programs based on email domain
 function autoEnrollUniversityPrograms(email) {
     return new Promise((resolve, reject) => {
@@ -87,9 +86,9 @@ function autoEnrollUniversityPrograms(email) {
   router.post('/login', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-    
+
     // Query to find user based on email
-    connection.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+    connection.query('SELECT * FROM Users WHERE email = ?', [email], (err, results) => {
       if (err) {
         console.error('Error querying database:', err);
         return res.status(500).send('Database error');
@@ -101,9 +100,9 @@ function autoEnrollUniversityPrograms(email) {
       }
       
       const user = results[0];
-  
+      console.log(user);
       // Compare password with hashed password in database
-      bcrypt.compare(password, user.password, (err, isMatch) => {
+      bcrypt.compare(password, user.password_hash, (err, isMatch) => {
         if (err) {
           console.error('Error comparing passwords:', err);
           return res.status(500).send('Authentication error');
@@ -114,9 +113,9 @@ function autoEnrollUniversityPrograms(email) {
         }
   
         // Store user data in session upon successful login
-        req.session.user = { email: user.email, username: user.username };
-        res.send('Logged in successfully!');
-        res.redirect('/');
+        req.session = { email: user.email, username: user.username };
+        return res.send('Logged in successfully!');
+        
       });
     });
   });

@@ -36,12 +36,6 @@ app.set('view engine', 'hbs');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.use(session({
-    secret: 'secret-key',
-    resave: false,
-    saveUninitialized: false,
-  }));
-
 // Add more routes here as needed
 app.route('/')
   .get((req, res) => {
@@ -70,6 +64,12 @@ const pool = mysql.createPool({
     password: 'password',
     database: 'ScholarEats'
 });
+
+app.use(session({
+  secret: 'secret-key',
+  resave: false,
+  saveUninitialized: false,
+}));
 
 //Checking if the database is connected
 pool.getConnection( (err)=> {
