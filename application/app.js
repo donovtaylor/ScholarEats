@@ -12,12 +12,13 @@ const about = require('./routes/about');                                  // Abo
 
 const app = express();
 
+// app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true })); // for form data
 
 // Mount routes
 app.use("/recipes", recipeRoutes); // Recipe Routes
-app.use("/inventory", inventoryRoutes); // Inventory Routes
+app.use("/ingredients", inventoryRoutes); // Inventory Routes
 app.use("/users", userRoutes); // User Routes
 app.use("/about", about);
 
@@ -76,45 +77,45 @@ pool.getConnection( (err)=> {
   console.log ("DB connected successful!")
 })
 
-// serve recipes page
-app.get('/recipes', (req, res) => {
-  res.render('recipes', {
-    style: ['default.css', 'recipes.css'],
-    title: 'Recipes',
-    recipe: [{
-      src: '/images/icon_orange.png',
-      alt: 'potato.jpg',
-      name: 'potato',
-      desc: 'lorem ipsum',
-    },
-    {
-      src: '/images/icon_orange.png',
-      alt: 'potato.jpg',
-      name: 'potato',
-      desc: 'lorem ipsum',
-    }]
-  })
-})
+// // serve recipes page
+// app.get('/recipes', (req, res) => {
+//   res.render('recipes', {
+//     style: ['default.css', 'recipes.css'],
+//     title: 'Recipes',
+//     recipe: [{
+//       src: '/images/icon_orange.png',
+//       alt: 'potato.jpg',
+//       name: 'potato',
+//       desc: 'lorem ipsum',
+//     },
+//     {
+//       src: '/images/icon_orange.png',
+//       alt: 'potato.jpg',
+//       name: 'potato',
+//       desc: 'lorem ipsum',
+//     }]
+//   })
+// })
 
-// serve Ingredients page
-app.get('/ingredients', (req, res) => {
-  res.render('ingredients', {
-    style: ['default.css', 'ingredients.css'],
-    title: 'Ingredients',
-    ingredient: [{
-      src: '/images/icon_orange.png',
-      alt: 'potato.jpg',
-      name: 'potato',
-      desc: 'lorem ipsum',
-    },
-    {
-      src: '/images/icon_orange.png',
-      alt: 'potato.jpg',
-      name: 'potato',
-      desc: 'lorem ipsum',
-    }]
-  });
-});
+// // serve Ingredients page
+// app.get('/ingredients', (req, res) => {
+//   res.render('ingredients', {
+//     style: ['default.css', 'ingredients.css'],
+//     title: 'Ingredients',
+//     ingredient: [{
+//       src: '/images/icon_orange.png',
+//       alt: 'potato.jpg',
+//       name: 'potato',
+//       desc: 'lorem ipsum',
+//     },
+//     {
+//       src: '/images/icon_orange.png',
+//       alt: 'potato.jpg',
+//       name: 'potato',
+//       desc: 'lorem ipsum',
+//     }]
+//   });
+// });
 
 // serve login page
 app.get('/login', (req, res) => {
@@ -303,10 +304,6 @@ app.get('/example', (req, res) => {
 // });
 // NO LONGER USING HTML
 
-// Mount routes
-app.use('/recipes', recipeRoutes); // Recipe Routes
-app.use('/inventory', inventoryRoutes); // Inventory Routes
-app.use('/users', userRoutes); // User Routes
 
 // Add more routes as needed for your existing HTML files
 app.get('/', (req, res) => {

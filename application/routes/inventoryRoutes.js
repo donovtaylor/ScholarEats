@@ -1,5 +1,7 @@
 const express = require('express');
 const mysql = require('mysql');
+const bodyParser = require('body-parser');
+
 const router = express.Router();
 
 // Fix these when connecting to the actual db
@@ -17,6 +19,57 @@ connection.connect(err => {
     }
     console.log('Connected to the database');
 });
+
+// // Populate available food DUMMY INFO FOR TESTING
+// // serve Ingredients page
+// router.get('/', (req, res) => {
+//     res.render('ingredients', {
+//       style: ['default.css', 'ingredients.css'],
+//       title: 'Ingredients',
+//       ingredient: [{
+//         src: '/images/icon_orange.png',
+//         alt: 'potato.jpg',
+//         name: 'potato',
+//         desc: 'lorem ipsum',
+//       },
+//       {
+//         src: '/images/icon_orange.png',
+//         alt: 'potato.jpg',
+//         name: 'potato',
+//         desc: 'lorem ipsum',
+//       }]
+//     });
+//   });
+
+// Populate available food
+// serve Ingredients page
+router.get('/', (req, res) => {
+    const query = `
+        SELECT s.ingredient_id, s.quantity, i.name
+        FROM store s
+        JOIN ingredient i ON s.ingredient_id = i.ingredient_id
+    `;
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error('Error fetching ingredients:', err);
+            return res.status(500).json({ message: 'Database error' });
+        }
+        
+        const ingredients = results.map(row => ({
+            src: '/images/icon_orange.png',
+            alt: 'ingredient.jpg',
+            name: row.name,
+            desc: `Quantity: ${row.quantity}`
+        }));
+
+        res.render('ingredients', {
+            style: ['default.css', 'ingredients.css'],
+            title: 'Ingredients',
+            ingredient: ingredients
+        });
+    });
+});
+
 
 // Update expired status of food items
 router.get('/checkExpired', (req, res) => {
@@ -43,5 +96,6 @@ router.get('/checkOutOfStock', (req, res) => {
         res.json({ message: 'Out of stock items removed successfully' });
     });
 });
+
 
 module.exports = router;

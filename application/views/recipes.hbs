@@ -3,9 +3,13 @@
   {{>navbar}}
   <div class="container">
     <header>Recipes {{fName}}</header>
-    {{#each recipe}}
-      {{>partial_recipe this}}
-    {{/each}}
+    {{#if recipe.length}}
+      {{#each recipe}}
+        {{>partial_recipe this}}
+      {{/each}}
+    {{else}}
+      <p>No recipes available.</p>
+    {{/if}}
   </div>
   {{>footer}}
 </div>

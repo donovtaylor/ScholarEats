@@ -24,7 +24,34 @@ connection.connect(err => {
     console.log('Connected to the database');
 });
 
-// Route to display recipes
+// // Rendering recipes DUMMY INFORMATION FOR TESTING
+// router.get('/', (req, res) => {
+//                 // Example sample data
+//                 res.render('recipes', {
+//                     style: ['default.css', 'recipes.css'],
+//                     title: 'Recipes',
+//                     recipe: [{
+//                         src: '/images/icon_orange.png',
+//                         alt: 'example 1',
+//                         name: 'example 1',
+//                         desc: 'lorem ipsum',
+//                     },
+//                     {
+//                         src: '/images/icon_orange.png',
+//                         alt: 'potato.jpg',
+//                         name: 'example 2',
+//                         desc: 'lorem ipsum',
+//                     },
+//                     {
+//                         src: '/images/icon_orange.png',
+//                         alt: 'potato.jpg',
+//                         name: 'example 3',
+//                         desc: 'lorem ipsum',
+//                     }]
+//                   })
+//         });
+
+// Rendering recipes dynamically from the database
 router.get('/', (req, res) => {
     // Fetch regular recipes
     fetchRecipes((err, recipes) => {
@@ -40,8 +67,9 @@ router.get('/', (req, res) => {
                 return res.status(500).send('Error fetching recommended recipes');
             }
             
-            res.render('partials/partial_recipe', {
-                fName: 'Available',
+            res.render('recipes', {
+                style: ['default.css', 'recipes.css'],
+                title: 'Recipes',
                 recipes: recommendedRecipes.length > 0 ? recommendedRecipes : recipes
             });
         });
