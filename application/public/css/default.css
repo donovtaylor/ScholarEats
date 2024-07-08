@@ -11,8 +11,44 @@ header {
   justify-self:left;
   align-self:center;
 }
+.footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr;
+  align-items: start;
+  gap: 20px;
+  padding: 20px;
+}
+
+.footer span {
+  display: inline;
+  position: relative;
+}
+
+.footer-logo {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 25px;
+  margin: 25px;
+}
+.footer-info {
+  text-align: left;
+}
+.footer-links {
+  display: flex;
+  text-align: left;
+  flex-direction: column;
+}
+.social-icons {
+display: flex;
+justify-content: flex-end;
+align-items: center;
+gap: 25px;
+margin: 25px;
+}
+
 a:not(.no-style) {
-  display:grid;
+  display: grid;
   text-decoration: none;
   font-size: 1.2em;
   color: orange;
@@ -21,6 +57,12 @@ a:not(.no-style) {
   transition: background-color 0.3s, color 0.3s;
   
 }
+
+a span {
+  display: inline-block;
+  position: relative;
+}
+
 a > div {
 padding-left: 40px;
 padding-top: 40px;
@@ -77,13 +119,12 @@ padding-top: 40px;
   margin-left: 10px;
 }
 
-
 .submitbutton:hover {
   background-color: orange;
   color: white;
 }
 
-a:hover {
+a:hover:not(.no-style) {
   background-color: orange;
   color: white;
 }
@@ -103,12 +144,11 @@ padding: 5px;
 }
 
 img {
-object-fit:cover;
+object-fit: cover;
 border-radius: 5px;
 }
 
 .no-style {
-  display: flexbox;
   color: orange;
   text-decoration: none;
   border: none;
