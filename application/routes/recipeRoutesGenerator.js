@@ -1,3 +1,10 @@
+/*
+
+THIS FILE HAS BEEN MERGED WITH recipeRoutes.js
+NO LONGER IN USE, EDWARD MCDONALD WILL DELETE WHEN SAFE
+
+*/
+
 const express = require('express');
 const mysql = require('mysql');
 const router = express.Router();

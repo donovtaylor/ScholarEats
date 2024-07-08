@@ -1,6 +1,5 @@
 const express = require('express');
 const session = require('express-session');
-
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
 const path = require('path');
@@ -9,7 +8,6 @@ const exphbs = require('express-handlebars');
 const inventoryRoutes = require('./routes/inventoryRoutes');              // Inventory
 const userRoutes = require('./routes/userRoutes');                        // User
 const recipeRoutes = require('./routes/recipeRoutes');                    // Recipe
-const recipeRoutesGenerator = require('./routes/recipeRoutesGenerator');  // Recipe Generation
 const about = require('./routes/about');                                  // About
 
 const app = express();
@@ -21,7 +19,6 @@ app.use(express.urlencoded({ extended: true })); // for form data
 app.use("/recipes", recipeRoutes); // Recipe Routes
 app.use("/inventory", inventoryRoutes); // Inventory Routes
 app.use("/users", userRoutes); // User Routes
-app.use("/recipegenerator", recipeRoutesGenerator); // Recipe Generator Routes
 app.use("/about", about);
 
 // Middleware to configure Handlebars
@@ -44,7 +41,7 @@ app.use(session({
     saveUninitialized: false,
   }));
 
-// Add more routes as needed for your existing HTML files
+// Add more routes here as needed
 app.route('/')
   .get((req, res) => {
     // Serve index.hbs
@@ -310,7 +307,6 @@ app.get('/example', (req, res) => {
 app.use('/recipes', recipeRoutes); // Recipe Routes
 app.use('/inventory', inventoryRoutes); // Inventory Routes
 app.use('/users', userRoutes); // User Routes
-app.use('/recipes', recipeRoutesGenerator); // Recipe Generator Routes
 
 // Add more routes as needed for your existing HTML files
 app.get('/', (req, res) => {
