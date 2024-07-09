@@ -1,0 +1,18 @@
+<div class="spacer"></div>
+<div class="page">
+    {{>navbar}}
+    <div class="container">
+    <article>
+      <header>Privacy Policy and Terms of Service</header>
+      <form action="/register" method="POST" id="register-form">
+        <input type="text" name="username" placeholder="Username" id="username">
+        <input type="text" name="email" placeholder="Email" id="email">
+        <input type="password" name="password" placeholder="Password" id="password">
+        <input type="password" name="verify_password" placeholder="Verify Password" id="verify-password">
+        <input type="submit" value="Register">
+      </form>
+    </div>
+    </article>
+    {{>footer}}
+</div>
+<div class="spacer"></div>
