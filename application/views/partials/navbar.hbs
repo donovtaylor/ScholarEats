@@ -6,8 +6,6 @@
   <a href="/ingredients">Ingredients</a>
   <a href="/">About</a>
   <a href="/">Contact Us</a>
-  <a class="unfinished_button">Notifications</a>
-  <a href="/login">sign in/up</a>
   <div class="search">
     <form action='/recipes' id="searchform" method='GET'>
       <input type='text' class="searchbar" id="autocomplete-input" name="searchInput">
@@ -35,9 +33,8 @@
     </form>
   </div>
   <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
-  <div class="content_warning" id="content_warning">test</div>
+  <div class="content_warning" id="content_warning"></div>
   <a href="/">Notifications</a>
-  
   {{#if isLoggedIn}}
     {{>profilebadge}}
   {{else}}
