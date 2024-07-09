@@ -23,7 +23,7 @@
 |      #6      |    Sai Bavisetti     |sbavisetti@sfsu.edu   | BAVISETTISAKETH |    skyper_007      |       Database           |
 |      #7      |    Maeve Fitzpatrick |mfitzpatrick@sfsu.edu |maeve-fitzpatrick|  maevefitzpatrick  |       Docs-editor        |
 |      #8      |    Sabrina Diaz-Erazo|sdiazerazo@sfsu.edu   |    sderazo      |  sabreenz          |       GitHub Master      |
-
+|      #9      |    Tina Chou         |ychou@sfsu.edu        |    Tina0713     |  yuting2002        |       Frontend           |
 
 4. All the team's members ***MUST*** sign the following [team's contract](https://forms.gle/dxATAsa9isXKbcBn7). Missing signatures from students will result in these students being dropped from the course. 
 
