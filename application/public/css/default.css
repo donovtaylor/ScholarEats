@@ -11,8 +11,44 @@ header {
   justify-self:left;
   align-self:center;
 }
-a {
-  display:grid;
+.footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr;
+  align-items: start;
+  gap: 20px;
+  padding: 20px;
+}
+
+.footer span {
+  display: inline;
+  position: relative;
+}
+
+.footer-logo {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 25px;
+  margin: 25px;
+}
+.footer-info {
+  text-align: left;
+}
+.footer-links {
+  display: flex;
+  text-align: left;
+  flex-direction: column;
+}
+.social-icons {
+display: flex;
+justify-content: flex-end;
+align-items: center;
+gap: 25px;
+margin: 25px;
+}
+
+a:not(.no-style) {
+  display: grid;
   text-decoration: none;
   font-size: 1.3em;
   color: orange;
@@ -21,6 +57,12 @@ a {
   transition: background-color 0.3s, color 0.3s;
   
 }
+
+a span {
+  display: inline-block;
+  position: relative;
+}
+
 a > div {
 padding-left: 40px;
 padding-top: 40px;
@@ -33,7 +75,7 @@ padding-top: 40px;
   height: fit-content;
 }
 
-.navbar > a {
+.navbar > a, .navbar .profilebadge {
   display: grid;
   text-decoration: none;
   font-size: 1.3em;
@@ -43,6 +85,14 @@ padding-top: 40px;
   transition: background-color 0.3s, color 0.3s;
   align-content: center;
   justify-content: center;
+}
+
+.profilebadge {
+  position: relative;
+}
+
+.profilebadge .dropdown_content{
+  position: absolute;
 }
 
 .navbar > .search {
@@ -94,7 +144,7 @@ padding-top: 40px;
   align-self: center;
 }
 
-.dropdown-content {
+.dropdown_content {
   display: none;
   background: darkslategray;
   box-shadow: 0px 5px 10px black;
@@ -105,11 +155,13 @@ padding-top: 40px;
   padding: 0px;
 }
 
-.dropdown-content > p {
+.dropdown_content > p {
   margin: 5px;
+  display:flex;
+  flex-direction: row;
 }
 
-.dropdown-content .checkbox {
+.dropdown_content .checkbox {
   margin-right: 8px;
 }
 
@@ -132,10 +184,11 @@ padding-top: 40px;
   text-align: center;
 }
 
-a:hover {
+a:hover:not(.no-style) {
   background-color: orange;
   color: white;
 }
+
 .container {
 display:grid;
 grid-template-columns: 1fr 1fr;
@@ -149,19 +202,34 @@ justify-content:space-between;
 margin: 5px;
 padding: 5px;
 }
+
 img {
-object-fit:cover;
+object-fit: cover;
 border-radius: 5px;
 }
 
-.dropdown-content {
+.dropdown_content {
+  background-color: darkslategray;
   display: none;
+  
   position: absolute;
-  width: 100%;
+  width: 200px;
   overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 10px 0px black;
 }
 
-.profilebadge:hover .dropdown-content {
+.profilebadge:hover .dropdown_content {
+
   display: block;
 }
+
+.show {
+  display:block;
+}
+.no-style {
+  color: orange;
+  text-decoration: none;
+  border: none;
+  border-radius: none;
+}
+

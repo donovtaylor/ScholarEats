@@ -8,7 +8,8 @@ const exphbs = require('express-handlebars');
 const inventoryRoutes = require('./routes/inventoryRoutes');              // Inventory
 const userRoutes = require('./routes/userRoutes');                        // User
 const recipeRoutes = require('./routes/recipeRoutes');                    // Recipe
-const about = require('./routes/about');                                  // About
+const about = require('./routes/about');                                 // About
+const autocomplete = require('./routes/autocomplete');
 
 const app = express();
 
@@ -37,12 +38,14 @@ app.use("/about", about);
 
 
 // Middleware to configure Handlebars
-app.engine('hbs', exphbs.engine({
-  extname: 'hbs',
+const hbs = exphbs.create({
   layoutsDir: path.join(__dirname, 'views/layouts'),
   partialsDir: path.join(__dirname, 'views/partials'),
-  defaultLayout: 'defaultLayout'
-}));
+  defaultLayout: 'defaultLayout',
+  extname: 'hbs',
+});
+
+app.engine('hbs', hbs.engine);
 
 app.set('view engine', 'hbs');
 
@@ -53,96 +56,68 @@ app.use(express.urlencoded({extended: true}));
 // Add more routes here as needed
 app.route('/')
   .get((req, res) => {
-    // Serve index.hbs
+    var searchInput = req.query.searchInput;
     res.render('index', {
-      script: ['unfinished_button.js', 'dropdown.js', 'autocomplete.js'],
-      script: ['unfinished_button.js', 'dropdown.js', 'autocomplete.js'],
-      style: ['default.css'],
-      title: 'team\'s about page',
-      header: 'team\'s about page'
-    })
-  })
-  .post((req, res) => {
-    var searchInput = req.body.searchInput;
-    res.render('index', {
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       title: 'team\'s about page',
       header: 'team\'s about page',
-      header: 'team\'s about page'
+      filter_option: ['option1','option2','option3']
     })
   });
 
-// Going to need to create a .env file for this.
-// If you are in your local machine, edit these host, user, password, and database for your needs
-const pool = mysql.createPool({
-  connectionLimit: 100,
-    host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-    user: 'backend_lead',
-    password: 'password',
-    database: 'ScholarEats'
-});
 
-
-
-
-
-
-
-
-//Checking if the database is connected
-pool.getConnection( (err)=> {
-  if (err) throw (err)
-  console.log ("DB connected successful!")
+// serve recipes page
+app.get('/recipes', (req, res) => {
+  res.render('recipes', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'recipes.css'],
+    title: 'Recipes',
+    filter_option: ['option1','option2','option3'],
+    recipe: [{
+      src: '/images/icon_orange.png',
+      alt: 'potato.jpg',
+      name: 'potato',
+      desc: 'lorem ipsum',
+    },
+    {
+      src: '/images/icon_orange.png',
+      alt: 'potato.jpg',
+      name: 'potato',
+      desc: 'lorem ipsum',
+    }]
+  })
 })
 
-// // serve recipes page
-// app.get('/recipes', (req, res) => {
-//   res.render('recipes', {
-//     style: ['default.css', 'recipes.css'],
-//     title: 'Recipes',
-//     recipe: [{
-//       src: '/images/icon_orange.png',
-//       alt: 'potato.jpg',
-//       name: 'potato',
-//       desc: 'lorem ipsum',
-//     },
-//     {
-//       src: '/images/icon_orange.png',
-//       alt: 'potato.jpg',
-//       name: 'potato',
-//       desc: 'lorem ipsum',
-//     }]
-//   })
-// })
-
-// // serve Ingredients page
-// app.get('/ingredients', (req, res) => {
-//   res.render('ingredients', {
-//     style: ['default.css', 'ingredients.css'],
-//     title: 'Ingredients',
-//     ingredient: [{
-//       src: '/images/icon_orange.png',
-//       alt: 'potato.jpg',
-//       name: 'potato',
-//       desc: 'lorem ipsum',
-//     },
-//     {
-//       src: '/images/icon_orange.png',
-//       alt: 'potato.jpg',
-//       name: 'potato',
-//       desc: 'lorem ipsum',
-//     }]
-//   });
-// });
+// serve Ingredients page
+app.get('/ingredients', (req, res) => {
+  res.render('ingredients', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'ingredients.css'],
+    title: 'Ingredients',
+    filter_option: ['option1','option2','option3'],
+    ingredient: [{
+      src: '/images/icon_orange.png',
+      alt: 'potato.jpg',
+      name: 'potato',
+      desc: 'lorem ipsum',
+    },
+    {
+      src: '/images/icon_orange.png',
+      alt: 'potato.jpg',
+      name: 'potato',
+      desc: 'lorem ipsum',
+    }]
+  });
+});
 
 // serve login page
 app.get('/login', (req, res) => {
   res.render('login', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'login.css'],
-    title: 'Login'
+    title: 'Login',
+    filter_option: ['option1','option2','option3']
   });
 });
 
@@ -151,10 +126,33 @@ app.get('/forgotpassword', (req, res) => {
   res.render('forgotpassword', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'forgotpassword.css'],
-    title: 'Forgot Password'
+    title: 'Forgot Password',
+    filter_option: ['option1','option2','option3']
   });
 });
 
+// serve contact us page
+app.get('/contact_us', (req, res) => {
+  const teamMembers = [
+    {fName: 'Angelo Arriaga', src: 'images/angelo.jpg', alt: 'angelo.jpg',  role: 'Team Lead', email: 'aarriaga1@sfsu.edu'},
+    {fName: 'Donovan Taylor', src: 'images/donovan.jpg', alt: 'donovan.jpg', role: 'Frontend Lead', email: 'dvelasquez1@sfsu.edu'},
+    {fName: 'Hancun Guo',src: 'images/hancun.jpg', alt: 'hancun.jpg', role: 'Frontend', email: 'hguo4@sfsu.edu'},
+    {fName: 'Edward Mcdonald',src: 'images/edward.jpg', alt: 'edward.jpg', role: 'Backend Lead', email: 'emcdonald1@sfsu.edu'},
+    {fName: 'Karl Carsola',src: 'images/karl.jpg', alt: 'karl.jpg', role: 'Backend', email: 'kcarsola@mail.sfsu.edu'},
+    {fName: 'Sai Bavisetti',src: 'images/sai.jpg', alt: 'sai.jpg', role: 'Database', email: 'sbavisetti@sfsu.edu'},
+    {fName: 'Maeve Fitzpatrick',src: 'images/maeve.jpg', alt: 'maeve.jpg', role: 'Docs-Editor', email: 'mfitzpatrick@sfsu.edu'},
+    {fName: 'Sabrina Diaz-Erazo',src: 'images/sabrina.jpg', alt: 'sabrina.jpg', role: 'GitHub Master', email: 'sdiazerazo@sfsu.edu'},
+    {fName: 'Tina Chou', role: 'Frontend',src: 'images/tina.jpg', alt: 'tina.jpg', email: 'ychou@sfsu.edu'}
+  ];
+  // add styling to contact_us page
+  res.render('contact_us', {
+    style: ['default.css'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    teamMembers
+  });
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
 // serve registration page
 app.get('/register', (req, res) => {
   res.render('register', {
@@ -164,48 +162,21 @@ app.get('/register', (req, res) => {
   });
 });
 
-app.get('/accountmanagement', (req, res) => {
-  res.render('accountmanagement', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'accountmanagement.css'],
-    title: 'Account Management'
-  });
-});
-
-// Serve static files from the 'website' directory (for existing HTML files)
-app.use(express.static(path.join(__dirname, 'public')));
-
-// // Middleware to configure Handlebars
-// app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
-// app.set('view engine', '.hbs');
-// app.set('views', path.join(__dirname, 'views')); // Specify the directory for Handlebars views
-
-// Example route using Handlebars (not converting existing HTML)
-app.get('/example', (req, res) => {
-    // Render a Handlebars template
-    res.render('example', { title: 'Handlebars Example' });
-});
-
-// // Serve the main index.html file
-// app.get('/', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'website/pages', 'index.html'));
-// });
-// NO LONGER USING HTML
-
-
-// Add more routes as needed for your existing HTML files
-app.get('/', (req, res) => {
-    // Serve your existing index.html file
-    res.sendFile(path.join(__dirname, 'website/pages', 'index.html'));
-});
-
-
 // test page to test new pages before connecting them
 app.get('/test', (req, res) => {
   res.render('accountmanagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
-    title: 'accountmanagement'
+    title: 'accountmanagement',
+  });
+});
+
+app.get('/accountmanagement', (req, res) => {
+  res.render('accountmanagement', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'accountmanagement.css'],
+    title: 'Account Management',
+    dietary_restriction: ['Vegan','Keto','Hala','Vegetarian','Pescatarian','Kosher']
   });
 });
 

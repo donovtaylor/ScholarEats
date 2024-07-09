@@ -1,5 +1,6 @@
-const dropbtn = document.getElementById("dropbtn");
-
-dropbtn.addEventListener("click", function (e) {
-  document.getElementById("dropdown-content").classList.toggle('show');
-});
+function dropdown(e) {
+  if (e.target.className == 'dropbtn') {
+    document.getElementById(e.target.name).classList.toggle('show');
+  }
+}
+document.addEventListener("click", dropdown);

@@ -3,7 +3,7 @@
   {{>navbar}}
   <div class="container">
     <header>Recipes {{fName}}</header>
-    {{#if recipe.length}}
+    {{#if recipe}}
       {{#each recipe}}
         {{>partial_recipe this}}
       {{/each}}
