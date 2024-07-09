@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById("login-form");
-    
-    // const logoutButton = document.getElementById('logout-button');
     // const changePasswordForm = document.getElementById('changepass-form');
     // const changeUsernameForm = document.getElementById('changeUsername-form');
 
@@ -25,9 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error:', error);
         });
     });
-/*
+
     logoutButton.addEventListener("click",function(){
-        fetch('/logout', {
+        fetch('/users/logout', {
             method: 'POST'
         })
         .then(response => response.json())
@@ -39,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error:', error);
         });
     });
-    
+/*    
     // Allows us to change password
     changePasswordForm.addEventListener("submit", function(event){
         event.preventDefault();
@@ -90,4 +88,5 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     */
+
 });

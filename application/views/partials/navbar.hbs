@@ -13,5 +13,12 @@
   <a href="/">About</a>
   <a href="/">Contact Us</a>
   <a href="/">Notifications</a>
-  <a href="/login">sign in/up</a>
+  
+  {{#if isLoggedIn}}
+    <span>Welcome</span>
+    <script src="/js/logout.js"></script>
+    <button id="logout-button">logout</button>
+  {{else}}
+    <a href="/login">Sign In/Up</a>
+  {{/if}}
 </div>
