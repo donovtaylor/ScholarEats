@@ -24,33 +24,6 @@ connection.connect(err => {
   console.log('Connected to the database');
 });
 
-// // Rendering recipes DUMMY INFORMATION FOR TESTING
-// router.get('/', (req, res) => {
-//                 // Example sample data
-//                 res.render('recipes', {
-//                     style: ['default.css', 'recipes.css'],
-//                     title: 'Recipes',
-//                     recipe: [{
-//                         src: '/images/icon_orange.png',
-//                         alt: 'example 1',
-//                         name: 'example 1',
-//                         desc: 'lorem ipsum',
-//                     },
-//                     {
-//                         src: '/images/icon_orange.png',
-//                         alt: 'potato.jpg',
-//                         name: 'example 2',
-//                         desc: 'lorem ipsum',
-//                     },
-//                     {
-//                         src: '/images/icon_orange.png',
-//                         alt: 'potato.jpg',
-//                         name: 'example 3',
-//                         desc: 'lorem ipsum',
-//                     }]
-//                   })
-//         });
-
 // Rendering recipes dynamically from the database
 router.get('/', (req, res) => {
   const { dietary_restriction, cooking_aid, difficulty, sort, searchInput } = req.query;
@@ -63,22 +36,20 @@ router.get('/', (req, res) => {
     queryParams.push(`%${dietary_restriction}%`);
   }
 
-<<<<<<< HEAD
     if (cooking_aid) {
         query += ' AND `cooking tip` LIKE ?';
         queryParams.push(`%${cooking_aid}%`);
     }
-=======
-  if (cooking_aid) {
-    query += ' AND cooking_aids LIKE ?';
-    queryParams.push(`%${cooking_aid}%`);
-  }
->>>>>>> 4ed382fe3a106aeaa8cb69bf7d26976704f6d9cb
 
   if (difficulty) {
     query += ' AND difficulty = ?';
     queryParams.push(difficulty);
   }
+
+    if (searchInput) {
+        query += ' AND recipe_name LIKE ?';
+        queryParams.push(`%${searchInput}%`);
+    }
 
   if (sort) {
     const [column, order] = sort.split('_');
@@ -320,7 +291,6 @@ router.get('/:restriction', (req, res) => {
 
 // Filter recipes by cooking aids required
 router.get('/:aid', (req, res) => {
-<<<<<<< HEAD
     const aid = req.params.aid;
     filterRecipes('cooking tip', aid, (err, results) => {
         if (err) {
@@ -328,15 +298,6 @@ router.get('/:aid', (req, res) => {
         }
         res.json(results);
     });
-=======
-  const aid = req.params.aid;
-  filterRecipes('cooking_aids', aid, (err, results) => {
-    if (err) {
-      return res.status(500).json({ message: 'Database error' });
-    }
-    res.json(results);
-  });
->>>>>>> 4ed382fe3a106aeaa8cb69bf7d26976704f6d9cb
 });
 
 // Filter recipes by difficulty
