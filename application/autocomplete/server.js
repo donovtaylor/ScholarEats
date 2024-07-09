@@ -35,7 +35,7 @@ app.get('/suggestions', (req, res) => {
     }
 
     const query = `
-        SELECT name
+        SELECT recipe_name
         FROM recipes
         WHERE name LIKE ?
         LIMIT 10
