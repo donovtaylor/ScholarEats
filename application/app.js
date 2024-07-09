@@ -41,6 +41,7 @@ app.route('/')
   .get((req, res) => {
     // Serve index.hbs
     res.render('index', {
+      script: ['unfinished_button.js', 'dropdown.js', 'autocomplete.js'],
       style: ['default.css'],
       title: 'team\'s about page',
       header: 'team\'s about page'
@@ -49,9 +50,10 @@ app.route('/')
   .post((req, res) => {
     var searchInput = req.body.searchInput;
     res.render('index', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       title: 'team\'s about page',
-      header: searchInput
+      header: 'team\'s about page'
     })
   });
 

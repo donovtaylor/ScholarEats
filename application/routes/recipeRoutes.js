@@ -53,25 +53,41 @@ connection.connect(err => {
 
 // Rendering recipes dynamically from the database
 router.get('/', (req, res) => {
-    // Fetch regular recipes
-    fetchRecipes((err, recipes) => {
+    const { dietary_restriction, cooking_aid, difficulty, sort, searchInput } = req.query;
+
+    let query = 'SELECT * FROM recipes WHERE 1=1';
+    let queryParams = [];
+
+    if (dietary_restriction) {
+        query += ' AND `dietary restrictions` LIKE ?';
+        queryParams.push(`%${dietary_restriction}%`);
+    }
+
+    if (cooking_aid) {
+        query += ' AND cooking_aids LIKE ?';
+        queryParams.push(`%${cooking_aid}%`);
+    }
+
+    if (difficulty) {
+        query += ' AND difficulty = ?';
+        queryParams.push(difficulty);
+    }
+
+    if (sort) {
+        const [column, order] = sort.split('_');
+        query += ` ORDER BY ${column} ${order.toUpperCase()}`;
+    }
+
+    connection.query(query, queryParams, (err, results) => {
         if (err) {
             console.error('Error fetching recipes:', err);
             return res.status(500).send('Error fetching recipes');
         }
 
-        // Fetch recommended recipes
-        generateRecommendedRecipes((err, recommendedRecipes) => {
-            if (err) {
-                console.error('Error fetching recommended recipes:', err);
-                return res.status(500).send('Error fetching recommended recipes');
-            }
-            
-            res.render('recipes', {
-                style: ['default.css', 'recipes.css'],
-                title: 'Recipes',
-                recipes: recommendedRecipes.length > 0 ? recommendedRecipes : recipes
-            });
+        res.render('recipes', {
+            style: ['default.css', 'recipes.css'],
+            title: 'Recipes',
+            recipes: results
         });
     });
 });
@@ -277,9 +293,9 @@ router.get('/sortByFiberDesc', (req, res) => {
 /* Filtering Routes */
 
 // Filter recipes by dietary restrictions
-router.get('/filterByDiet/:restriction', (req, res) => {
+router.get('/:restriction', (req, res) => {
     const restriction = req.params.restriction;
-    filterRecipes('dietary_restrictions', restriction, (err, results) => {
+    filterRecipes('dietary restrictions', restriction, (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Database error' });
         }
@@ -288,7 +304,7 @@ router.get('/filterByDiet/:restriction', (req, res) => {
 });
 
 // Filter recipes by cooking aids required
-router.get('/filterByCookingAids/:aid', (req, res) => {
+router.get('/:aid', (req, res) => {
     const aid = req.params.aid;
     filterRecipes('cooking_aids', aid, (err, results) => {
         if (err) {
@@ -299,7 +315,7 @@ router.get('/filterByCookingAids/:aid', (req, res) => {
 });
 
 // Filter recipes by difficulty
-router.get('/filterByDifficulty/:level', (req, res) => {
+router.get('/:level', (req, res) => {
     const level = req.params.level;
     filterRecipesExact('difficulty', level, (err, results) => {
         if (err) {
