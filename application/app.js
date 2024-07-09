@@ -153,6 +153,14 @@ app.get('/test', (req, res) => {
   });
 });
 
+app.get('/accountmanagement', (req, res) => {
+  res.render('accountmanagement', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'accountmanagement.css'],
+    title: 'Account Management'
+  });
+});
+
 // 404 Error handling
 app.use((req, res, next) => {
   res.status(404).send('404 Page Not Found');
