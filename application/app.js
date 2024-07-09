@@ -56,6 +56,7 @@ app.route('/')
     // Serve index.hbs
     res.render('index', {
       script: ['unfinished_button.js', 'dropdown.js', 'autocomplete.js'],
+      script: ['unfinished_button.js', 'dropdown.js', 'autocomplete.js'],
       style: ['default.css'],
       title: 'team\'s about page',
       header: 'team\'s about page'
@@ -65,8 +66,10 @@ app.route('/')
     var searchInput = req.body.searchInput;
     res.render('index', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       title: 'team\'s about page',
+      header: 'team\'s about page'
       header: 'team\'s about page'
     })
   });
@@ -137,14 +140,25 @@ pool.getConnection( (err)=> {
 // serve login page
 app.get('/login', (req, res) => {
   res.render('login', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'login.css'],
     title: 'Login'
+  });
+});
+
+// serve forgot password page
+app.get('/forgotpassword', (req, res) => {
+  res.render('forgotpassword', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'forgotpassword.css'],
+    title: 'Forgot Password'
   });
 });
 
 // serve registration page
 app.get('/register', (req, res) => {
   res.render('register', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'register.css'],
     title: 'Register'
   });
@@ -177,6 +191,15 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'website/pages', 'index.html'));
 });
 
+
+// test page to test new pages before connecting them
+app.get('/test', (req, res) => {
+  res.render('accountmanagement', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'accountmanagement.css'],
+    title: 'accountmanagement'
+  });
+});
 
 // 404 Error handling
 app.use((req, res, next) => {

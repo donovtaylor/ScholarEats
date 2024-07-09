@@ -14,7 +14,7 @@ header {
 a {
   display:grid;
   text-decoration: none;
-  font-size: 1.2em;
+  font-size: 1.3em;
   color: orange;
   border: 1px solid orange;
   border-radius: 5px;
@@ -27,15 +27,16 @@ padding-top: 40px;
 }
 .navbar {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 4fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   grid-auto-columns: auto;
-  height: 75px;
+  height: fit-content;
 }
 
 .navbar > a {
   display: grid;
   text-decoration: none;
-  font-size: 1.2em;
+  font-size: 1.3em;
   color: orange;
   border: 1px solid orange;
   border-radius: 5px;
@@ -43,44 +44,92 @@ padding-top: 40px;
   align-content: center;
   justify-content: center;
 }
-.navbar > div {
-  display: grid;
+
+.navbar > .search {
+  display: block;
+  grid-column: 2/7;
+  padding-top: 5px;
+}
+
+.navbar form {
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  align-content: center;
 }
 
 .searchbar {
   border-style: solid;
   border-color: orange;
   border-radius: 5px;
-  height: 25px;
+  height: 32px;
+  font-size: 1.3em;
   width: 100%;
+  border: 1px solid orange;
 }
 
-.navbar form {
-  display: grid;
-  grid-template-columns: 5fr 1fr;
-  justify-content: center;
-  padding-left: 20px;
-  padding-right: 20px;
-}
 
-.submitbutton {
-  font-size: medium;
+.submitbutton, .dropbtn {
+  font-size:1.3em;
   color: orange;
-  border-style: solid;
-  border-color: orange;
+  border: 1px solid orange;
   background-color: darkslategray;
   transition: background-color 0.3s, color 0.3s;
   border-radius: 5px;
-  height: 31px;
-  margin-left: 10px;
+  height: 36px;
 }
 
+.dropbtn {
+  margin-left: 0px;
+  border: 1px solid orange;
+}
 
-.submitbutton:hover {
+.submitbutton:hover, .dropbtn:hover {
   background-color: orange;
   color: white;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  align-self: center;
+}
+
+.dropdown-content {
+  display: none;
+  background: darkslategray;
+  box-shadow: 0px 5px 10px black;
+  position: absolute;
+  color: orange;
+  border-radius: 5px;
+  width: 100px;
+  padding: 0px;
+}
+
+.dropdown-content > p {
+  margin: 5px;
+}
+
+.dropdown-content .checkbox {
+  margin-right: 8px;
+}
+
+.checkbox {
+  transform: scale(1.5);
+}
+
+.checkbox:hover {
+  cursor: pointer;
+}
+
+#content_warning {
+  display:none;
+  border: 1px solid red;
+  background: darkred;
+  grid-row: 3/3;
+  grid-column: 1/8;
+  color: red;
+  width: 100%;
+  text-align: center;
 }
 
 a:hover {
