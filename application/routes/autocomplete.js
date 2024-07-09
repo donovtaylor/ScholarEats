@@ -37,7 +37,7 @@ router.get('/suggestions', (req, res) => {
     const query = `
         SELECT recipe_name
         FROM recipes
-        WHERE name LIKE ?
+        WHERE recipe_name LIKE ?
         LIMIT 10
     `;
 
