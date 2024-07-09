@@ -233,3 +233,22 @@ border-radius: 5px;
   border-radius: none;
 }
 
+.autocomplete-suggestions {
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: white;
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+}
+
+.autocomplete-suggestion {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.autocomplete-suggestion:hover {
+  background-color: #f0f0f0;
+}
+
