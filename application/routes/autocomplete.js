@@ -2,10 +2,10 @@ const express = require('express');
 const mysql = require('mysql2');
 const path = require('path');
 const cors = require('cors');
-const app = express();
-const port = 3000;  // Use a single port for both frontend and backend
 
-app.use(cors());  // Enable CORS for all routes
+let router = express.Router();
+
+router.use(cors());  // Enable CORS for all routes
 
 // Create connection to the database
 const db = mysql.createConnection({
@@ -25,10 +25,10 @@ db.connect(err => {
 });
 
 // Serve static files from the 'application/views/partials' directory
-app.use(express.static(path.join(__dirname, '../views/partials')));
+router.use(express.static(path.join(__dirname, '../views/partials')));
 
 // Endpoint to get recipe suggestions
-app.get('/suggestions', (req, res) => {
+router.get('/suggestions', (req, res) => {
     const searchTerm = req.query.q;
     if (!searchTerm) {
         return res.status(400).send('Missing query parameter');
@@ -52,11 +52,4 @@ app.get('/suggestions', (req, res) => {
     });
 });
 
-// Serve the index.html file for any other requests
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/partials', 'index.html'));
-});
-
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}/`);
-});
+module.exports = router;

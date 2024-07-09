@@ -6,13 +6,19 @@
   <a href="/ingredients">Ingredients</a>
   <a href="/">About</a>
   <a href="/">Contact Us</a>
+  <a class="unfinished_button">Notifications</a>
+  {{#if isLoggedIn}}
+    {{>profilebadge}}
+  {{else}}
+    <a href="/login">Sign In/Up</a>
+  {{/if}}
   <div class="search">
     <form action='/recipes' id="searchform" method='GET'>
       <input type='text' class="searchbar" id="autocomplete-input" name="searchInput">
       <input type='submit' class="submitbutton" value='Search'>
       <div class="dropdown">
-        <button type="button" id="dropbtn" class="dropbtn">Filter</button>
-        <div id="dropdown-content" class="dropdown-content">
+        <button type="button" name="filter_option" class="dropbtn">Filter</button>
+        <div id="filter_option" class="dropdown_content">
           <p><input type="checkbox" class="checkbox" name="dietary_restriction" value="vegan"> Vegan</p>
           <p><input type="checkbox" class="checkbox" name="dietary_restriction" value="gluten_free"> Gluten Free</p>
           <p><input type="checkbox" class="checkbox" name="cooking_aid" value="oven"> Oven Required</p>
@@ -34,10 +40,4 @@
   </div>
   <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
   <div class="content_warning" id="content_warning"></div>
-  <a href="/">Notifications</a>
-  {{#if isLoggedIn}}
-    {{>profilebadge}}
-  {{else}}
-    <a href="/login">Sign In/Up</a>
-  {{/if}}
 </div>

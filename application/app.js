@@ -8,7 +8,8 @@ const exphbs = require('express-handlebars');
 const inventoryRoutes = require('./routes/inventoryRoutes');              // Inventory
 const userRoutes = require('./routes/userRoutes');                        // User
 const recipeRoutes = require('./routes/recipeRoutes');                    // Recipe
-const about = require('./routes/about');                                  // About
+const about = require('./routes/about');                                 // About
+const autocomplete = require('./routes/autocomplete');
 
 const app = express();
 
@@ -56,7 +57,6 @@ app.use(express.urlencoded({extended: true}));
 app.route('/')
   .get((req, res) => {
     var searchInput = req.query.searchInput;
-    console.log(searchInput);
     res.render('index', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
@@ -137,8 +137,7 @@ app.get('/register', (req, res) => {
   res.render('register', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'register.css'],
-    title: 'Register',
-    filter_option: ['option1','option2','option3']
+    title: 'Register'
   });
 });
 
@@ -148,8 +147,6 @@ app.get('/test', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
     title: 'accountmanagement',
-    filter_option: ['option1','option2','option3'],
-    dietary_restriction: ['option4','option5','option6']
   });
 });
 
@@ -157,7 +154,8 @@ app.get('/accountmanagement', (req, res) => {
   res.render('accountmanagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
-    title: 'Account Management'
+    title: 'Account Management',
+    dietary_restriction: ['Vegan','Keto','Hala','Vegetarian','Pescatarian','Kosher']
   });
 });
 

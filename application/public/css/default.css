@@ -33,7 +33,7 @@ padding-top: 40px;
   height: fit-content;
 }
 
-.navbar > a {
+.navbar > a, .navbar .profilebadge {
   display: grid;
   text-decoration: none;
   font-size: 1.3em;
@@ -43,6 +43,14 @@ padding-top: 40px;
   transition: background-color 0.3s, color 0.3s;
   align-content: center;
   justify-content: center;
+}
+
+.profilebadge {
+  position: relative;
+}
+
+.profilebadge .dropdown_content{
+  position: absolute;
 }
 
 .navbar > .search {
@@ -156,14 +164,21 @@ object-fit:cover;
 border-radius: 5px;
 }
 
-.dropdown-content {
+.dropdown_content {
+  background-color: darkslategray;
   display: none;
+  
   position: absolute;
-  width: 100%;
+  width: 200px;
   overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 10px 0px black;
 }
 
-.profilebadge:hover .dropdown-content {
+.profilebadge:hover .dropdown_content {
+
   display: block;
+}
+
+.show {
+  display:block;
 }
