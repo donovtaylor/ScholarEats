@@ -62,29 +62,34 @@ app.route('/')
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       title: 'Team\'s about page',
-      header: 'Team\'s about page',
-      filter_option: ['option1', 'option2', 'option3']
+      header: 'Team\'s about page'
     })
   });
 
 
 // serve login page
-app.get('/login', (req, res) => {
-  res.render('login', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'login.css'],
-    title: 'Login',
-    filter_option: ['option1', 'option2', 'option3']
+app.route('/login')
+  .get((req, res) => {
+    res.render('login', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      style: ['default.css', 'login.css'],
+      title: 'Login'
+    })
+  })
+  .post((req, res) => {
+    res.redirect('/index', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      style: ['default.css', 'login.css'],
+      title: 'index'
+    })
   });
-});
 
 // serve forgot password page
 app.get('/forgotpassword', (req, res) => {
   res.render('forgotpassword', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'forgotpassword.css'],
-    title: 'Forgot Password',
-    filter_option: ['option1', 'option2', 'option3']
+    title: 'Forgot Password'
   });
 });
 
