@@ -16,11 +16,25 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true })); // for form data
 
+app.use(session({
+  secret: 'secret-key',
+  resave: false,
+  saveUninitialized: false,
+}));
+
+app.use((req, res, next) => {
+  res.locals.isLoggedIn = req.session.user ? true : false;
+  next();
+});
+
 // Mount routes
 app.use("/recipes", recipeRoutes); // Recipe Routes
 app.use("/ingredients", inventoryRoutes); // Inventory Routes
 app.use("/users", userRoutes); // User Routes
 app.use("/about", about);
+
+
+
 
 // Middleware to configure Handlebars
 app.engine('hbs', exphbs.engine({
@@ -67,11 +81,12 @@ const pool = mysql.createPool({
     database: 'ScholarEats'
 });
 
-app.use(session({
-  secret: 'secret-key',
-  resave: false,
-  saveUninitialized: false,
-}));
+
+
+
+
+
+
 
 //Checking if the database is connected
 pool.getConnection( (err)=> {

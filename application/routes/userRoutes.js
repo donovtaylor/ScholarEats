@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
+const session = require('express-session');
 const router = express.Router();
 
 // Fix these when connecting to the actual db
@@ -113,7 +114,8 @@ router.post('/login', (req, res) => {
       }
 
       // Store user data in session upon successful login
-      req.session = { email: user.email, username: user.username, uuid: user.uuid };
+      req.session.user = { email: user.email, username: user.username, uuid: user.uuid };
+      console.log(req.session.user.email);
       return res.send('Logged in successfully!');
 
     });
@@ -212,11 +214,11 @@ router.post("/set-dietary-restrictions", (req, res) => {
   const dietary_restrictions = req.body.dietary_restrictions;
   const userId = req.session.uuid;
 
-  connection.query("UPDATE user_info SET dietary_restrictions = ? WHERE user_id = ?", [ dietary_restrictions, userId], (err, result) => {
+  connection.query("UPDATE user_info SET dietary_restrictions = ? WHERE user_id = ?", [dietary_restrictions, userId], (err, result) => {
     if(err){
       return err;
     }
-    res.send("Successfully updated allergies");
+    res.send("Successfully updated dietary_restrictions");
   });
 });
 
