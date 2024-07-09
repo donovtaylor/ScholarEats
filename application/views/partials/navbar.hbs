@@ -4,6 +4,7 @@
   </a>
   <a href="/recipes">Recipes</a>
   <a href="/ingredients">Ingredients</a>
+
   <div>
     <form action='/' method='POST'>
       <input type='text' class="searchbar" id="autocomplete-input" name="searchInput">
@@ -11,11 +12,31 @@
       <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
     </form>
   </div>
+
   <a href="/">About</a>
   <a href="/">Contact Us</a>
-  <a href="/">Notifications</a>
+  <a class="unfinished_button">Notifications</button>
   <a href="/login">sign in/up</a>
+
 </div>
 
 <!-- Including the autocomplete.js script -->
 <script src="/autocomplete.js"></script>
+
+  <div class="search">
+    <form action='/' id="searchform" method='POST'>
+      <input type='text' class="searchbar" name="searchInput">
+      <input type='submit' class="submitbutton" value='Search'>
+      <div class="dropdown">
+        <button type="button" id="dropbtn" class="dropbtn">Filter</button>
+        <div id="dropdown-content" class="dropdown-content">
+          <p><input type="checkbox" class="checkbox" name="filter1">filter1</p>
+          <p><input type="checkbox" class="checkbox" name="filter2">filter2</p>
+          <p><input type="checkbox" class="checkbox" name="filter3">filter3</p>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="content_warning" id="content_warning">test</div>
+</div>
+
