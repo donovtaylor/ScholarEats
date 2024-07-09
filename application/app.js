@@ -69,7 +69,7 @@ app.route('/')
 
 
 // serve login page
-app.get('/', (req, res) => {
+app.get('/login', (req, res) => {
   res.render('login', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'login.css'],
