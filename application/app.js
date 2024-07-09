@@ -88,6 +88,14 @@ app.get('/forgotpassword', (req, res) => {
   });
 });
 
+// serve privacy policy and terms of service page
+app.get('/privacy_policy', (req, res) => {
+  res.render('privacy_policy', {
+    style: ['default.css'],
+    title: 'Privacy Policy and Terms of Service'
+  });
+});
+
 // serve contact us page
 app.get('/contact_us', (req, res) => {
   const teamMembers = [
