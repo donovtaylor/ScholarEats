@@ -5,10 +5,24 @@
   <a href="/recipes">Recipes</a>
   <a href="/ingredients">Ingredients</a>
 
+  <div>
+    <form action='/' method='POST'>
+      <input type='text' class="searchbar" id="autocomplete-input" name="searchInput">
+      <input type='submit' class="submitbutton" value='search'>
+      <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
+    </form>
+  </div>
+
   <a href="/">About</a>
   <a href="/">Contact Us</a>
   <a class="unfinished_button">Notifications</button>
   <a href="/login">sign in/up</a>
+
+</div>
+
+<!-- Including the autocomplete.js script -->
+<script src="/autocomplete.js"></script>
+
   <div class="search">
     <form action='/' id="searchform" method='POST'>
       <input type='text' class="searchbar" name="searchInput">
@@ -25,3 +39,4 @@
   </div>
   <div class="content_warning" id="content_warning">test</div>
 </div>
+
