@@ -21,7 +21,7 @@ function autoEnrollUniversityPrograms(email) {
     const domain = email.split('@')[1];
     const query = `
         UPDATE Users 
-        SET university = (SELECT university FROM university WHERE email_suffix = ?),
+        SET university = (SELECT name FROM university WHERE email_suffix = ?),
             verification_status = TRUE
         WHERE email = ?
       `;
@@ -69,7 +69,6 @@ router.post('/register', (req, res) => {
           console.error('Error inserting user:', err);
           return res.status(500).send('Error inserting user');
         }
-
         // Automatically enroll user in university programs based on email domain
         autoEnrollUniversityPrograms(email)
           .then(() => {
