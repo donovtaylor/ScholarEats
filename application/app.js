@@ -145,7 +145,11 @@ app.get('/contact_us', (req, res) => {
     {fName: 'Tina Chou', role: 'Frontend',src: 'images/tina.jpg', alt: 'tina.jpg', email: 'ychou@sfsu.edu'}
   ];
   // add styling to contact_us page
-  res.render('contact_us', { style: ['default.css'], teamMembers });
+  res.render('contact_us', {
+    style: ['default.css'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    teamMembers
+  });
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
