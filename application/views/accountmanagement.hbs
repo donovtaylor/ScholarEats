@@ -1,33 +1,43 @@
 <div class="spacer"></div>
 <div class="page">
-    {{>navbar}}
-    <div class="container">
-      <header>Account Management</header>
-      <form class="account-form" action="/submit" method="post">
-            <div class="form-group">
-                <label for="Fname">First Name</label>
-                <input type="text" id="Fname" name="Fname" required>
-            </div>
-            <div class="form-group">
-                <label for="Lname">Last Name</label>
-                <input type="text" id="Lname" name="Lname" required>
-            </div>
-            <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" name="email"required>
-            </div>
-            <div class="form-group">
-                <label for="new-password">New Password</label>
-                <input type="password" id="new-password" name="new-password" required>
-            </div>
-            <div class="form-group">
-                <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="confirm-password" name="confirm-password" required>
-            </div>
-            <button type="submit">Submit</button>
-        </form>
-      </form>
-    </div>
-    {{>footer}}
+  {{>navbar}}
+  <div class="container">
+    <header>Account Management</header>
+    <form class="account-form" action="/" method="post">
+      <div class="form-group">
+        <label for="Fname">First Name</label>
+        <input type="text" id="Fname" name="Fname" required>
+      </div>
+      <div class="form-group">
+        <label for="Lname">Last Name</label>
+        <input type="text" id="Lname" name="Lname" required>
+      </div>
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="new-password">New Password</label>
+        <input type="password" id="new-password" name="new-password" required>
+      </div>
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+      </div>
+      <div class="form-group">
+        <label for="dietary restrictions">Dietary Restrictions</label>
+        <div class="dropdown">
+        <button type="button" name="dietary_restriction" class="dropbtn">Filter</button>
+        <div id="dietary_restriction" class="dropdown_content">
+          {{#each dietary_restriction}}
+          <p><input type="checkbox" class="checkbox" name="{{this}}">{{this}}</p>
+          {{/each}}
+        </div>
+      </div>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  {{>footer}}
 </div>
 <div class="spacer"></div>

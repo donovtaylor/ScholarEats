@@ -9,33 +9,28 @@ app.use(express.urlencoded({ extended: true })); // for form data
 app.use("/about", about);
 
 // Middleware to configure Handlebars
-app.engine('hbs', exphbs.engine({
-  extname: 'hbs',
+const hbs = exphbs.create({
   layoutsDir: path.join(__dirname, 'views/layouts'),
   partialsDir: path.join(__dirname, 'views/partials'),
-  defaultLayout: 'defaultLayout'
-}));
+  defaultLayout: 'defaultLayout',
+  extname: 'hbs',
+});
+
+app.engine('hbs', hbs.engine);
 
 app.set('view engine', 'hbs');
 
 // Add more routes as needed for your existing HTML files
 app.route('/')
   .get((req, res) => {
-    // Serve index.hbs
-    res.render('index', {
-      script: ['unfinished_button.js', 'dropdown.js', 'autocomplete.js'],
-      style: ['default.css'],
-      title: 'team\'s about page',
-      header: 'team\'s about page'
-    })
-  })
-  .post((req, res) => {
-    var searchInput = req.body.searchInput;
+    var searchInput = req.query.searchInput;
+    console.log(searchInput);
     res.render('index', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       title: 'team\'s about page',
-      header: 'team\'s about page'
+      header: 'team\'s about page',
+      filter_option: ['option1','option2','option3']
     })
   });
 
@@ -46,6 +41,7 @@ app.get('/recipes', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'recipes.css'],
     title: 'Recipes',
+    filter_option: ['option1','option2','option3'],
     recipe: [{
       src: '/images/icon_orange.png',
       alt: 'potato.jpg',
@@ -67,6 +63,7 @@ app.get('/ingredients', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'ingredients.css'],
     title: 'Ingredients',
+    filter_option: ['option1','option2','option3'],
     ingredient: [{
       src: '/images/icon_orange.png',
       alt: 'potato.jpg',
@@ -87,7 +84,8 @@ app.get('/login', (req, res) => {
   res.render('login', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'login.css'],
-    title: 'Login'
+    title: 'Login',
+    filter_option: ['option1','option2','option3']
   });
 });
 
@@ -96,7 +94,8 @@ app.get('/forgotpassword', (req, res) => {
   res.render('forgotpassword', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'forgotpassword.css'],
-    title: 'Forgot Password'
+    title: 'Forgot Password',
+    filter_option: ['option1','option2','option3']
   });
 });
 
@@ -105,7 +104,8 @@ app.get('/register', (req, res) => {
   res.render('register', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'register.css'],
-    title: 'Register'
+    title: 'Register',
+    filter_option: ['option1','option2','option3']
   });
 });
 
@@ -114,7 +114,9 @@ app.get('/test', (req, res) => {
   res.render('accountmanagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
-    title: 'accountmanagement'
+    title: 'accountmanagement',
+    filter_option: ['option1','option2','option3'],
+    dietary_restriction: ['option4','option5','option6']
   });
 });
 

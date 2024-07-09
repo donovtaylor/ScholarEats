@@ -8,6 +8,7 @@ router.get('/angelo', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    filter_option: ['option1','option2','option3'],
     fName: 'Angelo',
     src: '/images/angelo.jpg',
     alt: 'angelo.jpg',
@@ -20,6 +21,7 @@ router.get('/donovan', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    filter_option: ['option1','option2','option3'],
     fName: 'Donovan',
     src: '/images/donovan.jpg',
     alt: 'donovan.jpg',
@@ -32,6 +34,7 @@ router.get('/hancun', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    filter_option: ['option1','option2','option3'],
     fName: 'Hancun',
     src: '/images/hancun.jpg',
     alt: 'hancun.jpg',
@@ -44,6 +47,7 @@ router.get('/edward', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    filter_option: ['option1','option2','option3'],
     fName: 'Edward',
     src: '/images/edward.jpg',
     alt: 'edward.jpg',
@@ -56,6 +60,7 @@ router.get('/karl', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    filter_option: ['option1','option2','option3'],
     fName: 'Karl',
     src: '/images/karl.jpg',
     alt: 'karl.jpg',
@@ -68,6 +73,7 @@ router.get('/sai', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    filter_option: ['option1','option2','option3'],
     fName: 'Sai',
     src: '/images/sai.jpg',
     alt: 'sai.jpg',
@@ -80,6 +86,7 @@ router.get('/maeve', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    filter_option: ['option1','option2','option3'],
     fName: 'Maeve',
     src: '/images/maeve.jpg',
     alt: 'maeve.jpg',
@@ -92,6 +99,7 @@ router.get('/sabrina', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    filter_option: ['option1','option2','option3'],
     fName: 'Sabrina',
     src: '/images/sabrina.jpg',
     alt: 'sabrina.jpg',
@@ -104,6 +112,7 @@ router.get('/tina', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    filter_option: ['option1','option2','option3'],
     fName: 'Tina',
     src: '/images/tina.jpg',
     alt:'tina.jpg',
