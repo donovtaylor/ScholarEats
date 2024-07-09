@@ -57,13 +57,3 @@
     border-color: white;
   }
   
-  .unfinished_button {
-    border: 1px solid orange;
-    color: orange;
-    text-align: center;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
-    cursor: not-allowed;
-  }
-  
