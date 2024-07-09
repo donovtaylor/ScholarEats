@@ -132,6 +132,24 @@ app.get('/forgotpassword', (req, res) => {
   });
 });
 
+// serve contact us page
+app.get('/contact_us', (req, res) => {
+  const teamMembers = [
+    {fName: 'Angelo Arriaga', src: 'images/angelo.jpg', alt: 'angelo.jpg',  role: 'Team Lead', email: 'aarriaga1@sfsu.edu'},
+    {fName: 'Donovan Taylor', src: 'images/donovan.jpg', alt: 'donovan.jpg', role: 'Frontend Lead', email: 'dvelasquez1@sfsu.edu'},
+    {fName: 'Hancun Guo',src: 'images/hancun.jpg', alt: 'hancun.jpg', role: 'Frontend', email: 'hguo4@sfsu.edu'},
+    {fName: 'Edward Mcdonald',src: 'images/edward.jpg', alt: 'edward.jpg', role: 'Backend Lead', email: 'emcdonald1@sfsu.edu'},
+    {fName: 'Karl Carsola',src: 'images/karl.jpg', alt: 'karl.jpg', role: 'Backend', email: 'kcarsola@mail.sfsu.edu'},
+    {fName: 'Sai Bavisetti',src: 'images/sai.jpg', alt: 'sai.jpg', role: 'Database', email: 'sbavisetti@sfsu.edu'},
+    {fName: 'Maeve Fitzpatrick',src: 'images/maeve.jpg', alt: 'maeve.jpg', role: 'Docs-Editor', email: 'mfitzpatrick@sfsu.edu'},
+    {fName: 'Sabrina Diaz-Erazo',src: 'images/sabrina.jpg', alt: 'sabrina.jpg', role: 'GitHub Master', email: 'sdiazerazo@sfsu.edu'},
+    {fName: 'Tina Chou', role: 'Frontend',src: 'images/tina.jpg', alt: 'tina.jpg', email: 'ychou@sfsu.edu'}
+  ];
+  // add styling to contact_us page
+  res.render('contact_us', { style: ['default.css'], teamMembers });
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
 // serve registration page
 app.get('/register', (req, res) => {
   res.render('register', {
