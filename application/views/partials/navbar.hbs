@@ -4,14 +4,13 @@
   </a>
   <a href="/recipes">Recipes</a>
   <a href="/ingredients">Ingredients</a>
-
   <a href="/">About</a>
   <a href="/">Contact Us</a>
-  <a class="unfinished_button">Notifications</button>
+  <a class="unfinished_button">Notifications</a>
   <a href="/login">sign in/up</a>
   <div class="search">
     <form action='/' id="searchform" method='POST'>
-      <input type='text' class="searchbar" name="searchInput">
+      <input type='text' class="searchbar" id="autocomplete-input" name="searchInput">
       <input type='submit' class="submitbutton" value='Search'>
       <div class="dropdown">
         <button type="button" id="dropbtn" class="dropbtn">Filter</button>
@@ -23,5 +22,6 @@
       </div>
     </form>
   </div>
+  <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
   <div class="content_warning" id="content_warning">test</div>
 </div>
