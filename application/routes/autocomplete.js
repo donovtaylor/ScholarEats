@@ -29,7 +29,7 @@ router.use(express.static(path.join(__dirname, '../views/partials')));
 
 // Endpoint to get recipe suggestions
 router.get('/suggestions', (req, res) => {
-    const searchTerm = req.query.q;
+    const searchTerm = req.query.searchInput;
     if (!searchTerm) {
         return res.status(400).send('Missing query parameter');
     }

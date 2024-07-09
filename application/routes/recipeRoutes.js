@@ -86,6 +86,7 @@ router.get('/', (req, res) => {
 
         res.render('recipes', {
             style: ['default.css', 'recipes.css'],
+            script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
             title: 'Recipes',
             recipes: results
         });

@@ -59,7 +59,6 @@ app.route('/')
     var searchInput = req.query.searchInput;
     res.render('index', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       title: 'team\'s about page',
       header: 'team\'s about page',
