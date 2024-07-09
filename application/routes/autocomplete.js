@@ -24,12 +24,9 @@ db.connect(err => {
     console.log('Connected to the database');
 });
 
-// Serve static files from the 'application/views/partials' directory
-router.use(express.static(path.join(__dirname, '../views/partials')));
-
 // Endpoint to get recipe suggestions
 router.get('/suggestions', (req, res) => {
-    const searchTerm = req.query.searchInput;
+    const searchTerm = req.query.q;
     if (!searchTerm) {
         return res.status(400).send('Missing query parameter');
     }
