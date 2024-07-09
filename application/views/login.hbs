@@ -1,18 +1,57 @@
-<div class="spacer"></div>
-<div class="page">
+<body>
+  <div class="spacer"></div>
+  <div class="page">
     {{>navbar}}
-    <div class="container">
+    <div class="login-form-container">
       <header>Login</header>
-      <form action="/login" method="POST">
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit" value="Login">
+      <form class="login-form" action="/" method="POST" id="login-form" onsubmit="return validateForm()">
+        <input type="text" name="username" id="username" placeholder="Username" required pattern=".{5,}" title="Username must be at least 5 characters long">
+        <input type="password" name="password" id="password" placeholder="Password" required pattern=".{8,}" title="Password must be at least 8 characters long">
+        <label>
+          <input type="checkbox" id ="remember_me" name="remember_me"> Remember me
+        </label>
+        <div id="captcha-container">
+          <!-- CAPTCHA will be dynamically inserted here -->
+        </div>
+        <input type="submit" id="login-submit" value="Login">
+        <div id="error-message" class="error-message"></div>
         <a href="/register">Register</a>
-        <a href="/">Forgot Password</a>
-        <a href="/">Forgot Username</a>
+        <a href="/forgotpassword">Forgot Username/Password</a>
         <a class="unfinished_button">Admin Login</a>
       </form>
     </div>
+    <script src="/js/login.js"></script>
     {{>footer}}
-</div>
-<div class="spacer"></div>
+  </div>
+  <div class="spacer"></div>
+
+  <script>
+    function validateForm() {
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+      var errorMessage = document.getElementById("error-message");
+      
+      errorMessage.textContent = "";
+      
+      if (username === "" || password === "") {
+        errorMessage.textContent = "Username and Password must be filled out";
+        return false;
+      }
+
+      // Add more complex validation if needed
+      
+      return true;
+    }
+
+    // Example CAPTCHA implementation (replace with actual CAPTCHA)
+    function loadCaptcha() {
+      var captchaContainer = document.getElementById("captcha-container");
+      captchaContainer.innerHTML = '<img src="captcha-image-url" alt="CAPTCHA">';
+    }
+
+    window.onload = function() {
+      loadCaptcha();
+    };
+  </script>
+</body>
+</html>

@@ -33,7 +33,7 @@ padding-top: 40px;
   height: fit-content;
 }
 
-.navbar > a {
+.navbar > a, .navbar .profilebadge {
   display: grid;
   text-decoration: none;
   font-size: 1.3em;
@@ -43,6 +43,14 @@ padding-top: 40px;
   transition: background-color 0.3s, color 0.3s;
   align-content: center;
   justify-content: center;
+}
+
+.profilebadge {
+  position: relative;
+}
+
+.profilebadge .dropdown_content{
+  position: absolute;
 }
 
 .navbar > .search {
@@ -94,7 +102,7 @@ padding-top: 40px;
   align-self: center;
 }
 
-.dropdown-content {
+.dropdown_content {
   display: none;
   background: darkslategray;
   box-shadow: 0px 5px 10px black;
@@ -105,11 +113,13 @@ padding-top: 40px;
   padding: 0px;
 }
 
-.dropdown-content > p {
+.dropdown_content > p {
   margin: 5px;
+  display:flex;
+  flex-direction: row;
 }
 
-.dropdown-content .checkbox {
+.dropdown_content .checkbox {
   margin-right: 8px;
 }
 
@@ -154,6 +164,21 @@ object-fit:cover;
 border-radius: 5px;
 }
 
-.show {
+.dropdown_content {
+  background-color: darkslategray;
+  display: none;
+  
+  position: absolute;
+  width: 200px;
+  overflow: auto;
+  box-shadow: 0px 8px 10px 0px black;
+}
+
+.profilebadge:hover .dropdown_content {
+
   display: block;
+}
+
+.show {
+  display:block;
 }
