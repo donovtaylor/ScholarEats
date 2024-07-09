@@ -8,14 +8,17 @@
   <a href="/contact_us">Contact Us</a>
   <a class="unfinished_button">Notifications</a>
   {{#if isLoggedIn}}
-    {{>profilebadge}}
+  {{>profilebadge}}
   {{else}}
-    <a href="/login">Sign In/Up</a>
+  <a href="/login">Sign In/Up</a>
   {{/if}}
 
   <div class="search">
     <form action='/recipes' id="searchform" method='GET'>
-      <input type='text' class="searchbar" id="autocomplete-input" name="searchInput">
+      <div class="search-suggestions">
+        <input type='text' class="searchbar" id="autocomplete-input" name="searchInput" autocomplete="off">
+        <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
+      </div>
       <input type='submit' class="submitbutton" value='Search'>
       <div class="dropdown">
         <button type="button" name="filter_option" class="dropbtn">Filter</button>
@@ -39,6 +42,5 @@
       </div>
     </form>
   </div>
-  <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
   <div class="content_warning" id="content_warning"></div>
 </div>

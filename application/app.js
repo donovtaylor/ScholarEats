@@ -33,6 +33,7 @@ app.use("/recipes", recipeRoutes); // Recipe Routes
 app.use("/ingredients", inventoryRoutes); // Inventory Routes
 app.use("/users", userRoutes); // User Routes
 app.use("/about", about);
+app.use("/suggestions", autocomplete);
 
 
 
@@ -51,7 +52,7 @@ app.set('view engine', 'hbs');
 
 //Middleware Functions to parse json
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 // Add more routes here as needed
 app.route('/')
@@ -60,64 +61,20 @@ app.route('/')
     res.render('index', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
-      title: 'team\'s about page',
-      header: 'team\'s about page',
-      filter_option: ['option1','option2','option3']
+      title: 'Team\'s about page',
+      header: 'Team\'s about page',
+      filter_option: ['option1', 'option2', 'option3']
     })
   });
 
 
-// serve recipes page
-app.get('/recipes', (req, res) => {
-  res.render('recipes', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'recipes.css'],
-    title: 'Recipes',
-    filter_option: ['option1','option2','option3'],
-    recipe: [{
-      src: '/images/icon_orange.png',
-      alt: 'potato.jpg',
-      name: 'potato',
-      desc: 'lorem ipsum',
-    },
-    {
-      src: '/images/icon_orange.png',
-      alt: 'potato.jpg',
-      name: 'potato',
-      desc: 'lorem ipsum',
-    }]
-  })
-})
-
-// serve Ingredients page
-app.get('/ingredients', (req, res) => {
-  res.render('ingredients', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'ingredients.css'],
-    title: 'Ingredients',
-    filter_option: ['option1','option2','option3'],
-    ingredient: [{
-      src: '/images/icon_orange.png',
-      alt: 'potato.jpg',
-      name: 'potato',
-      desc: 'lorem ipsum',
-    },
-    {
-      src: '/images/icon_orange.png',
-      alt: 'potato.jpg',
-      name: 'potato',
-      desc: 'lorem ipsum',
-    }]
-  });
-});
-
 // serve login page
-app.get('/login', (req, res) => {
+app.get('/', (req, res) => {
   res.render('login', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'login.css'],
     title: 'Login',
-    filter_option: ['option1','option2','option3']
+    filter_option: ['option1', 'option2', 'option3']
   });
 });
 
@@ -127,22 +84,22 @@ app.get('/forgotpassword', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'forgotpassword.css'],
     title: 'Forgot Password',
-    filter_option: ['option1','option2','option3']
+    filter_option: ['option1', 'option2', 'option3']
   });
 });
 
 // serve contact us page
 app.get('/contact_us', (req, res) => {
   const teamMembers = [
-    {fName: 'Angelo Arriaga', src: 'images/angelo.jpg', alt: 'angelo.jpg',  role: 'Team Lead', email: 'aarriaga1@sfsu.edu'},
-    {fName: 'Donovan Taylor', src: 'images/donovan.jpg', alt: 'donovan.jpg', role: 'Frontend Lead', email: 'dvelasquez1@sfsu.edu'},
-    {fName: 'Hancun Guo',src: 'images/hancun.jpg', alt: 'hancun.jpg', role: 'Frontend', email: 'hguo4@sfsu.edu'},
-    {fName: 'Edward Mcdonald',src: 'images/edward.jpg', alt: 'edward.jpg', role: 'Backend Lead', email: 'emcdonald1@sfsu.edu'},
-    {fName: 'Karl Carsola',src: 'images/karl.jpg', alt: 'karl.jpg', role: 'Backend', email: 'kcarsola@mail.sfsu.edu'},
-    {fName: 'Sai Bavisetti',src: 'images/sai.jpg', alt: 'sai.jpg', role: 'Database', email: 'sbavisetti@sfsu.edu'},
-    {fName: 'Maeve Fitzpatrick',src: 'images/maeve.jpg', alt: 'maeve.jpg', role: 'Docs-Editor', email: 'mfitzpatrick@sfsu.edu'},
-    {fName: 'Sabrina Diaz-Erazo',src: 'images/sabrina.jpg', alt: 'sabrina.jpg', role: 'GitHub Master', email: 'sdiazerazo@sfsu.edu'},
-    {fName: 'Tina Chou', role: 'Frontend',src: 'images/tina.jpg', alt: 'tina.jpg', email: 'ychou@sfsu.edu'}
+    { fName: 'Angelo Arriaga', src: 'images/angelo.jpg', alt: 'angelo.jpg', role: 'Team Lead', email: 'aarriaga1@sfsu.edu' },
+    { fName: 'Donovan Taylor', src: 'images/donovan.jpg', alt: 'donovan.jpg', role: 'Frontend Lead', email: 'dvelasquez1@sfsu.edu' },
+    { fName: 'Hancun Guo', src: 'images/hancun.jpg', alt: 'hancun.jpg', role: 'Frontend', email: 'hguo4@sfsu.edu' },
+    { fName: 'Edward Mcdonald', src: 'images/edward.jpg', alt: 'edward.jpg', role: 'Backend Lead', email: 'emcdonald1@sfsu.edu' },
+    { fName: 'Karl Carsola', src: 'images/karl.jpg', alt: 'karl.jpg', role: 'Backend', email: 'kcarsola@mail.sfsu.edu' },
+    { fName: 'Sai Bavisetti', src: 'images/sai.jpg', alt: 'sai.jpg', role: 'Database', email: 'sbavisetti@sfsu.edu' },
+    { fName: 'Maeve Fitzpatrick', src: 'images/maeve.jpg', alt: 'maeve.jpg', role: 'Docs-Editor', email: 'mfitzpatrick@sfsu.edu' },
+    { fName: 'Sabrina Diaz-Erazo', src: 'images/sabrina.jpg', alt: 'sabrina.jpg', role: 'GitHub Master', email: 'sdiazerazo@sfsu.edu' },
+    { fName: 'Tina Chou', role: 'Frontend', src: 'images/tina.jpg', alt: 'tina.jpg', email: 'ychou@sfsu.edu' }
   ];
   // add styling to contact_us page
   res.render('contact_us', {
@@ -167,7 +124,7 @@ app.get('/test', (req, res) => {
   res.render('accountmanagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
-    title: 'accountmanagement',
+    title: 'Account Management',
   });
 });
 
@@ -176,7 +133,7 @@ app.get('/accountmanagement', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
     title: 'Account Management',
-    dietary_restriction: ['Vegan','Keto','Hala','Vegetarian','Pescatarian','Kosher']
+    dietary_restriction: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']
   });
 });
 
