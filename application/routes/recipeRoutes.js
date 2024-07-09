@@ -64,7 +64,7 @@ router.get('/', (req, res) => {
     }
 
     if (cooking_aid) {
-        query += ' AND cooking_aids LIKE ?';
+        query += ' AND `cooking tip` LIKE ?';
         queryParams.push(`%${cooking_aid}%`);
     }
 
@@ -306,7 +306,7 @@ router.get('/:restriction', (req, res) => {
 // Filter recipes by cooking aids required
 router.get('/:aid', (req, res) => {
     const aid = req.params.aid;
-    filterRecipes('cooking_aids', aid, (err, results) => {
+    filterRecipes('cooking tip', aid, (err, results) => {
         if (err) {
             return res.status(500).json({ message: 'Database error' });
         }
