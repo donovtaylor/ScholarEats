@@ -1,25 +1,15 @@
 
 function handleClick(e) {
   if (e.target.className == "unfinished_button") {
-    first = new Date();
     warning.innerHTML = "unfinished button";
     warning.style.display = 'block';
-  }
-  
-  if (!timer1) {
-    timer1 = setTimeout(() => {
-      const second = new Date();
-      console.log(second - first);
-      console.log(timer1);
+    const timer = setTimeout(() => {
       warning.style.display = 'none';
+      console.log("timer " + timer + " has died");
     }, 3000);
-    timer1 = null;
+    console.log(timer);
   }
 }
-
-var timer1 = null;
-var first = null;
-
 // target the warning banner in the navbar
 const warning = document.getElementById("content_warning");
 

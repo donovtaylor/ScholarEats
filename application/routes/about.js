@@ -6,7 +6,7 @@ let router = express.Router();
 router.get('/angelo', (req, res) => {
   //uses the 'about.hbs' template
   res.render('about', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
     fName: 'Angelo',
     src: '/images/angelo.jpg',
@@ -18,7 +18,7 @@ router.get('/angelo', (req, res) => {
 // serve donovan's page
 router.get('/donovan', (req, res) => {
   res.render('about', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
     fName: 'Donovan',
     src: '/images/donovan.jpg',
@@ -30,7 +30,7 @@ router.get('/donovan', (req, res) => {
 // serve hancun's page
 router.get('/hancun', (req, res) => {
   res.render('about', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
     fName: 'Hancun',
     src: '/images/hancun.jpg',
@@ -42,7 +42,7 @@ router.get('/hancun', (req, res) => {
 // serve edward's page
 router.get('/edward', (req, res) => {
   res.render('about', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
     fName: 'Edward',
     src: '/images/edward.jpg',
@@ -54,7 +54,7 @@ router.get('/edward', (req, res) => {
 // serve karl's page
 router.get('/karl', (req, res) => {
   res.render('about', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
     fName: 'Karl',
     src: '/images/karl.jpg',
@@ -66,7 +66,7 @@ router.get('/karl', (req, res) => {
 // serve sai's page
 router.get('/sai', (req, res) => {
   res.render('about', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
     fName: 'Sai',
     src: '/images/sai.jpg',
@@ -78,7 +78,7 @@ router.get('/sai', (req, res) => {
 // serve maeve's page
 router.get('/maeve', (req, res) => {
   res.render('about', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
     fName: 'Maeve',
     src: '/images/maeve.jpg',
@@ -90,7 +90,7 @@ router.get('/maeve', (req, res) => {
 // serve sabrina's page
 router.get('/sabrina', (req, res) => {
   res.render('about', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
     fName: 'Sabrina',
     src: '/images/sabrina.jpg',
@@ -102,7 +102,7 @@ router.get('/sabrina', (req, res) => {
 // serve tina's page
 router.get('/tina', (req, res) => {
   res.render('about', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
     fName: 'Tina',
     src: '/images/tina.jpg',

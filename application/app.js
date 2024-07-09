@@ -23,7 +23,7 @@ app.route('/')
   .get((req, res) => {
     // Serve index.hbs
     res.render('index', {
-      script: ['unfinished_button.js', 'dropdown.js'],
+      script: ['unfinished_button.js', 'dropdown.js', 'autocomplete.js'],
       style: ['default.css'],
       title: 'team\'s about page',
       header: 'team\'s about page'
@@ -32,7 +32,7 @@ app.route('/')
   .post((req, res) => {
     var searchInput = req.body.searchInput;
     res.render('index', {
-      script: ['dropdown.js', 'unfinished_button.js'],
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       title: 'team\'s about page',
       header: 'team\'s about page'
@@ -43,7 +43,7 @@ app.route('/')
 // serve recipes page
 app.get('/recipes', (req, res) => {
   res.render('recipes', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'recipes.css'],
     title: 'Recipes',
     recipe: [{
@@ -64,7 +64,7 @@ app.get('/recipes', (req, res) => {
 // serve Ingredients page
 app.get('/ingredients', (req, res) => {
   res.render('ingredients', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'ingredients.css'],
     title: 'Ingredients',
     ingredient: [{
@@ -85,7 +85,7 @@ app.get('/ingredients', (req, res) => {
 // serve login page
 app.get('/login', (req, res) => {
   res.render('login', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'login.css'],
     title: 'Login'
   });
@@ -94,9 +94,18 @@ app.get('/login', (req, res) => {
 // serve registration page
 app.get('/register', (req, res) => {
   res.render('register', {
-    script: ['dropdown.js', 'unfinished_button.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'register.css'],
     title: 'Register'
+  });
+});
+
+// test page to test new pages before connecting them
+app.get('/test', (req, res) => {
+  res.render('accountmanagement', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'accountmanagement.css'],
+    title: 'accountmanagement'
   });
 });
 
