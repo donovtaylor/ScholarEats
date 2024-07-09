@@ -1,37 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById("login-form");
-    // const changePasswordForm = document.getElementById('changepass-form');
-    // const changeUsernameForm = document.getElementById('changeUsername-form');
+    
 
 
     loginForm.addEventListener("submit",function(event){
         event.preventDefault();
-        const email = document.getElementById('email').value;
+        const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         fetch('/users/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ username, password })
         })
         .then(response => response.text())
         .then(data => {
             alert(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-
-    logoutButton.addEventListener("click",function(){
-        fetch('/users/logout', {
-            method: 'POST'
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-            location.reload();
         })
         .catch(error => {
             console.error('Error:', error);

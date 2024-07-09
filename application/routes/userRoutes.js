@@ -85,11 +85,11 @@ router.post('/register', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  const email = req.body.email;
+  const username = req.body.username;
   const password = req.body.password;
 
   // Query to find user based on email
-  connection.query('SELECT * FROM Users WHERE email = ?', [email], (err, results) => {
+  connection.query('SELECT * FROM Users WHERE username = ?', [username], (err, results) => {
     if (err) {
       console.error('Error querying database:', err);
       return res.status(500).send('Database error');
@@ -97,11 +97,10 @@ router.post('/login', (req, res) => {
 
     // Check if user exists
     if (results.length === 0) {
-      return res.send('Invalid Email or Password');
+      return res.send('Invalid Username or Password');
     }
 
     const user = results[0];
-    console.log(user);
     // Compare password with hashed password in database
     bcrypt.compare(password, user.password_hash, (err, isMatch) => {
       if (err) {
@@ -115,8 +114,10 @@ router.post('/login', (req, res) => {
 
       // Store user data in session upon successful login
       req.session.user = { email: user.email, username: user.username, uuid: user.uuid };
-      console.log(req.session.user.email);
-      return res.send('Logged in successfully!');
+      console.log(req.session.user);
+      return res.send('Successfully Logged In!');
+  
+      
 
     });
   });
@@ -162,7 +163,7 @@ router.post('/change-password', (req, res) => {
           return err;
         }
 
-        connection.query("UPDATE Users SET password_hash = ? WHERE username = ?", [hash, req.session.username], (err, result) => {
+        connection.query("UPDATE Users SET password_hash = ? WHERE username = ?", [hash, req.session.user.username], (err, result) => {
           if (err) {
             return err;
           }
@@ -178,6 +179,7 @@ router.post('/change-password', (req, res) => {
 router.post("/change-username", (req, res) => {
 
   const newUsername = req.body.newUsername;
+  console.log(newUsername);
   //console.log("Request body:", req.body);
   //console.log("Session:", req.session);
   connection.query("SELECT * FROM Users where Username = ?", [newUsername], (err, results) => {
@@ -187,11 +189,13 @@ router.post("/change-username", (req, res) => {
     if (results.length > 0) {
       return res.send("Username is already taken");
     }
-    connection.query("UPDATE Users SET username = ? WHERE email = ?", [newUsername, req.session.email], (err, result) => {
+    connection.query("UPDATE Users SET username = ? WHERE email = ?", [newUsername, req.session.user.email], (err, result) => {
+      console.log(req.session.user.email);
+      console.log(req.session.user.username);
       if (err) {
         return err;
       }
-      req.session.username = newUsername;
+      req.session.user.username = newUsername;
       return res.send("successfully changed username!");
     });
   });

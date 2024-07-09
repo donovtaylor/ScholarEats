@@ -69,7 +69,7 @@ app.route('/')
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       title: 'team\'s about page',
-      header: 'team\'s about page'
+      header: 'team\'s about page',
       header: 'team\'s about page'
     })
   });
@@ -161,6 +161,14 @@ app.get('/register', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'register.css'],
     title: 'Register'
+  });
+});
+
+app.get('/accountmanagement', (req, res) => {
+  res.render('accountmanagement', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'accountmanagement.css'],
+    title: 'Account Management'
   });
 });
 
