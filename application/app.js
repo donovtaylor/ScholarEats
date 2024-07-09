@@ -102,7 +102,7 @@ app.get('/contact_us', (req, res) => {
     {fName: 'Sai Bavisetti',src: 'images/sai.jpg', alt: 'sai.jpg', role: 'Database', email: 'sbavisetti@sfsu.edu'},
     {fName: 'Maeve Fitzpatrick',src: 'images/maeve.jpg', alt: 'maeve.jpg', role: 'Docs-Editor', email: 'mfitzpatrick@sfsu.edu'},
     {fName: 'Sabrina Diaz-Erazo',src: 'images/sabrina.jpg', alt: 'sabrina.jpg', role: 'GitHub Master', email: 'sdiazerazo@sfsu.edu'},
-    {fName: 'Tina', role: 'Frontend',src: 'images/tina.jpg', alt: 'tina.jpg', email: 'ychou@sfsu.edu'}
+    {fName: 'Tina Chou', role: 'Frontend',src: 'images/tina.jpg', alt: 'tina.jpg', email: 'ychou@sfsu.edu'}
   ];
   // add styling to contact_us page
   res.render('contact_us', { style: ['default.css'], teamMembers });
