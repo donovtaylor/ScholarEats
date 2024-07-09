@@ -39,9 +39,7 @@
   <a href="/">Notifications</a>
   
   {{#if isLoggedIn}}
-    <span>Welcome</span>
-    <script src="/js/logout.js"></script>
-    <button id="logout-button">logout</button>
+    {{>profilebadge}}
   {{else}}
     <a href="/login">Sign In/Up</a>
   {{/if}}

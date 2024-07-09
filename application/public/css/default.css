@@ -104,3 +104,15 @@ img {
 object-fit:cover;
 border-radius: 5px;
 }
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  width: 100%;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.profilebadge:hover .dropdown-content {
+  display: block;
+}
