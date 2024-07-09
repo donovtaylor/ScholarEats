@@ -1,12 +1,40 @@
 const express = require('express');
-const app = express();
+const session = require('express-session');
+const bcrypt = require('bcryptjs');
+const mysql = require('mysql');
 const path = require('path');
-const exphbs = require('express-handlebars'); // Import express-handlebars
-const about = require(path.join(__dirname, 'routes/about'));
+const exphbs = require('express-handlebars');
 
+const inventoryRoutes = require('./routes/inventoryRoutes');              // Inventory
+const userRoutes = require('./routes/userRoutes');                        // User
+const recipeRoutes = require('./routes/recipeRoutes');                    // Recipe
+const about = require('./routes/about');                                  // About
+
+const app = express();
+
+// app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true })); // for form data
+
+app.use(session({
+  secret: 'secret-key',
+  resave: false,
+  saveUninitialized: false,
+}));
+
+app.use((req, res, next) => {
+  res.locals.isLoggedIn = req.session.user ? true : false;
+  next();
+});
+
+// Mount routes
+app.use("/recipes", recipeRoutes); // Recipe Routes
+app.use("/ingredients", inventoryRoutes); // Inventory Routes
+app.use("/users", userRoutes); // User Routes
 app.use("/about", about);
+
+
+
 
 // Middleware to configure Handlebars
 const hbs = exphbs.create({
@@ -20,12 +48,17 @@ app.engine('hbs', hbs.engine);
 
 app.set('view engine', 'hbs');
 
-// Add more routes as needed for your existing HTML files
+//Middleware Functions to parse json
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+// Add more routes here as needed
 app.route('/')
   .get((req, res) => {
     var searchInput = req.query.searchInput;
     console.log(searchInput);
     res.render('index', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       title: 'team\'s about page',
