@@ -1,35 +1,57 @@
-<div class="spacer"></div>
-<div class="page">
-  {{>navbar}}
-  <div class="login-form-container">
-    <header>Login</header>
-    <form class="login-form" action="/login" method="POST" onsubmit="return validateForm()">
-      <input type="text" name="username" placeholder="Username" required pattern=".{5,}" title="Username must be at least 5 characters long">
-      <input type="password" name="password" placeholder="Password" required pattern=".{8,}" title="Password must be at least 8 characters long">
-      <label>
-        <input type="checkbox" name="remember_me"> Remember me
-      </label>
-      <input type="submit" value="Login">
-      <a href="/register">Register</a>
-      <a href="/forgot-password">Forgot Password</a>
-      <a href="/forgot-username">Forgot Username</a>
-      <a class="unfinished_button">Admin Login</a>
-    </form>
+<body>
+  <div class="spacer"></div>
+  <div class="page">
+    {{>navbar}}
+    <div class="login-form-container">
+      <header>Login</header>
+      <form class="login-form" action="/login" method="POST" onsubmit="return validateForm()">
+        <input type="text" name="username" id="username" placeholder="Username" required pattern=".{5,}" title="Username must be at least 5 characters long">
+        <input type="password" name="password" id="password" placeholder="Password" required pattern=".{8,}" title="Password must be at least 8 characters long">
+        <label>
+          <input type="checkbox" name="remember_me"> Remember me
+        </label>
+        <div id="captcha-container">
+          <!-- CAPTCHA will be dynamically inserted here -->
+        </div>
+        <input type="submit" value="Login">
+        <div id="error-message" class="error-message"></div>
+        <a href="/register">Register</a>
+        <a href="/forgotpassword">Forgot Password</a>
+        <a href="/forgotusername">Forgot Username</a>
+        <a class="unfinished_button">Admin Login</a>
+      </form>
+    </div>
+    {{>footer}}
   </div>
-  {{>footer}}
-</div>
-<div class="spacer"></div>
+  <div class="spacer"></div>
 
-<script>
-  function validateForm() {
-    // Example of additional validation
-    var username = document.forms["login-form"]["username"].value;
-    var password = document.forms["login-form"]["password"].value;
-    if (username == "" || password == "") {
-      alert("Username and Password must be filled out");
-      return false;
+  <script>
+    function validateForm() {
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+      var errorMessage = document.getElementById("error-message");
+      
+      errorMessage.textContent = "";
+      
+      if (username === "" || password === "") {
+        errorMessage.textContent = "Username and Password must be filled out";
+        return false;
+      }
+
+      // Add more complex validation if needed
+      
+      return true;
     }
-    // Add more complex validation if needed
-    return true;
-  }
-</script>
+
+    // Example CAPTCHA implementation (replace with actual CAPTCHA)
+    function loadCaptcha() {
+      var captchaContainer = document.getElementById("captcha-container");
+      captchaContainer.innerHTML = '<img src="captcha-image-url" alt="CAPTCHA">';
+    }
+
+    window.onload = function() {
+      loadCaptcha();
+    };
+  </script>
+</body>
+</html>

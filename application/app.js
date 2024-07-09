@@ -91,6 +91,15 @@ app.get('/login', (req, res) => {
   });
 });
 
+// serve forgot password page
+app.get('/forgotpassword', (req, res) => {
+  res.render('forgotpassword', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'forgotpassword.css'],
+    title: 'Forgot Password'
+  });
+});
+
 // serve registration page
 app.get('/register', (req, res) => {
   res.render('register', {
