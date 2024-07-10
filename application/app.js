@@ -61,6 +61,8 @@ app.route('/')
     res.render('index', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
+      dropdown_filters: {value: 'Filter', id: 'filter_options',
+        option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
       title: 'Team\'s about page',
       header: 'Team\'s about page'
     })
@@ -73,6 +75,8 @@ app.route('/login')
     res.render('login', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css', 'login.css'],
+      dropdown_filters: {value: 'Filter', id: 'filter_options',
+        option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
       title: 'Login'
     })
   })
@@ -80,6 +84,8 @@ app.route('/login')
     res.redirect('/index', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css', 'login.css'],
+      dropdown_filters: {value: 'Filter', id: 'filter_options',
+        option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
       title: 'index'
     })
   });
@@ -89,6 +95,8 @@ app.get('/forgotpassword', (req, res) => {
   res.render('forgotpassword', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'forgotpassword.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     title: 'Forgot Password'
   });
 });
@@ -109,6 +117,8 @@ app.get('/contact_us', (req, res) => {
   // add styling to contact_us page
   res.render('contact_us', {
     style: ['default.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     teamMembers
   });
@@ -120,6 +130,8 @@ app.get('/register', (req, res) => {
   res.render('register', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'register.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     title: 'Register'
   });
 });
@@ -129,6 +141,8 @@ app.get('/test', (req, res) => {
   res.render('accountmanagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     title: 'Account Management',
   });
 });
@@ -137,6 +151,8 @@ app.get('/accountmanagement', (req, res) => {
   res.render('accountmanagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     title: 'Account Management',
     dietary_restriction: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']
   });

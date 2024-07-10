@@ -8,6 +8,8 @@ router.get('/angelo', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     fName: 'Angelo',
     title: 'About Angelo',
     src: '/images/angelo.jpg',
@@ -21,6 +23,8 @@ router.get('/donovan', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     fName: 'Donovan',
     title: 'About Donovan',
     src: '/images/donovan.jpg',
@@ -34,6 +38,8 @@ router.get('/hancun', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     fName: 'Hancun',
     title: 'About Hancun',
     src: '/images/hancun.jpg',
@@ -47,6 +53,8 @@ router.get('/edward', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     fName: 'Edward',
     title: 'About Edward',
     src: '/images/edward.jpg',
@@ -60,6 +68,8 @@ router.get('/karl', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     fName: 'Karl',
     title: 'About Karl',
     src: '/images/karl.jpg',
@@ -73,6 +83,8 @@ router.get('/sai', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     fName: 'Sai',
     title: 'About Sai',
     src: '/images/sai.jpg',
@@ -86,6 +98,8 @@ router.get('/maeve', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     fName: 'Maeve',
     title: 'About Maeve',
     src: '/images/maeve.jpg',
@@ -99,6 +113,8 @@ router.get('/sabrina', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     fName: 'Sabrina',
     title: 'About Sabrina',
     src: '/images/sabrina.jpg',
@@ -112,6 +128,8 @@ router.get('/tina', (req, res) => {
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
     fName: 'Tina',
     title: 'About Tina',
     src: '/images/tina.jpg',
