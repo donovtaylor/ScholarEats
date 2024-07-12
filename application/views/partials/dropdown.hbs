@@ -1,9 +1,11 @@
 <div class="dropdown">
   <button type="button" name="{{id}}" class="dropbtn">{{value}}</button>
   <div id="{{id}}" class="dropdown_content">
-    <p><input type="checkbox" class="checkbox" name="dietary_restriction" value="vegan"> Vegan</p>
     {{#each option}}
-      <p><input type="checkbox" class="checkbox" name="{{this}}"> {{this}}</p>
+      <p><input type="checkbox" class="dropdown_option" name="{{this}}">{{this}}</p>
+    {{/each}}
+    {{#each option2}}
+      <p><input type="radio" class="dropdown_option" name="{{this}}">{{this}}</p>
     {{/each}}
   </div>
 </div>

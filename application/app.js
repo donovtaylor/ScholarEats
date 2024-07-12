@@ -62,7 +62,8 @@ app.route('/')
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       dropdown_filters: {value: 'Filter', id: 'filter_options',
-        option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
+        option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher','Easy','Medium','Hard'],
+        option2: ['ascending','descending']},
       title: 'Team\'s about page',
       header: 'Team\'s about page'
     })

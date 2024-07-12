@@ -15,12 +15,12 @@
 
   <div class="search">
     <form action='/recipes' id="searchform" method='GET'>
-        <input type='text' class="searchbar" id="autocomplete-input" name="searchInput" autocomplete="off">
+      <input type='text' class="searchbar" id="autocomplete-input" name="searchInput" autocomplete="off">
       <input type='submit' class="submitbutton" value='Search'>
       {{>dropdown dropdown_filters}}
     </form>
+    <div><div id="autocomplete-suggestions" class="autocomplete-suggestions"></div></div>
   </div>
-  <div id="acs_wrapper"><div id="autocomplete-suggestions" class="autocomplete-suggestions"></div></div>
-  
+
   <div class="content_warning" id="content_warning"></div>
 </div>

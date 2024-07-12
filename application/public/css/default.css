@@ -95,6 +95,7 @@ padding-top: 40px;
 }
 
 .navbar > .search {
+  
   display: flex;
   flex-direction: column;
   grid-column: 2/7;
@@ -115,28 +116,21 @@ padding-top: 40px;
   border: 1px solid orange;
 }
 
-#acs_wrapper {
-  position: relative;
-  grid-column: 2/4;
-  grid-row: 3/3;
-}
-
 .autocomplete-suggestions {
+  display: none;
   position:absolute;
+  color: orange;
   background-color: darkslategray;
   border-radius: 5px;
   box-shadow: 0px 5px 10px black;
 }
 
 .autocomplete-suggestions div:hover {
+  cursor: pointer;
   background-color: orange;
+  color: white;
+  transition: background-color 0.15s, color 0.15s;
 }
-
-#search-suggestions {
-  display: flex;
-  flex-direction: column;
-}
-
 
 .submitbutton, .dropbtn {
   font-size:1.3em;
@@ -182,15 +176,12 @@ padding-top: 40px;
   flex-direction: row;
 }
 
-.dropdown_content .checkbox {
+.dropdown_option {
+  transform: scale(1.5);
   margin-right: 8px;
 }
 
-.checkbox {
-  transform: scale(1.5);
-}
-
-.checkbox:hover {
+.dropdown_option:hover {
   cursor: pointer;
 }
 
