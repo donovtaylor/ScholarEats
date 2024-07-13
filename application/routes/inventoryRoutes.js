@@ -65,7 +65,8 @@ router.get('/', (req, res) => {
         res.render('ingredients', {
             style: ['default.css', 'ingredients.css'],
             dropdown_filters: {value: 'Filter', id: 'filter_options',
-              option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
+              checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+              radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
             title: 'Ingredients',
             script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
             ingredient: ingredients

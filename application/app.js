@@ -35,9 +35,6 @@ app.use("/users", userRoutes); // User Routes
 app.use("/about", about);
 app.use("/suggestions", autocomplete);
 
-
-
-
 // Middleware to configure Handlebars
 const hbs = exphbs.create({
   layoutsDir: path.join(__dirname, 'views/layouts'),
@@ -62,13 +59,12 @@ app.route('/')
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       dropdown_filters: {value: 'Filter', id: 'filter_options',
-        checkbox_option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher','Easy','Medium','Hard'],
-        radio_option: ['ascending','descending']},
+        checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+        radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
       title: 'Team\'s about page',
       header: 'Team\'s about page'
     })
   });
-
 
 // serve login page
 app.route('/login')
@@ -77,8 +73,8 @@ app.route('/login')
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css', 'login.css'],
       dropdown_filters: {value: 'Filter', id: 'filter_options',
-        checkbox_option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher','Easy','Medium','Hard'],
-        radio_option: ['ascending','descending']},
+        checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+        radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
       title: 'Login'
     })
   })
@@ -87,8 +83,8 @@ app.route('/login')
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css', 'login.css'],
       dropdown_filters: {value: 'Filter', id: 'filter_options',
-        checkbox_option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher','Easy','Medium','Hard'],
-        radio_option: ['ascending','descending']},
+        checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+        radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
       title: 'index'
     })
   });
@@ -99,7 +95,8 @@ app.get('/forgotpassword', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'forgotpassword.css'],
     dropdown_filters: {value: 'Filter', id: 'filter_options',
-      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
+      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
     title: 'Forgot Password'
   });
 });
@@ -121,7 +118,8 @@ app.get('/contact_us', (req, res) => {
   res.render('contact_us', {
     style: ['default.css'],
     dropdown_filters: {value: 'Filter', id: 'filter_options',
-      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
+      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     teamMembers
   });
@@ -134,7 +132,8 @@ app.get('/register', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'register.css'],
     dropdown_filters: {value: 'Filter', id: 'filter_options',
-      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
+      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
     title: 'Register'
   });
 });
@@ -145,7 +144,8 @@ app.get('/test', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
     dropdown_filters: {value: 'Filter', id: 'filter_options',
-      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
+      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
     title: 'Account Management',
   });
 });
@@ -155,8 +155,8 @@ app.get('/accountmanagement', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
     dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher','Easy','Medium','Hard'],
-      radio_option: ['ascending','descending']},
+      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
     dietary_restrictions: {value: 'Dietary Restrictions', id: 'dietary_restrictions',
       checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']},
     title: 'Account Management'
