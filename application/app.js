@@ -62,8 +62,8 @@ app.route('/')
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       dropdown_filters: {value: 'Filter', id: 'filter_options',
-        option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher','Easy','Medium','Hard'],
-        option2: ['ascending','descending']},
+        checkbox_option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher','Easy','Medium','Hard'],
+        radio_option: ['ascending','descending']},
       title: 'Team\'s about page',
       header: 'Team\'s about page'
     })
@@ -77,7 +77,8 @@ app.route('/login')
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css', 'login.css'],
       dropdown_filters: {value: 'Filter', id: 'filter_options',
-        option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
+        checkbox_option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher','Easy','Medium','Hard'],
+        radio_option: ['ascending','descending']},
       title: 'Login'
     })
   })
@@ -86,7 +87,8 @@ app.route('/login')
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css', 'login.css'],
       dropdown_filters: {value: 'Filter', id: 'filter_options',
-        option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
+        checkbox_option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher','Easy','Medium','Hard'],
+        radio_option: ['ascending','descending']},
       title: 'index'
     })
   });
@@ -153,9 +155,11 @@ app.get('/accountmanagement', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
     dropdown_filters: {value: 'Filter', id: 'filter_options',
-      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
-    title: 'Account Management',
-    dietary_restriction: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']
+      checkbox_option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher','Easy','Medium','Hard'],
+      radio_option: ['ascending','descending']},
+    dietary_restrictions: {value: 'Dietary Restrictions', id: 'dietary_restrictions',
+      checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']},
+    title: 'Account Management'
   });
 });
 

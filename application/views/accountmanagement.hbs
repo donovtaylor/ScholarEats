@@ -17,14 +17,7 @@
     </form>
     <h3>Change Dietary Restrictions</h3>
     <form class="account-form" id="change-dietary-restrictions" action="/submit" method="post">
-      <div class="dropdown">
-        <button type="button" name="dietary_restriction" class="dropbtn">Filter</button>
-        <div id="dietary_restriction" class="dropdown_content">
-          {{#each dietary_restriction}}
-          <p><input type="checkbox" class="checkbox" name="{{this}}"> {{this}}</p>
-          {{/each}}
-        </div>
-      </div>
+      {{>dropdown dietary_restrictions}}
       <button type="submit">Submit</button>
     </form>
 
