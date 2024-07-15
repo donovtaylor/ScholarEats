@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
 const session = require('express-session');
 const router = express.Router();
+const { isLoggedIn, isAdmin, isUser } = require('./authMiddleware');
 
 // Fix these when connecting to the actual db
 const connection = mysql.createPool({

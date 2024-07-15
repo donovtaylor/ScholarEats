@@ -101,7 +101,7 @@ router.get('/generateRecommendedRecipes', (req, res) => {
 });
 
 // Generate recommended recipes based on available ingredients
-function generateRecommendedRecipes(callback) { // Update parameter
+function generateRecommendedRecipes(callback) {
   const getAvailableIngredientsQuery = `SELECT ingredient_id FROM store WHERE quantity > 0`;
 
   connection.query(getAvailableIngredientsQuery, (err, ingredientResults) => {
@@ -117,16 +117,15 @@ function generateRecommendedRecipes(callback) { // Update parameter
     }
 
     const getRecipeIdsQuery = `
-            SELECT recipe_id
-            FROM recipe_ingredient
-            WHERE ingredient_id IN (?)
-            GROUP BY recipe_id
-            HAVING COUNT(*) = (
-                SELECT COUNT(*)
-                FROM recipe_ingredient ri
-                WHERE ri.recipe_id = recipe_ingredient.recipe_id
-            )
-        `;
+      SELECT recipe_id
+      FROM recipe_ingredient
+      WHERE ingredient_id IN (?)
+      GROUP BY recipe_id
+      HAVING COUNT(DISTINCT ingredient_id) = (
+        SELECT COUNT(*)
+        FROM recipe_ingredient ri
+        WHERE ri.recipe_id = recipe_ingredient.recipe_id
+      )`;
 
     connection.query(getRecipeIdsQuery, [availableIngredientIds], (err, recipeIdResults) => {
       if (err) {
@@ -140,7 +139,7 @@ function generateRecommendedRecipes(callback) { // Update parameter
 
       const recipeIds = recipeIdResults.map(row => row.recipe_id);
 
-      const getRecipesQuery = `SELECT * FROM recipes WHERE id IN (?)`;
+      const getRecipesQuery = `SELECT * FROM recipes WHERE recipe_id IN (?)`;
 
       connection.query(getRecipesQuery, [recipeIds], (err, recipeResults) => {
         if (err) {
