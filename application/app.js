@@ -4,223 +4,159 @@ const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
 const path = require('path');
 const exphbs = require('express-handlebars');
-const recipeRoutes = require('./routes/recipeRoutes'); // Recipe Routes
-const inventoryRoutes = require('./routes/inventoryRoutes'); // Inventory Routes
-const userRoutes = require('./routes/userRoutes'); // User Routes
-const recipeGeneratorRoutes = require('./routes/recipeGeneratorRoutes'); // Recipe Generation Routes
 
+const inventoryRoutes = require('./routes/inventoryRoutes');              // Inventory
+const userRoutes = require('./routes/userRoutes');                        // User
+const recipeRoutes = require('./routes/recipeRoutes');                    // Recipe
+const about = require('./routes/about');                                 // About
+const autocomplete = require('./routes/autocomplete');
 
 const app = express();
 
-//Middleware Functions to parse json
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+// app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true })); // for form data
 
 app.use(session({
-    secret: 'secret-key',
-    resave: false,
-    saveUninitialized: false,
-  }));
+  secret: 'secret-key',
+  resave: false,
+  saveUninitialized: false,
+}));
 
-
-// Going to need to create a .env file for this.
-// If you are in your local machine, edit these host, user, password, and database for your needs
-const pool = mysql.createPool({
-    connectionLimit: 100,
-    host: 'my_db',
-    user: 'student',
-    password: 'student',
-    database: 'testdb'
-});
-
-//Checking if the database is connected
-pool.getConnection( (err)=> {
-    if (err) throw (err)
-    console.log ("DB connected successful!")
-})
-
-app.post('/register', (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    const email = req.body.email;
-
-
-    // Checks if the email/username is already in the database
-    pool.query('SELECT * FROM users WHERE email = ? OR username = ?',[email, username], (err,results) => {
-        if (results.length > 0) {
-            return res.send('Email or username already taken');
-        }
-    });
-
-
-    // Hashes the password using bcrypt
-    bcrypt.hash(password, 10, (err, hash) => {
-        if (err) {
-            console.error('Error hashing password:', err);
-            return (err);
-        }
-        // We insert the information that was given into the database
-        pool.query('INSERT INTO users (user_id, email, username, password) VALUES (UUID(), ?, ?, ?)', [email, username, hash], (err, result) => {
-            if (err) {
-                console.error('Error inserting user:', err);
-                return (err);
-            }
-            res.send('User registered successfully');
-        });
-    });
-});
-
-
-
-app.post('/login', (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-    
-    pool.query('SELECT * FROM users WHERE email = ?',[email], (err,results)=>{
-        if (err){
-            return err;
-        }
-        if (results.length == 0){
-            console.log("Invalid Email or Password");
-        }
-        const user = results[0];
-        bcrypt.compare(password, user.password, (err, isMatch) =>{
-            if (err){
-                return err;
-            }
-            if(!isMatch){
-                return res.send("Invalid Email or Password");
-            }
-            req.session.user = { email: user.email, username: user.username };
-            res.send("logged in!");
-            
-        });
-
-    })
-});
-
-app.post('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return err;
-        }
-        // Clear the session cookie
-        res.clearCookie('connect.sid'); 
-        res.json({ message: 'Logged out successfully' });
-    });
-});
-
-
-app.post('/change-password',(req, res) =>{
-    const newPass = req.body.newPass;
-    const currentPass = req.body.currentPass;
-    const confirmPass = req.body.confirmPass;
-
-    
-
-    pool.query('SELECT * FROM users WHERE username = ?', [req.session.user.username], (err, results) => {
-        if (err) {
-            return err;
-        }
-        const user = results[0];
-        bcrypt.compare(currentPass, user.password, (err, isMatch) =>{
-            if (err){
-                return err;
-            }
-            if (!isMatch){
-                return res.send("Incorrect Password");
-            }
-
-            if(newPass != confirmPass){
-        
-                return res.send("Password Doesn't Match")
-            }
-
-            bcrypt.hash(newPass, 10, (err, hash) => {
-                if (err){
-                    return err;
-                }
-            
-                pool.query("UPDATE users SET password = ? WHERE username = ?", [hash, req.session.user.username], (err, result) =>{
-                    if (err){
-                        return err;
-                    }
-                    res.send("successfully changed password!");
-                });
-            });
-        });
-
-
-    });
-});
-
-// NOTE: NEED TO ADD A CHECK IF THE USERNAMEIS TAKEN OR NOT
-app.post("/change-username",(req, res) =>{
-
-    const newUsername = req.body.newUsername;
-    //console.log("Request body:", req.body);
-    //console.log("Session:", req.session);
-
-    pool.query("UPDATE users SET username = ? WHERE email = ?", [newUsername, req.session.user.email], (err, result) => {
-        if (err){
-            return err;
-        }
-        req.session.user.username = newUsername;
-        res.send("successfully changed username!");
-    });
-});
-
-
-// Displays the status wheter if we are logged in or not.
-app.get("/status", (req, res) => {
-    if (req.session.user) {
-        res.json({ loggedIn: true, user: req.session.user });
-    } else {
-        res.json({ loggedIn: false });
-    }
-});
-
-
-
-
-// Serve static files from the 'website' directory (for existing HTML files)
-app.use(express.static(path.join(__dirname, 'website/pages')));
-
-// Middleware to configure Handlebars
-app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
-app.set('view engine', '.hbs');
-app.set('views', path.join(__dirname, 'views')); // Specify the directory for Handlebars views
-
-// Example route using Handlebars (not converting existing HTML)
-app.get('/example', (req, res) => {
-    // Render a Handlebars template
-    res.render('example', { title: 'Handlebars Example' });
-});
-
-// Serve the main index.html file
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'website/pages', 'index.html'));
+app.use((req, res, next) => {
+  res.locals.isLoggedIn = req.session.user ? true : false;
+  next();
 });
 
 // Mount routes
-// app.use('/recipes', recipeRoutes); // Recipe Routes
-// app.use('/inventory', inventoryRoutes); // Inventory Routes
-// app.use('/users', userRoutes); // User Routes
-// app.use('/recipes', recipeGeneratorRoutes); // Recipe Generator Routes
+app.use("/recipes", recipeRoutes); // Recipe Routes
+app.use("/ingredients", inventoryRoutes); // Inventory Routes
+app.use("/users", userRoutes); // User Routes
+app.use("/about", about);
+app.use("/suggestions", autocomplete);
 
-// Add more routes as needed for your existing HTML files
-app.get('/', (req, res) => {
-    // Serve your existing index.html file
-    res.sendFile(path.join(__dirname, 'website/pages', 'index.html'));
+
+
+
+// Middleware to configure Handlebars
+const hbs = exphbs.create({
+  layoutsDir: path.join(__dirname, 'views/layouts'),
+  partialsDir: path.join(__dirname, 'views/partials'),
+  defaultLayout: 'defaultLayout',
+  extname: 'hbs',
+});
+
+app.engine('hbs', hbs.engine);
+
+app.set('view engine', 'hbs');
+
+//Middleware Functions to parse json
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Add more routes here as needed
+app.route('/')
+  .get((req, res) => {
+    var searchInput = req.query.searchInput;
+    res.render('index', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      style: ['default.css'],
+      title: 'Team\'s about page',
+      header: 'Team\'s about page'
+    })
+  });
+
+
+// serve login page
+app.route('/login')
+  .get((req, res) => {
+    res.render('login', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      style: ['default.css', 'login.css'],
+      title: 'Login'
+    })
+  })
+  .post((req, res) => {
+    res.redirect('/index', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      style: ['default.css', 'login.css'],
+      title: 'index'
+    })
+  });
+
+// serve forgot password page
+app.get('/forgotpassword', (req, res) => {
+  res.render('forgotpassword', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'forgotpassword.css'],
+    title: 'Forgot Password'
+  });
+});
+
+// serve privacy policy and terms of service page
+app.get('/privacy_policy', (req, res) => {
+  res.render('privacy_policy', {
+    style: ['default.css'],
+    title: 'Privacy Policy and Terms of Service'
+  });
+});
+
+// serve contact us page
+app.get('/contact_us', (req, res) => {
+  const teamMembers = [
+    { fName: 'Angelo Arriaga', src: 'images/angelo.jpg', alt: 'angelo.jpg', role: 'Team Lead', email: 'aarriaga1@sfsu.edu' },
+    { fName: 'Donovan Taylor', src: 'images/donovan.jpg', alt: 'donovan.jpg', role: 'Frontend Lead', email: 'dvelasquez1@sfsu.edu' },
+    { fName: 'Hancun Guo', src: 'images/hancun.jpg', alt: 'hancun.jpg', role: 'Frontend', email: 'hguo4@sfsu.edu' },
+    { fName: 'Edward Mcdonald', src: 'images/edward.jpg', alt: 'edward.jpg', role: 'Backend Lead', email: 'emcdonald1@sfsu.edu' },
+    { fName: 'Karl Carsola', src: 'images/karl.jpg', alt: 'karl.jpg', role: 'Backend', email: 'kcarsola@mail.sfsu.edu' },
+    { fName: 'Sai Bavisetti', src: 'images/sai.jpg', alt: 'sai.jpg', role: 'Database', email: 'sbavisetti@sfsu.edu' },
+    { fName: 'Maeve Fitzpatrick', src: 'images/maeve.jpg', alt: 'maeve.jpg', role: 'Docs-Editor', email: 'mfitzpatrick@sfsu.edu' },
+    { fName: 'Sabrina Diaz-Erazo', src: 'images/sabrina.jpg', alt: 'sabrina.jpg', role: 'GitHub Master', email: 'sdiazerazo@sfsu.edu' },
+    { fName: 'Tina Chou', role: 'Frontend', src: 'images/tina.jpg', alt: 'tina.jpg', email: 'ychou@sfsu.edu' }
+  ];
+  // add styling to contact_us page
+  res.render('contact_us', {
+    style: ['default.css'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    teamMembers
+  });
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
+// serve registration page
+app.get('/register', (req, res) => {
+  res.render('register', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'register.css'],
+    title: 'Register'
+  });
+});
+
+// test page to test new pages before connecting them
+app.get('/test', (req, res) => {
+  res.render('accountmanagement', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'accountmanagement.css'],
+    title: 'Account Management',
+  });
+});
+
+app.get('/accountmanagement', (req, res) => {
+  res.render('accountmanagement', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'accountmanagement.css'],
+    title: 'Account Management',
+    dietary_restriction: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']
+  });
 });
 
 // 404 Error handling
 app.use((req, res, next) => {
-    res.status(404).send('404 Page Not Found');
+  res.status(404).send('404 Page Not Found');
 });
 
 // Start server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });

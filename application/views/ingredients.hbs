@@ -1,0 +1,12 @@
+<div class="spacer"></div>
+<div class="page">
+  {{>navbar}}
+  <div class="container">
+    <header>Ingredients {{fName}}</header>
+    {{#each ingredient}}
+      {{>partial_ingredient this}}
+    {{/each}}
+  </div>
+  {{>footer}}
+</div>
+<div class="spacer"></div>

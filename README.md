@@ -23,7 +23,7 @@
 |      #6      |    Sai Bavisetti     |sbavisetti@sfsu.edu   | BAVISETTISAKETH |    skyper_007      |       Database           |
 |      #7      |    Maeve Fitzpatrick |mfitzpatrick@sfsu.edu |maeve-fitzpatrick|  maevefitzpatrick  |       Docs-editor        |
 |      #8      |    Sabrina Diaz-Erazo|sdiazerazo@sfsu.edu   |    sderazo      |  sabreenz          |       GitHub Master      |
-
+|      #9      |    Tina Chou         |ychou@sfsu.edu        |    Tina0713     |  yuting2002        |       Frontend           |
 
 4. All the team's members ***MUST*** sign the following [team's contract](https://forms.gle/dxATAsa9isXKbcBn7). Missing signatures from students will result in these students being dropped from the course. 
 
@@ -31,7 +31,7 @@
 
 |             Name of the Project               |                            URL of the Project                          | 
 |                    :---:                      |                                 :---:                                  |
-|   ScholarEats  |              http://3.145.110.171:3000/       |                                                        
+|   ScholarEats  |              http://18.188.154.195:3000/       |                                                        
  
 
 ## NO code needs to be stored in the root of your repository. You may rename the application folder if you like to your team's application name. But all source code related to your team's application should be stored inside the application folder.

@@ -1,13 +1,13 @@
 -------------------------------------------------------------------------------------
 # Credentials
-- Updated DNS: ec2-3-145-110-171.us-east-2.compute.amazonaws.com
-- Updated IP: 3.145.110.171
-- Updated IP (with port): 3.145.110.171:3000 
+- Updated DNS: ec2-18-188-154-195.us-east-2.compute.amazonaws.com
+- Updated IP: 18.188.154.195
+- Updated IP (with port): 18.188.154.195:3000
 - Key Pair (name): CSC648KeyPair.pem 
 
 ## App:
-- Updated Website URL: http://3.145.110.171:3000/
-- SSH URL: ec2-user@ec2-3-145-110-171.us-east-2.compute.amazonaws.com
+- Updated Website URL: http://18.188.154.195:3000/
+- SSH URL: ec2-user@ec2-18-188-154-195.us-east-2.compute.amazonaws.com
 - SSH Username: ec2-user
 - SSH Password/Key: .pem file uploaded to credentials folder
 
@@ -51,9 +51,7 @@ Execute the following commands in the order given:
 - `pm2 startup` (this command will generate a command. run the command.)
 - `pm2 save`
 
-Now, our website can be accessed through the following link:
 
-http://3.145.110.171:3000/ 
 
 
 ## Tutorial on How to Access Database Instance via ssh:
