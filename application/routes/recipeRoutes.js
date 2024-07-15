@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const { isLoggedIn, isAdmin, isUser } = require('./APIRequestAuthentication');
 
 const router = express.Router();
 const app = express();
