@@ -89,6 +89,29 @@ app.route('/login')
     })
   });
 
+  // serve login page
+app.route('/adminlogin')
+.get((req, res) => {
+  res.render('adminlogin', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'login.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    title: 'adminlogin'
+  })
+})
+.post((req, res) => {
+  res.redirect('/index', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'login.css'],
+    dropdown_filters: {value: 'Filter', id: 'filter_options',
+      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    title: 'index'
+  })
+});
+
 // serve forgot password page
 app.get('/forgotpassword', (req, res) => {
   res.render('forgotpassword', {
