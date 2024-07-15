@@ -2,4 +2,12 @@
         <img src="{{src}}" alt="{{alt}}">
         <div><b>{{name}}</b></div>
         <div>{{desc}}</div>
+        <!-- Edit button dropdown, initially hidden -->
+        <div class="edit-dropdown" style="display: none;">
+            <button onclick="toggleDropdown(this)">Edit</button>
+            <div class="dropdown-content" style="display: none;">
+                <a href="#">Edit Quantity</a>
+                <a href="#">Edit Ingredient</a>
+            </div>
+        </div>
     </div>
