@@ -11,3 +11,26 @@
             </div>
         </div>
 </div>
+
+<script>
+    // Example admin status variable
+    var isAdmin = true; // Set this based on your actual admin login status
+    // Function to toggle dropdown visibility
+    function toggleDropdown(button) {
+        var dropdownContent = button.nextElementSibling;
+        if (dropdownContent.style.display === "none") {
+            dropdownContent.style.display = "block";
+        } else {
+            dropdownContent.style.display = "none";
+        }
+    }
+
+    // Show edit buttons if the user is an admin
+    if (isAdmin) {
+        var editDropdowns = document.querySelectorAll('.edit-dropdown');
+        editDropdowns.forEach(function(dropdown) {
+        dropdown.style.display = 'block';
+    });
+    }
+
+</script>
