@@ -12,7 +12,7 @@ const connection = mysql.createPool({
   });
 
 // Check if the user is logged in
-function isLoggedIn(req, res, next) {
+function IS_LOGGED_IN(req, res, next) {
     if (req.session.user) {
       return next();
     } else {
@@ -21,7 +21,7 @@ function isLoggedIn(req, res, next) {
   }
   
   // Check if the user is an Admin
-  function isAdmin(req, res, next) {
+  function IS_ADMIN(req, res, next) {
     if (req.session.user && req.session.user.user_agent === 'admin') {
       return next();
     } else {
@@ -30,7 +30,7 @@ function isLoggedIn(req, res, next) {
   }
   
   // Check if the user is a User
-  function isUser(req, res, next) {
+  function IS_USER(req, res, next) {
     if (req.session.user && req.session.user.user_agent === 'user') {
       return next();
     } else {
@@ -38,4 +38,4 @@ function isLoggedIn(req, res, next) {
     }
   }
   
-  module.exports = { isLoggedIn, isAdmin, isUser };
+  module.exports = { IS_LOGGED_IN, IS_ADMIN, IS_USER };

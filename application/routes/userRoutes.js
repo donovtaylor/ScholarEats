@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
 const session = require('express-session');
 const router = express.Router();
-const { isLoggedIn, isAdmin, isUser } = require('./APIRequestAuthentication');
+const { isLoggedIn: IS_LOGGED_IN, IS_ADMIN, IS_USER } = require('./APIRequestAuthentication');
 
 // Fix these when connecting to the actual db
 const connection = mysql.createPool({
@@ -135,7 +135,7 @@ router.post('/logout', (req, res) => {
   });
 });
 
-router.post('/change-password', isLoggedIn, (req, res) => {
+router.post('/change-password', IS_LOGGED_IN, (req, res) => {
   const newPass = req.body.newPass;
   const currentPass = req.body.currentPass;
   const confirmPass = req.body.confirmPass;
@@ -176,7 +176,7 @@ router.post('/change-password', isLoggedIn, (req, res) => {
   });
 });
 
-router.post("/change-username", isLoggedIn, (req, res) => {
+router.post("/change-username", IS_LOGGED_IN, (req, res) => {
 
   const newUsername = req.body.newUsername;
   console.log(newUsername);
@@ -202,7 +202,7 @@ router.post("/change-username", isLoggedIn, (req, res) => {
 
 });
 
-router.post("/set-allergies", isLoggedIn, (req, res) => {
+router.post("/set-allergies", IS_LOGGED_IN, (req, res) => {
   const allergies = req.body.allergies;
   const userId = req.session.uuid;
 
@@ -214,7 +214,7 @@ router.post("/set-allergies", isLoggedIn, (req, res) => {
   });
 });
 
-router.post("/set-dietary-restrictions", isLoggedIn, (req, res) => {
+router.post("/set-dietary-restrictions", IS_LOGGED_IN, (req, res) => {
   const dietary_restrictions = req.body.dietary_restrictions;
   const userId = req.session.uuid;
 
