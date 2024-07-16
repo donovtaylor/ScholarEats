@@ -18,7 +18,6 @@ body {
   grid-area: rightSpacer;
 }
 
-
 header {
   grid-area: header;
   display: block;
