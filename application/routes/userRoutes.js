@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
 const session = require('express-session');
 const router = express.Router();
-const { isLoggedIn: IS_LOGGED_IN, IS_ADMIN, IS_USER } = require('./APIRequestAuthentication');
+const { IS_LOGGED_IN, IS_ADMIN, IS_USER } = require('./APIRequestAuthentication');
 
 // Fix these when connecting to the actual db
 const connection = mysql.createPool({
