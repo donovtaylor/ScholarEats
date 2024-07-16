@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const router = express.Router();
 
 // Fix these when connecting to the actual db
@@ -11,6 +12,7 @@ const connection = mysql.createPool({
   password: 'password',
   database: 'ScholarEats'
 });
+
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -87,16 +89,16 @@ router.post('/login', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  // Query to find user based on email
+  // Query to find user based on username
   connection.query('SELECT * FROM Users WHERE username = ?', [username], (err, results) => {
     if (err) {
       console.error('Error querying database:', err);
-      return res.status(500).send('Database error');
+      return res.status(500).json({ error: 'Database error' });
     }
 
     // Check if user exists
     if (results.length === 0) {
-      return res.send('Invalid Username or Password');
+      return res.status(400).json({ error: 'Invalid Username or Password' });
     }
 
     const user = results[0];
@@ -104,34 +106,60 @@ router.post('/login', (req, res) => {
     bcrypt.compare(password, user.password_hash, (err, isMatch) => {
       if (err) {
         console.error('Error comparing passwords:', err);
-        return res.status(500).send('Authentication error');
+        return res.status(500).json({ error: 'Authentication error' });
       }
 
       if (!isMatch) {
-        return res.send('Invalid Email or Password');
+        return res.status(400).json({ error: 'Invalid Username or Password' });
       }
 
-      // Store user data in session upon successful login
-      req.session.user = { email: user.email, username: user.username, uuid: user.uuid };
-      console.log(req.session.user);
-      return res.send('Successfully Logged In!');
-  
-      
+      // console.log('User:', user);
 
+      connection.query('SELECT * FROM sessions WHERE user_id = ? AND session_end IS NULL', [user.uuid], (err, sessionResults) => {
+        if (err) {
+          console.error('Error querying sessions:', err);
+          return res.status(500).json({ error: 'Database error' });
+        }
+
+        req.session.user = {
+          email: user.email,
+          username: user.username,
+          uuid: user.uuid,
+          sessionStart: new Date(),
+        };
+
+        //console.log('Session ID:', req.session.id);
+        //console.log('Session User UUID:', req.session.user.uuid);
+
+        connection.query('INSERT INTO sessions (session_id, user_id, session_start, expires) VALUES (?, ?, ?, ?)', [req.session.id, req.session.user.uuid, req.session.user.sessionStart, new Date(Date.now() + (24 * 60 * 60 * 1000))], (err) => {
+          if (err) {
+            return err;
+          }
+          console.log('new session created:', req.session.user);
+          return res.send('Logged In Successfully');
+        });
+
+      });
     });
   });
 });
 
 
 router.post('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return err;
-    }
-    // Clear the session cookie
-    res.clearCookie('connect.sid');
-    res.json({ message: 'Logged out successfully' });
-  });
+  if (req.session) {
+    connection.query('UPDATE sessions SET session_end = ? WHERE session_id = ?', [new Date(), req.session.id], (err) => {
+      if (err) {
+        return err;
+      }
+    });
+
+    req.session.destroy((err) => {
+      if (err) {
+        return err;
+      }
+      return res.send('Logged Out Successfully');
+    });
+  }
 });
 
 router.post('/change-password', (req, res) => {
@@ -206,7 +234,7 @@ router.post("/set-allergies", (req, res) => {
   const userId = req.session.uuid;
 
   connection.query("UPDATE user_info SET allergies = ? WHERE user_id = ?", [allergies, userId], (err, result) => {
-    if(err){
+    if (err) {
       return err;
     }
     res.send("Successfully updated allergies");
@@ -218,7 +246,7 @@ router.post("/set-dietary-restrictions", (req, res) => {
   const userId = req.session.uuid;
 
   connection.query("UPDATE user_info SET dietary_restrictions = ? WHERE user_id = ?", [dietary_restrictions, userId], (err, result) => {
-    if(err){
+    if (err) {
       return err;
     }
     res.send("Successfully updated dietary_restrictions");
