@@ -1,12 +1,10 @@
-<div class="spacer"></div>
-<div class="page">
-  {{>navbar}}
-  <div class="container">
-    <header>Ingredients {{fName}}</header>
-    {{#each ingredient}}
-      {{>partial_ingredient this}}
-    {{/each}}
-  </div>
-  {{>footer}}
+<div class="leftSpacer"></div>
+{{>navbar}}
+<header>Ingredients {{fName}}</header>
+<div class="container">
+  {{#each ingredient}}
+  {{>partial_ingredient this}}
+  {{/each}}
 </div>
-<div class="spacer"></div>
+{{>footer}}
+<div class="rightSpacer"></div>

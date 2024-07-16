@@ -1,16 +1,14 @@
-<div class="spacer"></div>
-<div class="page">
-  {{>navbar}}
-  <div class="container">
-    <header>Recipes {{fName}}</header>
-    {{#if recipe}}
-      {{#each recipe}}
-        {{>partial_recipe this}}
-      {{/each}}
-    {{else}}
-      <p>No recipes available.</p>
-    {{/if}}
-  </div>
-  {{>footer}}
+<div class="leftSpacer"></div>
+{{>navbar}}
+<header>Recipes</header>
+<div class="container">
+  {{#if recipe}}
+  {{#each recipe}}
+  {{>partial_recipe this}}
+  {{/each}}
+  {{else}}
+  <p>No recipes available.</p>
+  {{/if}}
 </div>
-<div class="spacer"></div>
+{{>footer}}
+<div class="rightSpacer"></div>

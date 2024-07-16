@@ -1,17 +1,34 @@
 body {
-  display:grid;
+  display: grid;
+  grid-template-areas:
+  "leftSpacer   nav     rightSpacer"
+  "leftSpacer  header   rightSpacer"
+  "leftSpacer container rightSpacer"
+  "leftSpacer  footer   rightSpacer";
   grid-template-columns: 1fr 3fr 1fr;
   font-family: Arial, sans-serif;
   background-color: darkslategray;
 }
-header {
-  grid-column: 1 / 3;
-  display:block;
-  font-size: 2em;
-  justify-self:left;
-  align-self:center;
+
+#leftSpacer {
+  grid-area: leftSpacer;
 }
+
+#rightSpacer {
+  grid-area: rightSpacer;
+}
+
+
+header {
+  grid-area: header;
+  display: block;
+  font-size: 2em;
+  justify-self: left;
+  align-self: center;
+}
+
 .footer {
+  grid-area: footer;
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr;
   align-items: start;
@@ -31,20 +48,23 @@ header {
   gap: 25px;
   margin: 25px;
 }
+
 .footer-info {
   text-align: left;
 }
+
 .footer-links {
   display: flex;
   text-align: left;
   flex-direction: column;
 }
+
 .social-icons {
-display: flex;
-justify-content: flex-end;
-align-items: center;
-gap: 25px;
-margin: 25px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 25px;
+  margin: 25px;
 }
 
 a:not(.no-style) {
@@ -55,7 +75,7 @@ a:not(.no-style) {
   border: 1px solid orange;
   border-radius: 5px;
   transition: background-color 0.3s, color 0.3s;
-  
+
 }
 
 a span {
@@ -63,16 +83,19 @@ a span {
   position: relative;
 }
 
-a > div {
-padding-left: 40px;
-padding-top: 40px;
+a>div {
+  padding-left: 40px;
+  padding-top: 40px;
 }
+
 .navbar {
+  grid-area: nav;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
-.navbar > a, .navbar .profilebadge {
+.navbar>a,
+.navbar .profilebadge {
   display: block;
   text-decoration: none;
   color: orange;
@@ -89,7 +112,7 @@ padding-top: 40px;
   align-content: center;
 }
 
-.profilebadge .dropdown_content{
+.profilebadge .dropdown_content {
   position: absolute;
 }
 
@@ -98,8 +121,8 @@ padding-top: 40px;
   display: block;
 }
 
-.navbar > .search {
-  
+.navbar>.search {
+
   display: flex;
   flex-direction: column;
   grid-column: 2/7;
@@ -107,7 +130,7 @@ padding-top: 40px;
 }
 
 .navbar form {
-  display:flex;
+  display: flex;
 }
 
 .searchbar {
@@ -122,7 +145,7 @@ padding-top: 40px;
 
 .autocomplete-suggestions {
   display: none;
-  position:absolute;
+  position: absolute;
   color: orange;
   background-color: darkslategray;
   border-radius: 5px;
@@ -136,8 +159,9 @@ padding-top: 40px;
   transition: background-color 0.15s, color 0.15s;
 }
 
-.submitbutton, .dropbtn {
-  font-size:1.3em;
+.submitbutton,
+.dropbtn {
+  font-size: 1.3em;
   color: orange;
   border: 1px solid orange;
   background-color: darkslategray;
@@ -151,7 +175,8 @@ padding-top: 40px;
   border: 1px solid orange;
 }
 
-.submitbutton:hover, .dropbtn:hover {
+.submitbutton:hover,
+.dropbtn:hover {
   background-color: orange;
   color: white;
   cursor: pointer;
@@ -174,9 +199,9 @@ padding-top: 40px;
   padding: 0px;
 }
 
-.dropdown_content > p {
+.dropdown_content>p {
   margin: 5px;
-  display:flex;
+  display: flex;
   flex-direction: row;
 }
 
@@ -190,7 +215,7 @@ padding-top: 40px;
 }
 
 #content_warning {
-  display:none;
+  display: none;
   border: 1px solid red;
   background: darkred;
   grid-row: 3/3;
@@ -206,28 +231,33 @@ a:hover:not(.no-style) {
 }
 
 .container {
-display:grid;
-grid-template-columns: 1fr 1fr;
-justify-content: left;
+  display: grid;
+  grid-area: container;
 }
 
-.container > a {
-display: grid;
-grid-template-columns: 1fr 4fr;
-justify-content:space-between;
-margin: 5px;
-padding: 5px;
+.aboutContents {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: left;
+}
+
+.aboutContents>a {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  justify-content: space-between;
+  margin: 5px;
+  padding: 5px;
 }
 
 img {
-object-fit: cover;
-border-radius: 5px;
+  object-fit: cover;
+  border-radius: 5px;
 }
 
 .dropdown_content {
   background-color: darkslategray;
   display: none;
-  
+
   position: absolute;
   width: 200px;
   overflow: auto;
@@ -235,12 +265,12 @@ border-radius: 5px;
 }
 
 .show {
-  display:block;
+  display: block;
 }
+
 .no-style {
   color: orange;
   text-decoration: none;
   border: none;
   border-radius: none;
 }
-

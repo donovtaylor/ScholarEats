@@ -153,7 +153,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/register', (req, res) => {
   res.render('register', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'register.css'],
+    style: ['default.css'],
     dropdown_filters: {value: 'Filter', id: 'filter_options',
       checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
       radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
