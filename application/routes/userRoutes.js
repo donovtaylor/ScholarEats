@@ -243,7 +243,11 @@ router.post("/set-allergies", (req, res) => {
   const allergies = req.body.allergies;
   const userId = req.session.user.userId;
 
-  connection.query("UPDATE user_info SET allergies = ? WHERE user_id = ?", [allergies, userId], (err, result) => {
+  console.log(allergies);
+  const allergiesJoin = allergies.join(',');
+  console.log(allergiesJoin);
+
+  connection.query("UPDATE user_info SET allergies = ? WHERE user_id = ?", [allergiesJoin, userId], (err, result) => {
     if (err) {
       return err;
     }
@@ -253,12 +257,12 @@ router.post("/set-allergies", (req, res) => {
 
 router.post("/set-dietary-restrictions", (req, res) => {
   const dietary_restrictions = req.body.dietary_restrictions;
-  const userId = req.session.uuid;
+  const userId = req.session.user.userId;
   console.log(dietary_restrictions);
-  const dietaryRestrictionsString = dietary_restrictions.join(',');
-  console.log(dietaryRestrictionsString);
+  const dietaryRestrictionsJoin = dietary_restrictions.join(',');
+  console.log(dietaryRestrictionsJoin);
 
-  connection.query("UPDATE user_info SET dietary_restrictions = ? WHERE user_id = ?", [dietaryRestrictionsString, userId], (err, result) => {
+  connection.query("UPDATE user_info SET dietary_restrictions = ? WHERE user_id = ?", [dietaryRestrictionsJoin, userId], (err, result) => {
     if (err) {
       return err;
     }

@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const changePasswordForm = document.getElementById('change-password-form');
     const changeUsernameForm = document.getElementById('change-username-form');
     const setDietaryRestrictionsForm = document.getElementById('change-dietary-restrictions');
+    const setAllergies = document.getElementById('change-allergies-from');
 
     // Allows us to change password
     changePasswordForm.addEventListener("submit", function(event){
@@ -64,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         console.log(dietaryRestrictions);
 
-        fetch('/users//set-dietary-restrictions', {
+        fetch('/users/set-dietary-restrictions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -79,6 +80,34 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => {
             console.error('Error:', error);
         });
-    })
+    });
+
+    setAllergies.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const checkboxes = document.querySelectorAll('.allergy-checkbox');
+        const allergies = [];
+        checkboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+                allergies.push(checkbox.value);
+            }
+        });
+        console.log(allergies);
+
+        fetch('/users/set-allergies', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ allergies: allergies })
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
 
 })

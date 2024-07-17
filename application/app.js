@@ -167,7 +167,8 @@ app.get('/accountmanagement', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
     title: 'Account Management',
-    dietary_restriction: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']
+    dietary_restriction: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher'],
+    allergies: ['Milk', 'Eggs', 'Fish', 'Crustacean Shellfish', 'Tree Nuts', 'Peanuts', 'Wheat', 'Soybeans']
   });
 });
 
