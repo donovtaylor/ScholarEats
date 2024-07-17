@@ -29,7 +29,21 @@ connection.connect(err => {
 router.get('/', (req, res) => {
   const { dietary_restriction, cooking_aid, difficulty, sort, searchInput } = req.query;
 
-  let query = 'SELECT * FROM recipes WHERE 1=1';
+  let query = `
+    SELECT DISTINCT r.*
+    FROM recipes r
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM recipe_ingredient ri
+        WHERE ri.recipe_id = r.\`Unnamed: 0\`
+        AND ri.ingredient_id NOT IN (
+            SELECT ingredient_id
+            FROM store
+            WHERE quantity > 0
+        )
+    )
+  `;
+
   let queryParams = [];
 
   if (dietary_restriction) {
@@ -37,20 +51,20 @@ router.get('/', (req, res) => {
     queryParams.push(`%${dietary_restriction}%`);
   }
 
-    if (cooking_aid) {
-        query += ' AND `cooking tip` LIKE ?';
-        queryParams.push(`%${cooking_aid}%`);
-    }
+  if (cooking_aid) {
+      query += ' AND `cooking tip` LIKE ?';
+      queryParams.push(`%${cooking_aid}%`);
+  }
 
   if (difficulty) {
     query += ' AND difficulty = ?';
     queryParams.push(difficulty);
   }
 
-    if (searchInput) {
-        query += ' AND recipe_name LIKE ?';
-        queryParams.push(`%${searchInput}%`);
-    }
+  if (searchInput) {
+      query += ' AND recipe_name LIKE ?';
+      queryParams.push(`%${searchInput}%`);
+  }
 
   if (sort) {
     const [column, order] = sort.split('_');
