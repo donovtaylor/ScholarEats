@@ -32,7 +32,12 @@ router.get('/', (req, res) => {
   let query = `
     SELECT DISTINCT r.*
     FROM recipes r
-    WHERE NOT EXISTS (
+    WHERE r.\`Unnamed: 0\` IN (
+      SELECT MIN(inner_r.\`Unnamed: 0\`)
+      FROM recipes inner_r
+      GROUP BY inner_r.recipe_name
+    )
+    AND NOT EXISTS (
         SELECT 1
         FROM recipe_ingredient ri
         WHERE ri.recipe_id = r.\`Unnamed: 0\`
