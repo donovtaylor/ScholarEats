@@ -39,7 +39,13 @@ app.use(session({
 
 app.use((req, res, next) => {
   res.locals.isLoggedIn = req.session.user ? true : false;
-  console.log(res.locals.isLoggedIn);
+  if (res.locals.isLoggedIn) {
+    res.locals.isAdmin = req.session.user.role === 'admin';
+  } else {
+    res.locals.isAdmin = false;
+  }
+  //console.log('isLoggedIn:' + res.locals.isLoggedIn);
+  console.log('isAdmin:' + res.locals.isAdmin);
   next();
 });
 

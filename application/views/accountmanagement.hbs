@@ -21,7 +21,7 @@
         <button type="button" name="dietary_restriction" class="dropbtn">Filter</button>
         <div id="dietary_restriction" class="dropdown_content">
           {{#each dietary_restriction}}
-          <p><input type="checkbox" class="checkbox" name="{{this}}"> {{this}}</p>
+          <p><input type="checkbox" class="dietary-checkbox" name="{{this}}" value="{{this}}"> {{this}}</p>
           {{/each}}
         </div>
       </div>
