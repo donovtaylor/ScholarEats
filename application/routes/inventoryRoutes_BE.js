@@ -102,5 +102,4 @@ router.get('/checkOutOfStock', (req, res) => {
     });
 });
 
-
 module.exports = router;

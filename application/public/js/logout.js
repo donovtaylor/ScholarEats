@@ -5,10 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch('/users/logout', {
             method: 'POST'
         })
-        .then(response => response.json())
+        .then(response => response.text())
         .then(data => {
-            alert(data.message);
-            location.reload();
+            alert(data);
+            window.location.href = '/';
         })
         .catch(error => {
             console.error('Error:', error);

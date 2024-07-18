@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
 const router = express.Router();
 const app = express();
@@ -24,41 +25,31 @@ connection.connect(err => {
   console.log('Connected to the database');
 });
 
-
-// // Rendering recipes DUMMY INFORMATION FOR TESTING
-// router.get('/', (req, res) => {
-//                 // Example sample data
-//                 res.render('recipes', {
-//                     style: ['default.css', 'recipes.css'],
-//                     title: 'Recipes',
-//                     recipe: [{
-//                         src: '/images/icon_orange.png',
-//                         alt: 'example 1',
-//                         name: 'example 1',
-//                         desc: 'lorem ipsum',
-//                     },
-//                     {
-//                         src: '/images/icon_orange.png',
-//                         alt: 'potato.jpg',
-//                         name: 'example 2',
-//                         desc: 'lorem ipsum',
-//                     },
-//                     {
-//                         src: '/images/icon_orange.png',
-//                         alt: 'potato.jpg',
-//                         name: 'example 3',
-//                         desc: 'lorem ipsum',
-//                     }]
-//                   })
-//         });
-
 // Rendering recipes dynamically from the database
 router.get('/', (req, res) => {
-var dropdownFilters = req.app.locals.dropdownFilters;
+  var dropdownFilters = req.app.locals.dropdownFilters;
   const { dietary_restriction, cooking_aid, difficulty, sort, searchInput } = req.query;
 
-    console.log(app.locals.dropdownFilters);
-  let query = 'SELECT * FROM recipes WHERE 1=1';
+  let query = `
+    SELECT DISTINCT r.*
+    FROM recipes r
+    WHERE r.\`Unnamed: 0\` IN (
+      SELECT MIN(inner_r.\`Unnamed: 0\`)
+      FROM recipes inner_r
+      GROUP BY inner_r.recipe_name
+    )
+    AND NOT EXISTS (
+        SELECT 1
+        FROM recipe_ingredient ri
+        WHERE ri.recipe_id = r.\`Unnamed: 0\`
+        AND ri.ingredient_id NOT IN (
+            SELECT ingredient_id
+            FROM store
+            WHERE quantity > 0
+        )
+    )
+  `;
+
   let queryParams = [];
 
   if (dietary_restriction) {
@@ -67,8 +58,8 @@ var dropdownFilters = req.app.locals.dropdownFilters;
   }
 
   if (cooking_aid) {
-    query += ' AND cooking_aids LIKE ?';
-    queryParams.push(`%${cooking_aid}%`);
+      query += ' AND `cooking tip` LIKE ?';
+      queryParams.push(`%${cooking_aid}%`);
   }
 
   if (difficulty) {
@@ -77,10 +68,9 @@ var dropdownFilters = req.app.locals.dropdownFilters;
   }
 
   if (searchInput) {
-    query += ' AND recipe_name LIKE ?';
-    queryParams.push(`%${searchInput}%`);
+      query += ' AND recipe_name LIKE ?';
+      queryParams.push(`%${searchInput}%`);
   }
-
 
   if (sort) {
     const [column, order] = sort.split('_');
@@ -133,7 +123,7 @@ router.get('/generateRecommendedRecipes', (req, res) => {
 });
 
 // Generate recommended recipes based on available ingredients
-function generateRecommendedRecipes(callback) { // Update parameter
+function generateRecommendedRecipes(callback) {
   const getAvailableIngredientsQuery = `SELECT ingredient_id FROM store WHERE quantity > 0`;
 
   connection.query(getAvailableIngredientsQuery, (err, ingredientResults) => {
@@ -149,16 +139,15 @@ function generateRecommendedRecipes(callback) { // Update parameter
     }
 
     const getRecipeIdsQuery = `
-            SELECT recipe_id
-            FROM recipe_ingredient
-            WHERE ingredient_id IN (?)
-            GROUP BY recipe_id
-            HAVING COUNT(*) = (
-                SELECT COUNT(*)
-                FROM recipe_ingredient ri
-                WHERE ri.recipe_id = recipe_ingredient.recipe_id
-            )
-        `;
+      SELECT recipe_id
+      FROM recipe_ingredient
+      WHERE ingredient_id IN (?)
+      GROUP BY recipe_id
+      HAVING COUNT(DISTINCT ingredient_id) = (
+        SELECT COUNT(*)
+        FROM recipe_ingredient ri
+        WHERE ri.recipe_id = recipe_ingredient.recipe_id
+      )`;
 
     connection.query(getRecipeIdsQuery, [availableIngredientIds], (err, recipeIdResults) => {
       if (err) {
@@ -172,7 +161,7 @@ function generateRecommendedRecipes(callback) { // Update parameter
 
       const recipeIds = recipeIdResults.map(row => row.recipe_id);
 
-      const getRecipesQuery = `SELECT * FROM recipes WHERE id IN (?)`;
+      const getRecipesQuery = `SELECT * FROM recipes WHERE recipe_id IN (?)`;
 
       connection.query(getRecipesQuery, [recipeIds], (err, recipeResults) => {
         if (err) {
@@ -323,13 +312,13 @@ router.get('/:restriction', (req, res) => {
 
 // Filter recipes by cooking aids required
 router.get('/:aid', (req, res) => {
-  const aid = req.params.aid;
-  filterRecipes('cooking_aids', aid, (err, results) => {
-    if (err) {
-      return res.status(500).json({ message: 'Database error' });
-    }
-    res.json(results);
-  });
+    const aid = req.params.aid;
+    filterRecipes('cooking tip', aid, (err, results) => {
+        if (err) {
+            return res.status(500).json({ message: 'Database error' });
+        }
+        res.json(results);
+    });
 });
 
 // Filter recipes by difficulty

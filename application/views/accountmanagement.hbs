@@ -18,6 +18,18 @@
     {{>dropdown dropdown2}}
     <button type="submit">Submit</button>
   </form>
+  <h3>Change Allergies</h3>
+    <form class="account-form" id="change-allergies-from" action="/submit" method="post">
+      <div class="dropdown">
+        <button type="button" name="allergies" class="dropbtn">Filter</button>
+        <div id="allergies" class="dropdown_content">
+          {{#each allergies}}
+          <p><input type="checkbox" class="allergy-checkbox" name="{{this}}" value="{{this}}"> {{this}}</p>
+          {{/each}}
+        </div>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
 
 
 </div>

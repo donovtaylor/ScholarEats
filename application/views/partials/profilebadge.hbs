@@ -2,9 +2,18 @@
   <div class="text">Welcome</div>
   <div>
     <div class="dropdown_content">
+
+      {{#if isAdmin}}
+      {
+      <script src="/js/logout.js"></script>
+      <a href="/accountmanagement">Account</a>
+      <a href="/PLACEHOLDER">PLACEHOLDER</a>
+      <button id="logout-button">Logout</button>
+      {{else}}
       <script src="/js/logout.js"></script>
       <a href="/accountmanagement">Account</a>
       <button id="logout-button">Logout</button>
+      {{/if}}
     </div>
   </div>
 </div>

@@ -1,13 +1,13 @@
 const express = require('express');
-const session = require('express-session');
-const bcrypt = require('bcryptjs');
-const mysql = require('mysql');
 const path = require('path');
 const exphbs = require('express-handlebars');
+const mysql = require('mysql');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 
-const inventoryRoutes = require('./routes/inventoryRoutes');              // Inventory
-const userRoutes = require('./routes/userRoutes');                        // User
-const recipeRoutes = require('./routes/recipeRoutes');                    // Recipe
+const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
+const userRoutes = require('./routes/userRoutes_BE');                        // User
+const recipeRoutes = require('./routes/recipeRoutes_BE');                    // Recipe
 const about = require('./routes/about');                                 // About
 const autocomplete = require('./routes/autocomplete');
 
@@ -17,14 +17,35 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true })); // for form data
 
+const connection = mysql.createPool({
+  host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
+  user: 'backend_Devop',
+  password: 'password',
+  database: 'ScholarEats'
+});
+
+const sessionStore = new MySQLStore({}, connection);
+
 app.use(session({
+  key: 'cookie_id',
   secret: 'secret-key',
+  store: sessionStore,
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24
+  }
 }));
 
 app.use((req, res, next) => {
   res.locals.isLoggedIn = req.session.user ? true : false;
+  if (res.locals.isLoggedIn) {
+    res.locals.isAdmin = req.session.user.role === 'admin';
+  } else {
+    res.locals.isAdmin = false;
+  }
+  //console.log('isLoggedIn:' + res.locals.isLoggedIn);
+  console.log('isAdmin:' + res.locals.isAdmin);
   next();
 });
 
@@ -101,6 +122,14 @@ app.get('/forgotpassword', (req, res) => {
     style: ['default.css', 'forgotpassword.css'],
     dropdown1: app.locals.dropdownFilters,
     title: 'Forgot Password'
+  });
+});
+
+// serve privacy policy and terms of service page
+app.get('/privacy_policy', (req, res) => {
+  res.render('privacy_policy', {
+    style: ['default.css'],
+    title: 'Privacy Policy and Terms of Service'
   });
 });
 
