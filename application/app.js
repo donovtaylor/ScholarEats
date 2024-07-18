@@ -1,9 +1,9 @@
 const express = require('express');
-const session = require('express-session');
-const bcrypt = require('bcryptjs');
-const mysql = require('mysql');
 const path = require('path');
 const exphbs = require('express-handlebars');
+const mysql = require('mysql');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 
 const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
 const userRoutes = require('./routes/userRoutes_BE');                        // User
@@ -17,14 +17,35 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true })); // for form data
 
+const connection = mysql.createPool({
+  host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
+  user: 'backend_Devop',
+  password: 'password',
+  database: 'ScholarEats'
+});
+
+const sessionStore = new MySQLStore({}, connection);
+
 app.use(session({
+  key: 'cookie_id',
   secret: 'secret-key',
+  store: sessionStore,
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24
+  }
 }));
 
 app.use((req, res, next) => {
   res.locals.isLoggedIn = req.session.user ? true : false;
+  if (res.locals.isLoggedIn) {
+    res.locals.isAdmin = req.session.user.role === 'admin';
+  } else {
+    res.locals.isAdmin = false;
+  }
+  //console.log('isLoggedIn:' + res.locals.isLoggedIn);
+  console.log('isAdmin:' + res.locals.isAdmin);
   next();
 });
 
@@ -146,7 +167,8 @@ app.get('/accountmanagement', (req, res) => {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
     title: 'Account Management',
-    dietary_restriction: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']
+    dietary_restriction: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher'],
+    allergies: ['Milk', 'Eggs', 'Fish', 'Crustacean Shellfish', 'Tree Nuts', 'Peanuts', 'Wheat', 'Soybeans']
   });
 });
 
