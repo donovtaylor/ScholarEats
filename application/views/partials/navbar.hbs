@@ -16,8 +16,8 @@
   <div class="search">
     <form action='/recipes' id="searchform" method='GET'>
       <input type='text' class="searchbar" id="autocomplete-input" name="searchInput" autocomplete="off">
-      <input type='submit' class="submitbutton" value='Search'>
-      {{>dropdown dropdown_filters}}
+      <input type='submit' id="searchSubmit" class="submitbutton" value='Search'>
+      {{>dropdown dropdown1}}
     </form>
     <div><div id="autocomplete-suggestions" class="autocomplete-suggestions"></div></div>
   </div>

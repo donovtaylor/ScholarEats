@@ -1,21 +1,32 @@
 .container {
-  max-width: 800px;
-  margin: auto;
-  background-color: #fff;
-  padding: 20px;
-  border: 1px solid #ddd;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-areas:
+  "rS recipes";
+  background-color: darkslategray;
 }
 
-h1 {
-  text-align: left;
-  color: #333;
+.refinedSearch {
+  grid-area: rS;
+  position: fixed;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.recipes{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  grid-area: recipes;
+  background-color: white;
 }
 
 .recipe {
   display: flex;
+  border: 1px solid #ddd;
   align-items: center;
   margin-bottom: 20px;
-  border: 1px solid #ddd;
   padding: 10px;
 
 }

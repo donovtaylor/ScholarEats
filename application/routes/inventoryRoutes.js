@@ -3,6 +3,7 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
 const router = express.Router();
+const app = express();
 
 // Fix these when connecting to the actual db
 const connection = mysql.createConnection({
@@ -19,6 +20,7 @@ connection.connect(err => {
     }
     console.log('Connected to the database');
 });
+
 
 // // Populate available food DUMMY INFO FOR TESTING
 // // serve Ingredients page
@@ -44,6 +46,7 @@ connection.connect(err => {
 // Populate available food
 // serve Ingredients page
 router.get('/', (req, res) => {
+  var dropdownFilters = req.app.locals.dropdownFilters;
     const query = `
         SELECT s.ingredient_id, s.quantity, i.name
         FROM store s
@@ -64,9 +67,7 @@ router.get('/', (req, res) => {
 
         res.render('ingredients', {
             style: ['default.css', 'ingredients.css'],
-            dropdown_filters: {value: 'Filter', id: 'filter_options',
-              checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-              radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+            dropdown1: dropdownFilters,
             title: 'Ingredients',
             script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
             ingredient: ingredients

@@ -1,7 +1,6 @@
 body {
   display: grid;
   grid-template-areas:
-  "leftSpacer   nav     rightSpacer"
   "leftSpacer  header   rightSpacer"
   "leftSpacer container rightSpacer"
   "leftSpacer  footer   rightSpacer";
@@ -21,9 +20,10 @@ body {
 header {
   grid-area: header;
   display: block;
-  font-size: 2em;
-  justify-self: left;
-  align-self: center;
+}
+
+h1 {
+  color: orange;
 }
 
 .footer {
@@ -99,7 +99,7 @@ a>div {
   text-decoration: none;
   color: orange;
   border: 1px solid orange;
-  border-radius: 5px;
+  border-radius: 30px;
   transition: background-color 0.3s, color 0.3s;
   align-content: center;
   text-align: center;
@@ -135,7 +135,7 @@ a>div {
 .searchbar {
   border-style: solid;
   border-color: orange;
-  border-radius: 5px;
+  border-radius: 30px;
   height: 32px;
   font-size: 1.3em;
   width: 100%;
@@ -165,7 +165,7 @@ a>div {
   border: 1px solid orange;
   background-color: darkslategray;
   transition: background-color 0.3s, color 0.3s;
-  border-radius: 5px;
+  border-radius: 30px;
   height: 36px;
 }
 
@@ -204,9 +204,13 @@ a>div {
   flex-direction: row;
 }
 
-.dropdown_option {
+[type=checkbox], [type=radio] {
   transform: scale(1.5);
   margin-right: 8px;
+}
+
+.dropdown_option {
+  border-radius: 30px;
 }
 
 .dropdown_option:hover {

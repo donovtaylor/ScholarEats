@@ -51,6 +51,14 @@ app.set('view engine', 'hbs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//this piece of code is to pass the dropdown variables between routes
+app.locals.dropdownFilters = {value: 'Filter', id: 'filter_options',
+  checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+  radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']};
+
+app.locals.dietaryRestrictions = {value: 'Dietary Restrictions', id: 'dietary_restrictions',
+  checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']};
+
 // Add more routes here as needed
 app.route('/')
   .get((req, res) => {
@@ -58,9 +66,7 @@ app.route('/')
     res.render('index', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
-      dropdown_filters: {value: 'Filter', id: 'filter_options',
-        checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-        radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+      dropdown1: app.locals.dropdownFilters,
       title: 'Team\'s about page',
       header: 'Team\'s about page'
     })
@@ -72,20 +78,8 @@ app.route('/login')
     res.render('login', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css', 'login.css'],
-      dropdown_filters: {value: 'Filter', id: 'filter_options',
-        checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-        radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+      dropdown1: app.locals.dropdownFilters,
       title: 'Login'
-    })
-  })
-  .post((req, res) => {
-    res.redirect('/index', {
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-      style: ['default.css', 'login.css'],
-      dropdown_filters: {value: 'Filter', id: 'filter_options',
-        checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-        radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
-      title: 'index'
     })
   });
 
@@ -95,20 +89,8 @@ app.route('/adminlogin')
   res.render('adminlogin', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'login.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: app.locals.dropdownFilters,
     title: 'adminlogin'
-  })
-})
-.post((req, res) => {
-  res.redirect('/index', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'login.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
-    title: 'index'
   })
 });
 
@@ -117,9 +99,7 @@ app.get('/forgotpassword', (req, res) => {
   res.render('forgotpassword', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'forgotpassword.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: app.locals.dropdownFilters,
     title: 'Forgot Password'
   });
 });
@@ -140,9 +120,7 @@ app.get('/contact_us', (req, res) => {
   // add styling to contact_us page
   res.render('contact_us', {
     style: ['default.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: app.locals.dropdownFilters,
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     teamMembers
   });
@@ -154,9 +132,7 @@ app.get('/register', (req, res) => {
   res.render('register', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: app.locals.dropdownFilters,
     title: 'Register'
   });
 });
@@ -166,9 +142,7 @@ app.get('/test', (req, res) => {
   res.render('accountmanagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: app.locals.dropdownFilters,
     title: 'Account Management',
   });
 });
@@ -177,11 +151,8 @@ app.get('/accountmanagement', (req, res) => {
   res.render('accountmanagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
-    dietary_restrictions: {value: 'Dietary Restrictions', id: 'dietary_restrictions',
-      checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']},
+    dropdown1: app.locals.dropdownFilters,
+    dropdown2: app.locals.dietaryRestrictions,
     title: 'Account Management'
   });
 });

@@ -17,6 +17,7 @@ input.addEventListener('input', () => {
                     suggestionDiv.addEventListener('click', () => {
                         input.value = suggestion;
                         suggestionsContainer.innerHTML = '';
+                        document.getElementById('searchSubmit').click();
                     });
                     suggestionsContainer.appendChild(suggestionDiv);
                 });

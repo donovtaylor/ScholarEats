@@ -7,14 +7,19 @@ function dropdown(e) {
   if (clicked_item.className == 'dropbtn') {
     // a dropdown button's name equals its dropdown content's id
     // this way, they are bound
-    this_dropdown = document.getElementById(clicked_item.name);
+
+    var this_dropdown = clicked_item.nextElementSibling;
+
+    // this_dropdown = document.getElementById(clicked_item.name);
     this_dropdown.classList.toggle('show');
+
     //we make sure that if we click a new dropdown, all other dropdowns collapse
     if (clicked_item != prev_clicked_item) {
       collapseDropdowns(this_dropdown);
     }
-    
+
     prev_clicked_item = clicked_item;
+
   } else if (clicked_item.className != 'dropdown_option') {
     // if clicked outside the dropdown, hide all dropdowns
     collapseDropdowns();
@@ -38,7 +43,7 @@ function collapseDropdowns(element) {
   var dropdowns = document.getElementsByClassName('dropdown_content');
   for (dropdown of dropdowns) {
     if (dropdown != element)
-    dropdown.classList.remove('show');
+      dropdown.classList.remove('show');
   }
 }
 

@@ -1,6 +1,5 @@
 <div class="leftSpacer"></div>
-{{>navbar}}
-<header>Account Management</header>
+{{>header}}
 <div class="container">
   <h3>Change Username</h3>
   <form class="account-form" id="change-username-form" action="/submit" method="post">
@@ -16,7 +15,7 @@
   </form>
   <h3>Change Dietary Restrictions</h3>
   <form class="account-form" id="change-dietary-restrictions" action="/submit" method="post">
-    {{>dropdown dietary_restrictions}}
+    {{>dropdown dropdown2}}
     <button type="submit">Submit</button>
   </form>
 

@@ -24,6 +24,7 @@ connection.connect(err => {
   console.log('Connected to the database');
 });
 
+
 // // Rendering recipes DUMMY INFORMATION FOR TESTING
 // router.get('/', (req, res) => {
 //                 // Example sample data
@@ -53,8 +54,10 @@ connection.connect(err => {
 
 // Rendering recipes dynamically from the database
 router.get('/', (req, res) => {
+var dropdownFilters = req.app.locals.dropdownFilters;
   const { dietary_restriction, cooking_aid, difficulty, sort, searchInput } = req.query;
 
+    console.log(app.locals.dropdownFilters);
   let query = 'SELECT * FROM recipes WHERE 1=1';
   let queryParams = [];
 
@@ -100,9 +103,7 @@ router.get('/', (req, res) => {
     res.render('recipes', {
       style: ['default.css', 'recipes.css'],
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-      dropdown_filters: {value: 'Filter', id: 'filter_options',
-        checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-        radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+      dropdown1: dropdownFilters,
       title: 'Recipes',
       recipe: recipes
     });
