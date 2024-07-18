@@ -5,9 +5,9 @@ const mysql = require('mysql');
 const path = require('path');
 const exphbs = require('express-handlebars');
 
-const inventoryRoutes = require('./routes/inventoryRoutes');              // Inventory
-const userRoutes = require('./routes/userRoutes');                        // User
-const recipeRoutes = require('./routes/recipeRoutes');                    // Recipe
+const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
+const userRoutes = require('./routes/userRoutes_BE');                        // User
+const recipeRoutes = require('./routes/recipeRoutes_BE');                    // Recipe
 const about = require('./routes/about');                                 // About
 const autocomplete = require('./routes/autocomplete');
 
