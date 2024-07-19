@@ -1,0 +1,11 @@
+<div class="dropdown">
+  <button type="button" name="{{id}}" class="dropbtn">{{value}}</button>
+  <div id="{{id}}" class="dropdown_content">
+    {{#each checkbox_option}}
+      <p><input type="checkbox" class="dropdown_option" value="{{this}}" name="{{this}}">{{this}}</p>
+    {{/each}}
+    {{#each radio_option}}
+      <p><input type="radio" class="dropdown_option" name="{{../id}}">{{this}}</p>
+    {{/each}}
+  </div>
+</div>

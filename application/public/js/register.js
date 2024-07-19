@@ -6,10 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         const verify_password = document.getElementById('verify-password').value;
-        //console.log("Email: ", email);
-        //console.log("Username: ", username);
-        //console.log("Password: ", password);
-        //console.log("Confirmed-Password: ", confirm_password); 
             
         fetch('/users/register', {
             method: 'POST',
@@ -18,12 +14,18 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({ email, username, password, verify_password })
         })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            alert(data);
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert(data.message);
+                window.location.href = '/login';
+            }
         })
         .catch(error => {
             console.error('Error:', error);
+            alert('An unexpected error occurred.');
         });
     });
 });

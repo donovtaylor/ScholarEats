@@ -15,32 +15,12 @@
 
   <div class="search">
     <form action='/recipes' id="searchform" method='GET'>
-      <div class="search-suggestions">
-        <input type='text' class="searchbar" id="autocomplete-input" name="searchInput" autocomplete="off">
-        <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
-      </div>
-      <input type='submit' class="submitbutton" value='Search'>
-      <div class="dropdown">
-        <button type="button" name="filter_option" class="dropbtn">Filter</button>
-        <div id="filter_option" class="dropdown_content">
-          <p><input type="checkbox" class="checkbox" name="dietary_restriction" value="vegan"> Vegan</p>
-          <p><input type="checkbox" class="checkbox" name="dietary_restriction" value="gluten_free"> Gluten Free</p>
-          <p><input type="checkbox" class="checkbox" name="cooking_aid" value="oven"> Oven Required</p>
-          <p><input type="checkbox" class="checkbox" name="cooking_aid" value="stove"> Stove Required</p>
-          <p><input type="checkbox" class="checkbox" name="difficulty" value="easy"> Easy</p>
-          <p><input type="checkbox" class="checkbox" name="difficulty" value="medium"> Medium</p>
-          <p><input type="checkbox" class="checkbox" name="difficulty" value="hard"> Hard</p>
-          <p><input type="radio" class="radio" name="sort" value="calories_asc"> Calories Ascending</p>
-          <p><input type="radio" class="radio" name="sort" value="calories_desc"> Calories Descending</p>
-          <p><input type="radio" class="radio" name="sort" value="protein_asc"> Protein Ascending</p>
-          <p><input type="radio" class="radio" name="sort" value="protein_desc"> Protein Descending</p>
-          <p><input type="radio" class="radio" name="sort" value="fat_asc"> Fat Ascending</p>
-          <p><input type="radio" class="radio" name="sort" value="fat_desc"> Fat Descending</p>
-          <p><input type="radio" class="radio" name="sort" value="fiber_asc"> Fiber Ascending</p>
-          <p><input type="radio" class="radio" name="sort" value="fiber_desc"> Fiber Descending</p>
-        </div>
-      </div>
+      <input type='text' class="searchbar" id="autocomplete-input" name="searchInput" value="{{searchInput}}" autocomplete="off">
+      <input type='submit' id="searchSubmit" class="submitbutton" value='Search'>
+      {{>dropdown dropdown1}}
     </form>
+    <div><div id="autocomplete-suggestions" class="autocomplete-suggestions"></div></div>
   </div>
+
   <div class="content_warning" id="content_warning"></div>
 </div>

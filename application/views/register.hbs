@@ -1,17 +1,14 @@
-<div class="spacer"></div>
-<div class="page">
-    {{>navbar}}
-    <div class="container">
-      <header>Register</header>
-      <form action="/register" method="POST" id="register-form">
-        <input type="text" name="username" placeholder="Username" id="username">
-        <input type="text" name="email" placeholder="Email" id="email">
-        <input type="password" name="password" placeholder="Password" id="password">
-        <input type="password" name="verify_password" placeholder="Verify Password" id="verify-password">
-        <input type="submit" value="Register">
-      </form>
-    </div>
-    <script src="/js/register.js"></script>
-    {{>footer}}
+<div class="leftSpacer"></div>
+{{>header}}
+<div class="container">
+  <form action="/register" method="POST" id="register-form">
+    <input type="text" name="username" placeholder="Username" id="username">
+    <input type="text" name="email" placeholder="Email" id="email">
+    <input type="password" name="password" placeholder="Password" id="password">
+    <input type="password" name="verify_password" placeholder="Verify Password" id="verify-password">
+    <input type="submit" value="Register">
+  </form>
 </div>
-<div class="spacer"></div>
+<script src="/js/register.js"></script>
+{{>footer}}
+<div class="rightSpacer"></div>

@@ -1,14 +1,10 @@
 .container {
+  grid-template-columns: 1fr 1fr;
   max-width: 800px;
   margin: auto;
   background-color: #fff;
   padding: 20px;
   border: 1px solid #ddd;
-}
-
-h1 {
-  text-align: left;
-  color: #333;
 }
 
 .ingredient {

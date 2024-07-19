@@ -1,13 +1,13 @@
 const express = require('express');
-const session = require('express-session');
-const bcrypt = require('bcryptjs');
-const mysql = require('mysql');
 const path = require('path');
 const exphbs = require('express-handlebars');
+const mysql = require('mysql');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 
-const inventoryRoutes = require('./routes/inventoryRoutes');              // Inventory
-const userRoutes = require('./routes/userRoutes');                        // User
-const recipeRoutes = require('./routes/recipeRoutes');                    // Recipe
+const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
+const userRoutes = require('./routes/userRoutes_BE');                        // User
+const recipeRoutes = require('./routes/recipeRoutes_BE');                    // Recipe
 const about = require('./routes/about');                                 // About
 const autocomplete = require('./routes/autocomplete');
 
@@ -17,14 +17,35 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true })); // for form data
 
+const connection = mysql.createPool({
+  host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
+  user: 'backend_Devop',
+  password: 'password',
+  database: 'ScholarEats'
+});
+
+const sessionStore = new MySQLStore({}, connection);
+
 app.use(session({
+  key: 'cookie_id',
   secret: 'secret-key',
+  store: sessionStore,
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24
+  }
 }));
 
 app.use((req, res, next) => {
   res.locals.isLoggedIn = req.session.user ? true : false;
+  if (res.locals.isLoggedIn) {
+    res.locals.isAdmin = req.session.user.role === 'admin';
+  } else {
+    res.locals.isAdmin = false;
+  }
+  //console.log('isLoggedIn:' + res.locals.isLoggedIn);
+  //console.log('isAdmin:' + res.locals.isAdmin);
   next();
 });
 
@@ -34,9 +55,6 @@ app.use("/ingredients", inventoryRoutes); // Inventory Routes
 app.use("/users", userRoutes); // User Routes
 app.use("/about", about);
 app.use("/suggestions", autocomplete);
-
-
-
 
 // Middleware to configure Handlebars
 const hbs = exphbs.create({
@@ -54,6 +72,17 @@ app.set('view engine', 'hbs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//this piece of code is to pass the dropdown variables between routes
+app.locals.dropdownFilters = {value: 'Filter', id: 'filter_options',
+  checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard'],
+  radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']};
+
+app.locals.dietaryRestrictions = {value: 'Dietary Restrictions', id: 'dietary_restrictions',
+  checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']};
+
+app.locals.allergies = {value: 'Allergies', id: 'allergies',
+  checkbox_option: ['Milk', 'Eggs', 'Fish', 'Crustacean Shellfish', 'Tree Nuts', 'Peanuts', 'Wheat', 'Soybeans']};
+
 // Add more routes here as needed
 app.route('/')
   .get((req, res) => {
@@ -61,11 +90,11 @@ app.route('/')
     res.render('index', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
+      dropdown1: app.locals.dropdownFilters,
       title: 'Team\'s about page',
       header: 'Team\'s about page'
     })
   });
-
 
 // serve login page
 app.route('/login')
@@ -73,22 +102,28 @@ app.route('/login')
     res.render('login', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css', 'login.css'],
+      dropdown1: app.locals.dropdownFilters,
       title: 'Login'
     })
-  })
-  .post((req, res) => {
-    res.redirect('/index', {
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-      style: ['default.css', 'login.css'],
-      title: 'index'
-    })
   });
+
+  // serve login page
+app.route('/adminlogin')
+.get((req, res) => {
+  res.render('adminlogin', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'login.css'],
+    dropdown1: app.locals.dropdownFilters,
+    title: 'adminlogin'
+  })
+});
 
 // serve forgot password page
 app.get('/forgotpassword', (req, res) => {
   res.render('forgotpassword', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'forgotpassword.css'],
+    dropdown1: app.locals.dropdownFilters,
     title: 'Forgot Password'
   });
 });
@@ -117,6 +152,7 @@ app.get('/contact_us', (req, res) => {
   // add styling to contact_us page
   res.render('contact_us', {
     style: ['default.css'],
+    dropdown1: app.locals.dropdownFilters,
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     teamMembers
   });
@@ -127,7 +163,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/register', (req, res) => {
   res.render('register', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'register.css'],
+    style: ['default.css'],
+    dropdown1: app.locals.dropdownFilters,
     title: 'Register'
   });
 });
@@ -137,6 +174,7 @@ app.get('/test', (req, res) => {
   res.render('accountmanagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
+    dropdown1: app.locals.dropdownFilters,
     title: 'Account Management',
   });
 });
@@ -145,8 +183,10 @@ app.get('/accountmanagement', (req, res) => {
   res.render('accountmanagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'accountmanagement.css'],
-    title: 'Account Management',
-    dietary_restriction: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']
+    dropdown1: app.locals.dropdownFilters,
+    dropdown2: app.locals.dietaryRestrictions,
+    dropdown3: app.locals.allergies,
+    title: 'Account Management'
   });
 });
 

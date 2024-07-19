@@ -3,6 +3,7 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 
 const router = express.Router();
+const app = express();
 
 // Fix these when connecting to the actual db
 const connection = mysql.createConnection({
@@ -20,30 +21,9 @@ connection.connect(err => {
     console.log('Connected to the database');
 });
 
-// // Populate available food DUMMY INFO FOR TESTING
-// // serve Ingredients page
-// router.get('/', (req, res) => {
-//     res.render('ingredients', {
-//       style: ['default.css', 'ingredients.css'],
-//       title: 'Ingredients',
-//       ingredient: [{
-//         src: '/images/icon_orange.png',
-//         alt: 'potato.jpg',
-//         name: 'potato',
-//         desc: 'lorem ipsum',
-//       },
-//       {
-//         src: '/images/icon_orange.png',
-//         alt: 'potato.jpg',
-//         name: 'potato',
-//         desc: 'lorem ipsum',
-//       }]
-//     });
-//   });
-
-// Populate available food
-// serve Ingredients page
+// Populate available food and serve Ingredients page
 router.get('/', (req, res) => {
+  var dropdownFilters = req.app.locals.dropdownFilters;
     const query = `
         SELECT s.ingredient_id, s.quantity, i.name
         FROM store s
@@ -64,13 +44,13 @@ router.get('/', (req, res) => {
 
         res.render('ingredients', {
             style: ['default.css', 'ingredients.css'],
+            dropdown1: dropdownFilters,
             title: 'Ingredients',
             script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
             ingredient: ingredients
         });
     });
 });
-
 
 // Update expired status of food items
 router.get('/checkExpired', (req, res) => {
@@ -97,6 +77,5 @@ router.get('/checkOutOfStock', (req, res) => {
         res.json({ message: 'Out of stock items removed successfully' });
     });
 });
-
 
 module.exports = router;

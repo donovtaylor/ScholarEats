@@ -2,7 +2,7 @@
 {{>header}}
 <div class="container">
   <div class="login-form-container">
-    <header>Login</header>
+    <header>Admin Login</header>
     <form class="login-form" action="/index" method="POST" id="login-form" onsubmit="return validateForm()">
       <input type="text" name="username" id="username" placeholder="Username" required pattern=".{5,}"
         title="Username must be at least 5 characters long">
@@ -16,15 +16,13 @@
       </div>
       <input type="submit" id="login-submit" value="Login">
       <div id="error-message" class="error-message"></div>
-      <a href="/register">Register</a>
       <a href="/forgotpassword">Forgot Username/Password</a>
-      <a href="/adminlogin">Admin Login</a>
     </form>
   </div>
 </div>
-<script src="/js/login.js"></script>
 {{>footer}}
 <div class="rightSpacer"></div>
+<script src="/js/login.js"></script>
 
 <script>
   function validateForm() {
@@ -54,3 +52,6 @@
     loadCaptcha();
   };
 </script>
+</body>
+
+</html>

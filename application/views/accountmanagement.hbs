@@ -1,36 +1,31 @@
-<div class="spacer"></div>
-<div class="page">
-  {{>navbar}}
-  <div class="container">
-    <header>Account Management</header>
-    <h3>Change Username</h3>
-    <form class="account-form" id="change-username-form" action="/submit" method="post">
-      <input type="text" name="username" id="new-username" placeholder="Username">
-      <button type="submit">Submit</button>
-    </form>
-    <h3>Change Password</h3>
-    <form class="account-form" id="change-password-form" action="/submit" method="post">
-      <input type="password" name="current-password" id="current-password" placeholder="Current Password">
-      <input type="password" name="new-password" id="new-password" placeholder="New Password">
-      <input type="password" name="verify-password" id="verify-password" placeholder="Verify Password">
-      <button type="submit">Submit</button>
-    </form>
-    <h3>Change Dietary Restrictions</h3>
-    <form class="account-form" id="change-dietary-restrictions" action="/submit" method="post">
-      <div class="dropdown">
-        <button type="button" name="dietary_restriction" class="dropbtn">Filter</button>
-        <div id="dietary_restriction" class="dropdown_content">
-          {{#each dietary_restriction}}
-          <p><input type="checkbox" class="checkbox" name="{{this}}"> {{this}}</p>
-          {{/each}}
-        </div>
-      </div>
+<div class="leftSpacer"></div>
+{{>header}}
+<div class="container">
+  <h3>Change Username</h3>
+  <form class="account-form" id="change-username-form" action="/submit" method="post">
+    <input type="text" name="username" id="new-username" placeholder="Username">
+    <button type="submit">Submit</button>
+  </form>
+  <h3>Change Password</h3>
+  <form class="account-form" id="change-password-form" action="/submit" method="post">
+    <input type="password" name="current-password" id="current-password" placeholder="Current Password">
+    <input type="password" name="new-password" id="new-password" placeholder="New Password">
+    <input type="password" name="verify-password" id="verify-password" placeholder="Verify Password">
+    <button type="submit">Submit</button>
+  </form>
+  <h3>Change Dietary Restrictions</h3>
+  <form class="account-form" id="change-dietary-restrictions" action="/submit" method="post">
+    {{>dropdown dropdown2}}
+    <button type="submit">Submit</button>
+  </form>
+  <h3>Change Allergies</h3>
+    <form class="account-form" id="change-allergies-from" action="/submit" method="post">
+      {{>dropdown dropdown3}}
       <button type="submit">Submit</button>
     </form>
 
 
-  </div>
-  {{>footer}}
 </div>
+{{>footer}}
+<div class="rightSpacer"></div>
 <script src="/js/accountmangement.js"></script>
-<div class="spacer"></div>

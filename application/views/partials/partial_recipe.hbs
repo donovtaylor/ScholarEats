@@ -1,5 +1,27 @@
 <div class="recipe">
-        <img src="{{src}}" alt="{{alt}}">
-        <div><b>{{name}}</b></div>
-        <div>{{desc}}</div>
+  <img src="{{src}}" alt="{{alt}}">
+  <div><b>{{name}}</b></div>
+  <div>{{desc}}</div>
+  <!-- Edit button dropdown, initially hidden -->
+  <div class="edit-dropdown" style="display: none;">
+    <button class="dropbtn">Edit</button>
+    <div class="dropdown_content">
+      <a href="#" class="dropdown_option">Edit Recipe</a>
+      <a href="#" class="dropdown_option">Edit Ingredient</a>
     </div>
+  </div>
+</div>
+
+<script>
+  // Example admin status variable
+  var isAdmin = true; // Set this based on your actual admin login status
+
+  // Show edit buttons if the user is an admin
+  if (isAdmin) {
+    var editDropdowns = document.querySelectorAll('.edit-dropdown');
+    editDropdowns.forEach(function (dropdown) {
+      dropdown.style.display = 'block';
+    });
+  }
+
+</script>
