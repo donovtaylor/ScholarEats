@@ -45,7 +45,7 @@ app.use((req, res, next) => {
     res.locals.isAdmin = false;
   }
   //console.log('isLoggedIn:' + res.locals.isLoggedIn);
-  console.log('isAdmin:' + res.locals.isAdmin);
+  //console.log('isAdmin:' + res.locals.isAdmin);
   next();
 });
 
@@ -74,11 +74,14 @@ app.use(express.urlencoded({ extended: true }));
 
 //this piece of code is to pass the dropdown variables between routes
 app.locals.dropdownFilters = {value: 'Filter', id: 'filter_options',
-  checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+  checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard'],
   radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']};
 
 app.locals.dietaryRestrictions = {value: 'Dietary Restrictions', id: 'dietary_restrictions',
   checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']};
+
+app.locals.allergies = {value: 'Allergies', id: 'allergies',
+  checkbox_option: ['Milk', 'Eggs', 'Fish', 'Crustacean Shellfish', 'Tree Nuts', 'Peanuts', 'Wheat', 'Soybeans']};
 
 // Add more routes here as needed
 app.route('/')
@@ -174,6 +177,7 @@ app.get('/accountmanagement', (req, res) => {
     style: ['default.css', 'accountmanagement.css'],
     dropdown1: app.locals.dropdownFilters,
     dropdown2: app.locals.dietaryRestrictions,
+    dropdown3: app.locals.allergies,
     title: 'Account Management'
   });
 });

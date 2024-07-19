@@ -1,8 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const mysql = require('mysql');
-const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
+const mysql = require('mysql2/promise');
 const router = express.Router();
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
@@ -40,119 +38,83 @@ function autoEnrollUniversityPrograms(email) {
 }
 
 // Handle registration POST request
-router.post('/register', (req, res) => {
+router.post('/register', IS_LOGGED_OUT, async (req, res) => {
   const { username, email, password, verify_password } = req.body;
-
-
+ 
   // Check if passwords match
   if (password !== verify_password) {
-    return res.send('Passwords do not match');
+    return res.status(400).json({ error: 'Passwords do not match!' });
   }
 
-  // Check if email or username already exists
-  connection.query('SELECT * FROM Users WHERE email = ? OR username = ?', [email, username], (err, results) => {
-    if (err) {
-      console.error('Error querying database:', err);
-      return res.status(500).send('Database error');
+  try {
+    
+    const [emailResults] = await connection.execute('SELECT * FROM Users WHERE email = ?', [email]);
+    // Checks if email exists
+    if (emailResults.length > 0) {
+      return res.status(400).json({ error: 'Email already exists' });
     }
-    if (results.length > 0) {
-      return res.send('Email or username already taken');
+    
+    const [userResults] = await connection.execute('SELECT * FROM Users WHERE username = ?', [username]);
+    // Checks if username exists
+    if (userResults.length > 0) {
+      return res.status(400).json({ error: 'Username already exists' });
     }
 
     // Hash the password
-    bcrypt.hash(password, 10, (err, hash) => {
-      if (err) {
-        console.error('Error hashing password:', err);
-        return res.status(500).send('Error hashing password');
-      }
-
-      // Insert user into database
-      connection.query('INSERT INTO Users (uuid ,email, username, password_hash) VALUES (UUID(),?, ?, ?)', [email, username, hash], (err, result) => {
-        if (err) {
-          console.error('Error inserting user:', err);
-          return res.status(500).send('Error inserting user');
-        }
-        // Automatically enroll user in university programs based on email domain
-        autoEnrollUniversityPrograms(email)
-          .then(() => {
-            res.send('User registered successfully');
-          })
-          .catch((err) => {
-            console.error('Error auto-enrolling user:', err);
-            res.status(500).send('Error auto-enrolling user');
-          });
-      });
-    });
-  });
+    
+    const hash = await bcrypt.hash(password, 10);
+    console.log("TEST 5");
+    await connection.execute('INSERT INTO Users (uuid, email, username, password_hash) VALUES (UUID(), ?, ?, ?)', [email, username, hash]);
+    autoEnrollUniversityPrograms(email);
+    return res.json({ message: 'User registered successfully' });
+    
+  } catch (err) {
+    console.error('Error during registration:', err);
+    return res.status(500).json({ error: 'An error occurred during registration' });
+  }
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', IS_LOGGED_OUT, async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+  const isAdminLogin = req.body.password;
+  try {
 
-  // Query to find user based on username
-  connection.query('SELECT * FROM Users WHERE username = ?', [username], (err, results) => {
-    if (err) {
-      console.error('Error querying database:', err);
-      return res.status(500).json({ error: 'Database error' });
-    }
-
+    const [results] = await connection.execute('SELECT * FROM Users WHERE username = ?', [username]);
     // Check if user exists
     if (results.length === 0) {
       return res.status(400).json({ error: 'Invalid Username or Password' });
     }
-
     const user = results[0];
-    // Compare password with hashed password in database
-    bcrypt.compare(password, user.password_hash, (err, isMatch) => {
-      if (err) {
-        console.error('Error comparing passwords:', err);
-        return res.status(500).json({ error: 'Authentication error' });
-      }
 
-      if (!isMatch) {
-        return res.status(400).json({ error: 'Invalid Username or Password' });
-      }
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Invalid Username or Password' });
+    }
 
-      //console.log('User:', user);
+    const [sessionResults] = await connection.execute('SELECT * FROM sessions WHERE user_id = ? AND session_end IS NULL', [user.uuid]);
+   
+    role = 'user;'
+    if (Number(user.role_id) === 0) {
+      role = 'admin';
+    }
 
-      connection.query('SELECT * FROM sessions WHERE user_id = ? AND session_end IS NULL', [user.uuid], (err, sessionResults) => {
-        if (err) {
-          console.error('Error querying sessions:', err);
-          return res.status(500).json({ error: 'Database error' });
-        }
+    req.session.user = {
+      email: user.email,
+      username: user.username,
+      uuid: user.uuid,
+      sessionStart: new Date(),
+      userId: user.user_id,
+      role: role
+    };
 
-        if( Number(user.role_id) === 1){
-          role = 'user';
-        } else {
-          role = 'admin';
-        }
 
-        req.session.user = {
-          email: user.email,
-          username: user.username,
-          uuid: user.uuid,
-          sessionStart: new Date(),
-          userId: user.user_id,
-          role: role 
-        };
+    await connection.execute('INSERT INTO sessions (session_id, user_id, session_start, expires, user_agent) VALUES (?, ?, ?, ?, ?)', [req.session.id, req.session.user.uuid, req.session.user.sessionStart, new Date(Date.now() + (24 * 60 * 60 * 1000)), role])
+    return res.json({ message: 'Logged In Successfully' });
+  } catch (err) {
 
-        //console.log('Session ID:', req.session.id);
-        //console.log('Session User UUID:', req.session.user.uuid);
-        
-        
-        console.log(role);
-        connection.query('INSERT INTO sessions (session_id, user_id, session_start, expires, user_agent) VALUES (?, ?, ?, ?, ?)', [req.session.id, req.session.user.uuid, req.session.user.sessionStart, new Date(Date.now() + (24 * 60 * 60 * 1000)), role], (err) => {
-          if (err) {
-            return err;
-          }
-          //console.log('new session created:', req.session.user);
-          return res.send('Logged In Successfully');
-        });
-
-      });
-    });
-  });
+    return res.json({ error: err });
+  }
 });
 
 
@@ -173,102 +135,85 @@ router.post('/logout', (req, res) => {
   }
 });
 
-router.post('/change-password', IS_LOGGED_IN, (req, res) => {
+router.post('/change-password', IS_LOGGED_IN, async (req, res) => {
   const newPass = req.body.newPass;
   const currentPass = req.body.currentPass;
   const confirmPass = req.body.confirmPass;
 
-  connection.query('SELECT * FROM Users WHERE username = ?', [req.session.user.username], (err, results) => {
-    if (err) {
-      return err;
+  try {
+    // Compare current password with the stored hash
+
+    const [result] = await connection.execute('SELECT * FROM Users WHERE username = ?', [req.session.user.username]);
+
+    const user = result[0];
+
+    const isMatch = await bcrypt.compare(currentPass, user.password_hash);
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Incorrect Password' });
     }
-    const user = results[0];
-    bcrypt.compare(currentPass, user.password_hash, (err, isMatch) => {
-      if (err) {
-        return err;
-      }
-      if (!isMatch) {
-        return res.send("Incorrect Password");
-      }
 
-      if (newPass != confirmPass) {
+    // Check if new password and confirm password match
+    if (newPass !== confirmPass) {
+      return res.status(400).json({ error: 'Passwords do not match' });
+    }
 
-        return res.send("Password Doesn't Match")
-      }
+    // Hash the new password
+    const hash = await bcrypt.hash(newPass, 10);
 
-      bcrypt.hash(newPass, 10, (err, hash) => {
-        if (err) {
-          return err;
-        }
+    // Update the password in the database
+    await connection.execute('UPDATE Users SET password_hash = ? WHERE username = ?', [hash, req.session.user.username]);
 
-        connection.query("UPDATE Users SET password_hash = ? WHERE username = ?", [hash, req.session.user.username], (err, result) => {
-          if (err) {
-            return err;
-          }
-          res.send("successfully changed password!");
-        });
-      });
-    });
-
-
-  });
+    return res.json({ message: 'Successfully changed password!' });
+  } catch (err) {
+    console.error('Error changing password:', err);
+    return res.status(500).json({ error: 'An error occurred while changing the password' });
+  }
 });
 
-router.post("/change-username", IS_LOGGED_IN, (req, res) => {
+router.post("/change-username", IS_LOGGED_IN, async (req, res) => {
 
   const newUsername = req.body.newUsername;
-  console.log(newUsername);
-  //console.log("Request body:", req.body);
-  //console.log("Session:", req.session);
-  connection.query("SELECT * FROM Users where Username = ?", [newUsername], (err, results) => {
-    if (err) {
-      return err;
-    }
-    if (results.length > 0) {
-      return res.send("Username is already taken");
-    }
-    connection.query("UPDATE Users SET username = ? WHERE email = ?", [newUsername, req.session.user.email], (err, result) => {
-      console.log(req.session.user.email);
-      console.log(req.session.user.username);
-      if (err) {
-        return err;
-      }
-      req.session.user.username = newUsername;
-      return res.send("successfully changed username!");
-    });
-  });
 
+  try{
+    const [results] = await connection.execute('SELECT * FROM Users where Username = ?', [newUsername]);
+    if (results.length > 0){
+      return res.status(400).json({ error: "username is taken" });
+    }
+
+    await connection.execute('UPDATE Users SET username = ? WHERE email = ?', [newUsername, req.session.user.email]);
+    req.session.user.username = newUsername;
+    return res.json({ message: 'successfully changed username!' });
+
+  } catch (err){
+    return res.json({ error: err });
+  }
 });
 
-router.post("/set-allergies", IS_LOGGED_IN, (req, res) => {
+router.post("/set-allergies", IS_LOGGED_IN, async (req, res) => {
   const allergies = req.body.allergies;
   const userId = req.session.user.userId;
-
-  console.log(allergies);
   const allergiesJoin = allergies.join(',');
-  console.log(allergiesJoin);
 
-  connection.query("UPDATE user_info SET allergies = ? WHERE user_id = ?", [allergiesJoin, userId], (err, result) => {
-    if (err) {
-      return err;
-    }
-    res.send("Successfully updated allergies");
-  });
+  try{
+    await connection.execute('UPDATE user_info SET allergies = ? WHERE user_id = ?', [allergiesJoin, userId]);
+    return res.json({ message: 'Successfully Updated Allgeries' });
+  } catch (err){
+    return res.json({ error: err });
+  }
+
 });
 
-router.post("/set-dietary-restrictions", IS_LOGGED_IN, (req, res) => {
+router.post("/set-dietary-restrictions", IS_LOGGED_IN, async (req, res) => {
   const dietary_restrictions = req.body.dietary_restrictions;
   const userId = req.session.user.userId;
-  console.log(dietary_restrictions);
   const dietaryRestrictionsJoin = dietary_restrictions.join(',');
-  console.log(dietaryRestrictionsJoin);
 
-  connection.query("UPDATE user_info SET dietary_restrictions = ? WHERE user_id = ?", [dietaryRestrictionsJoin, userId], (err, result) => {
-    if (err) {
-      return err;
-    }
-    res.send("Successfully updated dietary_restrictions");
-  });
+  try{
+    await connection.execute('UPDATE user_info SET dietary_restrictions = ? WHERE user_id = ?', [dietaryRestrictionsJoin, userId]);
+    return res.json({ message: 'Successfully Updated Dietary Restrictions' });
+  } catch (err){
+    return res.json({ error: err });
+  }
 });
 
 
