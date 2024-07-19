@@ -1,8 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const mysql = require('mysql');
-const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
+const mysql = require('mysql2/promise');
 const router = express.Router();
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
@@ -40,7 +38,7 @@ function autoEnrollUniversityPrograms(email) {
 }
 
 // Handle registration POST request
-router.post('/register', (req, res) => {
+router.post('/register',IS_LOGGED_OUT, (req, res) => {
   const { username, email, password, verify_password } = req.body;
 
 
@@ -55,10 +53,6 @@ router.post('/register', (req, res) => {
       console.error('Error querying database:', err);
       return res.status(500).send('Database error');
     }
-    if (results.length > 0) {
-      return res.send('Email or username already taken');
-    }
-
     // Hash the password
     bcrypt.hash(password, 10, (err, hash) => {
       if (err) {
@@ -86,73 +80,48 @@ router.post('/register', (req, res) => {
   });
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', IS_LOGGED_OUT, async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+  const isAdminLogin = req.body.password;
+  try {
 
-  // Query to find user based on username
-  connection.query('SELECT * FROM Users WHERE username = ?', [username], (err, results) => {
-    if (err) {
-      console.error('Error querying database:', err);
-      return res.status(500).json({ error: 'Database error' });
-    }
-
+    const [results] = await connection.execute('SELECT * FROM Users WHERE username = ?', [username]);
     // Check if user exists
     if (results.length === 0) {
       return res.status(400).json({ error: 'Invalid Username or Password' });
     }
-
     const user = results[0];
-    // Compare password with hashed password in database
-    bcrypt.compare(password, user.password_hash, (err, isMatch) => {
-      if (err) {
-        console.error('Error comparing passwords:', err);
-        return res.status(500).json({ error: 'Authentication error' });
-      }
+    
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Invalid Username or Password' });
+    }
+    
+    const [sessionResults] = await connection.execute('SELECT * FROM sessions WHERE user_id = ? AND session_end IS NULL', [user.uuid]);
+    
+    role = 'user;'
+    if (Number(user.role_id) === 0) {
+      role = 'admin';
+    }
 
-      if (!isMatch) {
-        return res.status(400).json({ error: 'Invalid Username or Password' });
-      }
+    req.session.user = {
+      email: user.email,
+      username: user.username,
+      uuid: user.uuid,
+      sessionStart: new Date(),
+      userId: user.user_id,
+      role: role
+    };
 
-      //console.log('User:', user);
+    
+    await connection.execute('INSERT INTO sessions (session_id, user_id, session_start, expires, user_agent) VALUES (?, ?, ?, ?, ?)', [req.session.id, req.session.user.uuid, req.session.user.sessionStart, new Date(Date.now() + (24 * 60 * 60 * 1000)), role])
+    return res.json({ message: 'Logged In Successfully' });
+  } catch (err) {
 
-      connection.query('SELECT * FROM sessions WHERE user_id = ? AND session_end IS NULL', [user.uuid], (err, sessionResults) => {
-        if (err) {
-          console.error('Error querying sessions:', err);
-          return res.status(500).json({ error: 'Database error' });
-        }
-
-        if( Number(user.role_id) === 1){
-          role = 'user';
-        } else {
-          role = 'admin';
-        }
-
-        req.session.user = {
-          email: user.email,
-          username: user.username,
-          uuid: user.uuid,
-          sessionStart: new Date(),
-          userId: user.user_id,
-          role: role 
-        };
-
-        //console.log('Session ID:', req.session.id);
-        //console.log('Session User UUID:', req.session.user.uuid);
-        
-        
-        console.log(role);
-        connection.query('INSERT INTO sessions (session_id, user_id, session_start, expires, user_agent) VALUES (?, ?, ?, ?, ?)', [req.session.id, req.session.user.uuid, req.session.user.sessionStart, new Date(Date.now() + (24 * 60 * 60 * 1000)), role], (err) => {
-          if (err) {
-            return err;
-          }
-          //console.log('new session created:', req.session.user);
-          return res.send('Logged In Successfully');
-        });
-
-      });
-    });
-  });
+    return res.json({error: err});
+  
+  }
 });
 
 

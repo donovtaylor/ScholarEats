@@ -45,7 +45,7 @@ app.use((req, res, next) => {
     res.locals.isAdmin = false;
   }
   //console.log('isLoggedIn:' + res.locals.isLoggedIn);
-  console.log('isAdmin:' + res.locals.isAdmin);
+  //console.log('isAdmin:' + res.locals.isAdmin);
   next();
 });
 
