@@ -128,7 +128,9 @@ app.get('/forgotpassword', (req, res) => {
 // serve privacy policy and terms of service page
 app.get('/privacy_policy', (req, res) => {
   res.render('privacy_policy', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css'],
+    dropdown1: app.locals.dropdownFilters,
     title: 'Privacy Policy and Terms of Service'
   });
 });
@@ -163,16 +165,6 @@ app.get('/register', (req, res) => {
     style: ['default.css'],
     dropdown1: app.locals.dropdownFilters,
     title: 'Register'
-  });
-});
-
-// test page to test new pages before connecting them
-app.get('/test', (req, res) => {
-  res.render('accountmanagement', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'accountmanagement.css'],
-    dropdown1: app.locals.dropdownFilters,
-    title: 'Account Management',
   });
 });
 

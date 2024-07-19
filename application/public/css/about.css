@@ -16,10 +16,6 @@ body {
   font-family: Arial, sans-serif;
 }
 
-header {
-  font-size: 2em;
-  margin-top: 20px;
-}
 
 .container > img {
   max-width: 300px;

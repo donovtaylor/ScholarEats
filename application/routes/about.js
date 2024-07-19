@@ -2,15 +2,16 @@ const express = require("express");
 const path = require("path");
 let router = express.Router();
 
+
+
 // server angelo's page dynamically using handlebars
 router.get('/angelo', (req, res) => {
+  var dropdownFilters = req.app.locals.dropdownFilters;
   //uses the 'about.hbs' template
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: dropdownFilters,
     fName: 'Angelo',
     title: 'About Angelo',
     src: '/images/angelo.jpg',
@@ -21,12 +22,11 @@ router.get('/angelo', (req, res) => {
 
 // serve donovan's page
 router.get('/donovan', (req, res) => {
+  var dropdownFilters = req.app.locals.dropdownFilters;
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: dropdownFilters,
     fName: 'Donovan',
     title: 'About Donovan',
     src: '/images/donovan.jpg',
@@ -37,12 +37,11 @@ router.get('/donovan', (req, res) => {
 
 // serve hancun's page
 router.get('/hancun', (req, res) => {
+  var dropdownFilters = req.app.locals.dropdownFilters;
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: dropdownFilters,
     fName: 'Hancun',
     title: 'About Hancun',
     src: '/images/hancun.jpg',
@@ -53,12 +52,11 @@ router.get('/hancun', (req, res) => {
 
 // serve edward's page
 router.get('/edward', (req, res) => {
+  var dropdownFilters = req.app.locals.dropdownFilters;
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: dropdownFilters,
     fName: 'Edward',
     title: 'About Edward',
     src: '/images/edward.jpg',
@@ -69,12 +67,11 @@ router.get('/edward', (req, res) => {
 
 // serve karl's page
 router.get('/karl', (req, res) => {
+  var dropdownFilters = req.app.locals.dropdownFilters;
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: dropdownFilters,
     fName: 'Karl',
     title: 'About Karl',
     src: '/images/karl.jpg',
@@ -85,12 +82,11 @@ router.get('/karl', (req, res) => {
 
 // serve sai's page
 router.get('/sai', (req, res) => {
+  var dropdownFilters = req.app.locals.dropdownFilters;
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: dropdownFilters,
     fName: 'Sai',
     title: 'About Sai',
     src: '/images/sai.jpg',
@@ -101,11 +97,11 @@ router.get('/sai', (req, res) => {
 
 // serve maeve's page
 router.get('/maeve', (req, res) => {
+  var dropdownFilters = req.app.locals.dropdownFilters;
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      option: ['Vegan','Vegetarian','Pescatarian','Keto','Halal','Kosher']},
+    dropdown1: dropdownFilters,
     fName: 'Maeve',
     title: 'About Maeve',
     src: '/images/maeve.jpg',
@@ -116,12 +112,11 @@ router.get('/maeve', (req, res) => {
 
 // serve sabrina's page
 router.get('/sabrina', (req, res) => {
+  var dropdownFilters = req.app.locals.dropdownFilters;
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: dropdownFilters,
     fName: 'Sabrina',
     title: 'About Sabrina',
     src: '/images/sabrina.jpg',
@@ -132,12 +127,11 @@ router.get('/sabrina', (req, res) => {
 
 // serve tina's page
 router.get('/tina', (req, res) => {
+  var dropdownFilters = req.app.locals.dropdownFilters;
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'about.css'],
-    dropdown_filters: {value: 'Filter', id: 'filter_options',
-      checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
-      radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']},
+    dropdown1: dropdownFilters,
     fName: 'Tina',
     title: 'About Tina',
     src: '/images/tina.jpg',
