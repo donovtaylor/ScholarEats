@@ -93,7 +93,7 @@ let query = `
     queryParams.push(...difficulties);
   }
 
-  if (searchInput) { // Search input (Still works like before)
+  if (searchInput) { // Search
       query += ' AND `recipe_name` LIKE ?';
       queryParams.push(`%${searchInput}%`);
   }
@@ -125,7 +125,8 @@ let query = `
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       dropdown1: dropdownFilters,
       title: 'Recipes',
-      recipe: recipes
+      recipe: recipes,
+      searchInput: searchInput // Preserves the search input. Yippee!
     });
   });
 });
