@@ -80,6 +80,9 @@ app.locals.dropdownFilters = {value: 'Filter', id: 'filter_options',
 app.locals.dietaryRestrictions = {value: 'Dietary Restrictions', id: 'dietary_restrictions',
   checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']};
 
+app.locals.allergies = {value: 'Allergies', id: 'allergies',
+  checkbox_option: ['Milk', 'Eggs', 'Fish', 'Crustacean Shellfish', 'Tree Nuts', 'Peanuts', 'Wheat', 'Soybeans']};
+
 // Add more routes here as needed
 app.route('/')
   .get((req, res) => {
@@ -182,6 +185,7 @@ app.get('/accountmanagement', (req, res) => {
     style: ['default.css', 'accountmanagement.css'],
     dropdown1: app.locals.dropdownFilters,
     dropdown2: app.locals.dietaryRestrictions,
+    dropdown3: app.locals.allergies,
     title: 'Account Management'
   });
 });

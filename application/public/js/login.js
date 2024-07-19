@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             if (data.error) {
                 alert(data.error);
-                window.location.reload();
             } else {
                 alert(data.message);
                 window.location.href = '/';

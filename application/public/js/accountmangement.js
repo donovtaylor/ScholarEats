@@ -10,9 +10,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const currentPass = document.getElementById("current-password").value;
         const newPass = document.getElementById("new-password").value;
         const confirmPass = document.getElementById("verify-password").value;
-        //console.log("NewPass: ", newPass);
-        //console.log("ConfrimPass: ", confirmPass);
-    
     
         fetch('/users/change-password', {
             method: 'POST',
@@ -21,13 +18,20 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             body: JSON.stringify({ newPass, currentPass, confirmPass })
         })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            alert(data);
-            location.reload();
+            if (data.error) {
+                alert(data.error);
+            } else if (data.message) {
+                alert(data.message);
+                location.reload();
+            } else {
+                alert('Unexpected response from the server.');
+            }
         })
         .catch(error => {
             console.error('Error:', error);
+            alert('An unexpected error occurred.');
         });
     });
 
@@ -56,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     setDietaryRestrictionsForm.addEventListener('submit', function(event) {
         event.preventDefault();
-        const checkboxes = document.querySelectorAll('.dietary-checkbox');
+        const checkboxes = document.querySelectorAll('.dropdown_option');
         const dietaryRestrictions = [];
         checkboxes.forEach((checkbox) => {
             if (checkbox.checked) {
@@ -72,9 +76,9 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             body: JSON.stringify({ dietary_restrictions: dietaryRestrictions })
         })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            alert(data);
+            alert(data.message);
             location.reload();
         })
         .catch(error => {
@@ -84,14 +88,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     setAllergies.addEventListener('submit', function(event) {
         event.preventDefault();
-        const checkboxes = document.querySelectorAll('.allergy-checkbox');
+        const checkboxes = document.querySelectorAll('.dropdown_option');
         const allergies = [];
         checkboxes.forEach((checkbox) => {
             if (checkbox.checked) {
                 allergies.push(checkbox.value);
             }
         });
-        console.log(allergies);
 
         fetch('/users/set-allergies', {
             method: 'POST',
@@ -100,9 +103,9 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             body: JSON.stringify({ allergies: allergies })
         })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            alert(data);
+            alert(data.message);
             location.reload();
         })
         .catch(error => {
