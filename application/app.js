@@ -74,7 +74,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //this piece of code is to pass the dropdown variables between routes
 app.locals.dropdownFilters = {value: 'Filter', id: 'filter_options',
-  checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard','Medium','Hard'],
+  checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard'],
   radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']};
 
 app.locals.dietaryRestrictions = {value: 'Dietary Restrictions', id: 'dietary_restrictions',

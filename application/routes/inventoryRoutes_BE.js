@@ -21,30 +21,7 @@ connection.connect(err => {
     console.log('Connected to the database');
 });
 
-
-// // Populate available food DUMMY INFO FOR TESTING
-// // serve Ingredients page
-// router.get('/', (req, res) => {
-//     res.render('ingredients', {
-//       style: ['default.css', 'ingredients.css'],
-//       title: 'Ingredients',
-//       ingredient: [{
-//         src: '/images/icon_orange.png',
-//         alt: 'potato.jpg',
-//         name: 'potato',
-//         desc: 'lorem ipsum',
-//       },
-//       {
-//         src: '/images/icon_orange.png',
-//         alt: 'potato.jpg',
-//         name: 'potato',
-//         desc: 'lorem ipsum',
-//       }]
-//     });
-//   });
-
-// Populate available food
-// serve Ingredients page
+// Populate available food and serve Ingredients page
 router.get('/', (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
     const query = `
@@ -74,7 +51,6 @@ router.get('/', (req, res) => {
         });
     });
 });
-
 
 // Update expired status of food items
 router.get('/checkExpired', (req, res) => {

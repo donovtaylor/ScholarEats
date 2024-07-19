@@ -5,13 +5,16 @@
   <div class="refinedSearch">
     <h1>Refined Search</h1>
     <form action="/recipes" id="refinedSearch" method="get">
-      <p><input type="checkbox" class="refinedSearchOption" name="option1">Option1</p>
-      <p><input type="checkbox" class="refinedSearchOption" name="option2">Option2</p>
-      <p><input type="checkbox" class="refinedSearchOption" name="option3">Option3</p>
-      <p><input type="checkbox" class="refinedSearchOption" name="option4">Option4</p>
+      {{#each dropdownFilters.checkbox_option}}
+        <p><input type="checkbox" class="dropdown_option" name="{{this}}">{{this}}</p>
+      {{/each}}
+      {{#each dropdownFilters.radio_option}}
+        <p><input type="radio" class="dropdown_option" name="filter_options">{{this}}</p>
+      {{/each}}
       <input type="submit" class="submitbutton" value="Apply Filters">
     </form>
   </div>
+
   <div class="recipes">
     {{#if recipe}}
     {{#each recipe}}
