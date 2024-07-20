@@ -10,8 +10,17 @@ const userRoutes = require('./routes/userRoutes_BE');                        // 
 const recipeRoutes = require('./routes/recipeRoutes_BE');                    // Recipe
 const about = require('./routes/about');                                 // About
 const autocomplete = require('./routes/autocomplete');
+const notificationRoutes = require('./routes/notificationRoutes_BE');
 
 const app = express();
+
+// Mount routes
+app.use("/recipes", recipeRoutes); // Recipe Routes
+app.use("/ingredients", inventoryRoutes); // Inventory Routes
+app.use("/users", userRoutes); // User Routes
+app.use("/about", about);
+app.use("/suggestions", autocomplete);
+app.use("/notifications", notificationRoutes);
 
 // app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -49,12 +58,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Mount routes
-app.use("/recipes", recipeRoutes); // Recipe Routes
-app.use("/ingredients", inventoryRoutes); // Inventory Routes
-app.use("/users", userRoutes); // User Routes
-app.use("/about", about);
-app.use("/suggestions", autocomplete);
 
 // Middleware to configure Handlebars
 const hbs = exphbs.create({
