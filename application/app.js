@@ -14,13 +14,6 @@ const notificationRoutes = require('./routes/notificationRoutes_BE');
 
 const app = express();
 
-// Mount routes
-app.use("/recipes", recipeRoutes); // Recipe Routes
-app.use("/ingredients", inventoryRoutes); // Inventory Routes
-app.use("/users", userRoutes); // User Routes
-app.use("/about", about);
-app.use("/suggestions", autocomplete);
-app.use("/notifications", notificationRoutes);
 
 // app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -57,6 +50,14 @@ app.use((req, res, next) => {
   //console.log('isAdmin:' + res.locals.isAdmin);
   next();
 });
+
+// Mount routes
+app.use("/recipes", recipeRoutes); // Recipe Routes
+app.use("/ingredients", inventoryRoutes); // Inventory Routes
+app.use("/users", userRoutes); // User Routes
+app.use("/about", about);
+app.use("/suggestions", autocomplete);
+app.use("/notifications", notificationRoutes);
 
 
 // Middleware to configure Handlebars
