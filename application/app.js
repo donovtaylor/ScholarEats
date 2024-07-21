@@ -122,6 +122,16 @@ app.route('/adminlogin')
   })
 });
 
+app.route('/admintools')
+.get((req, res) => {
+  res.render('admintools', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'login.css'],
+    dropdown1: app.locals.dropdownFilters,
+    title: 'admintools'
+  })
+});
+
 // serve forgot password page
 app.get('/forgotpassword', (req, res) => {
   res.render('forgotpassword', {

@@ -1,0 +1,126 @@
+<div class="leftSpacer"></div>
+{{>header}}
+<div class="container">
+  <div class="admin-tools-container">
+    <header>Admin Tools</header>
+    <!-- Manage Users Section -->
+    <div class="admin-tool">
+      <form class="tool-form" action="/manage-users" method="POST" id="manage-users-form">
+        <h3>Manage Users</h3>
+        <input type="text" name="username" id="manage-username" placeholder="Username" required>
+        <select name="action" id="user-action" required>
+          <option value="add">Add User</option>
+          <option value="remove">Remove User</option>
+          <option value="update">Update User</option>
+        </select>
+        <input type="submit" id="manage-submit" value="Submit">
+      </form>
+    </div>
+    <!-- View Logs Section -->
+    <div class="admin-tool">
+      <form class="tool-form" action="/view-logs" method="GET" id="view-logs-form">
+        <h3>View Logs</h3>
+        <input type="date" name="log-date" id="log-date" required>
+        <input type="submit" id="view-logs-submit" value="View Logs">
+      </form>
+    </div>
+    <!-- Settings Section -->
+    <div class="admin-tool">
+      <form class="tool-form" action="/settings" method="POST" id="settings-form">
+        <h3>Settings</h3>
+        <label for="setting-1">Setting 1:</label>
+        <input type="text" name="setting-1" id="setting-1" required>
+        <label for="setting-2">Setting 2:</label>
+        <input type="text" name="setting-2" id="setting-2" required>
+        <input type="submit" id="settings-submit" value="Save Settings">
+      </form>
+    </div>
+    <!-- Manage Ingredients Section -->
+    <div class="admin-tool">
+      <form class="tool-form" action="/manage-ingredients" method="POST" id="manage-ingredients-form">
+        <h3>Manage Ingredients</h3>
+        <input type="text" name="ingredient-name" id="ingredient-name" placeholder="Ingredient Name" required>
+        <select name="action" id="ingredient-action" required>
+          <option value="add">Add Ingredient</option>
+          <option value="remove">Remove Ingredient</option>
+          <option value="edit">Edit Ingredient</option>
+        </select>
+        <input type="submit" id="ingredient-submit" value="Submit">
+      </form>
+    </div>
+    <!-- Manage Recipes Section -->
+    <div class="admin-tool">
+      <form class="tool-form" action="/manage-recipes" method="POST" id="manage-recipes-form">
+        <h3>Manage Recipes</h3>
+        <input type="text" name="recipe-name" id="recipe-name" placeholder="Recipe Name" required>
+        <select name="action" id="recipe-action" required>
+          <option value="add">Add Recipe</option>
+          <option value="remove">Remove Recipe</option>
+          <option value="edit">Edit Recipe</option>
+        </select>
+        <input type="submit" id="recipe-submit" value="Submit">
+      </form>
+    </div>
+  </div>
+</div>
+{{>footer}}
+<div class="rightSpacer"></div>
+<script src="/js/admin-tools.js"></script>
+
+<script>
+  // Add any necessary JavaScript for the admin tools page here
+
+  function validateManageUsersForm() {
+    var username = document.getElementById("manage-username").value;
+    var action = document.getElementById("user-action").value;
+    var errorMessage = document.getElementById("manage-users-error-message");
+
+    errorMessage.textContent = "";
+
+    if (username === "") {
+      errorMessage.textContent = "Username must be filled out";
+      return false;
+    }
+
+    return true;
+  }
+
+  document.getElementById("manage-users-form").onsubmit = validateManageUsersForm;
+
+  function validateManageIngredientsForm() {
+    var ingredientName = document.getElementById("ingredient-name").value;
+    var action = document.getElementById("ingredient-action").value;
+    var errorMessage = document.getElementById("manage-ingredients-error-message");
+
+    errorMessage.textContent = "";
+
+    if (ingredientName === "") {
+      errorMessage.textContent = "Ingredient Name must be filled out";
+      return false;
+    }
+
+    return true;
+  }
+
+  document.getElementById("manage-ingredients-form").onsubmit = validateManageIngredientsForm;
+
+  function validateManageRecipesForm() {
+    var recipeName = document.getElementById("recipe-name").value;
+    var action = document.getElementById("recipe-action").value;
+    var errorMessage = document.getElementById("manage-recipes-error-message");
+
+    errorMessage.textContent = "";
+
+    if (recipeName === "") {
+      errorMessage.textContent = "Recipe Name must be filled out";
+      return false;
+    }
+
+    return true;
+  }
+
+  document.getElementById("manage-recipes-form").onsubmit = validateManageRecipesForm;
+</script>
+</body>
+
+</html>
