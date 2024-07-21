@@ -1,5 +1,6 @@
 <div class="leftSpacer"></div>
 {{>header}}
+<link rel="stylesheet" href="/css/admintools.css">
 <div class="container">
   <div class="admin-tools-container">
     <header>Admin Tools</header>
@@ -22,17 +23,6 @@
         <h3>View Logs</h3>
         <input type="date" name="log-date" id="log-date" required>
         <input type="submit" id="view-logs-submit" value="View Logs">
-      </form>
-    </div>
-    <!-- Settings Section -->
-    <div class="admin-tool">
-      <form class="tool-form" action="/settings" method="POST" id="settings-form">
-        <h3>Settings</h3>
-        <label for="setting-1">Setting 1:</label>
-        <input type="text" name="setting-1" id="setting-1" required>
-        <label for="setting-2">Setting 2:</label>
-        <input type="text" name="setting-2" id="setting-2" required>
-        <input type="submit" id="settings-submit" value="Save Settings">
       </form>
     </div>
     <!-- Manage Ingredients Section -->

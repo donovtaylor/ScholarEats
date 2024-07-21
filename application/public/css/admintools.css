@@ -1,0 +1,70 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-tools-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: lightgray;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid orange;
+    width: 400px;
+}
+
+.admin-tool {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.tool-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.tool-form input[type="text"], 
+.tool-form input[type="date"], 
+.tool-form select {
+    font-size: 1.2em;
+    padding: 10px;
+    border: 1px solid orange;
+    border-radius: 5px;
+}
+
+.tool-form input[type="submit"] {
+    font-size: 1.3em;
+    color: white;
+    background-color: orange;
+    border: 1px solid darkorange;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.tool-form input[type="submit"]:hover {
+    background-color: darkorange;
+}
+
+.tool-form h3 {
+    font-size: 1.5em;
+    text-align: center;
+    color: darkorange;
+    margin-bottom: 10px;
+}
+
+.tool-form label {
+    font-size: 1.1em;
+    color: darkorange;
+}
+
+.error-message {
+    font-size: 1.1em;
+    color: red;
+    text-align: center;
+}
