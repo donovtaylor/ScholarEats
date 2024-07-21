@@ -5,10 +5,10 @@ const bodyParser = require('body-parser');
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
 const router = express.Router();
-const app = express();
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// const app = express();         // i dont know if we need these 3
+                                  // lines here - donovan
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 const connection = mysql.createConnection({
   host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
@@ -132,7 +132,7 @@ let query = `
 });
 
 /* 404 Error handling */
-app.use((req, res, next) => {
+router.use((req, res, next) => {
   res.status(404).send('404 Page Not Found');
 });
 
