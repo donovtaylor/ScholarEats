@@ -5,10 +5,8 @@ const bodyParser = require('body-parser');
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
 const router = express.Router();
-// const app = express();         // i dont know if we need these 3
-                                  // lines here - donovan
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+
+let debug = true; // toggle console debug messages
 
 const connection = mysql.createConnection({
   host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
@@ -28,23 +26,41 @@ connection.connect(err => {
 // Rendering recipes dynamically from the database
 router.get('/', (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
-  const { dietary_restriction, cooking_aid, sort, searchInput, filter_options } = req.query;
+  const { dietary_restriction, cooking_aid, sort, searchInput } = req.query; // removed filter_options
 
-  // Extract the checkbox data
-  const difficulties = Object.keys(req.query).filter(key => ['Easy', 'Medium', 'Hard'].includes(key) && req.query[key] === 'on');
-  const dietaryRestrictions = Object.keys(req.query).filter(key => ['Vegan', 'Keto', 'Halal', 'Vegetarian', 'Pescatarian', 'Kosher'].includes(key) && req.query[key] === 'on');
-  const cookingAids = Object.keys(req.query).filter(key => ['Oven Required','Stove Required'].includes(key) && req.query[key] === 'on');
-  
-  const sortOptions = {
-    'Calories Ascending': 'calories_ASC',
-    'Calories Descending': 'calories_DESC',
-    'Protein Ascending': 'protein_ASC',
-    'Protein Descending': 'protein_DESC',
-    'Fat Ascending': 'fat_ASC',
-    'Fat Descending': 'fat_DESC',
-    'Fiber Ascending': 'fiber_ASC',
-    'Fiber Descending': 'fiber_DESC'
-  };
+  /* Extract the checkbox/radio data */
+
+  // Difficulties
+  const difficulties = Object.keys(req.query).filter(key => [
+    'Easy',
+    'Medium',
+    'Hard'].includes(key) && req.query[key] === 'on');
+
+  // Dietary Restrictions
+  const dietaryRestrictions = Object.keys(req.query).filter(key => [
+    'Vegan',
+    'Keto',
+    'Halal',
+    'Vegetarian',
+    'Pescatarian',
+    'Kosher'].includes(key) && req.query[key] === 'on');
+
+  // Cooking Aids
+  const cookingAids = Object.keys(req.query).filter(key => [
+    'Oven Required',
+    'Stove Required'].includes(key) && req.query[key] === 'on');
+
+  // Sorting options
+  const sortOptionsQueryMap = { // map for the SQL queries
+    'Calories Ascending'  : 'calories ASC',
+    'Calories Descending' : 'calories DESC',
+    'Protein Ascending'   : 'protein ASC',
+    'Protein Descending'  : 'protein DESC',
+    'Fat Ascending'       : 'fat ASC',
+    'Fat Descending'      : 'fat DESC',
+    'Fiber Ascending'     : 'fiber ASC',
+    'Fiber Descending'    : 'fiber DESC'
+  }; const sortOptions = sortOptionsQueryMap[sort];
 
 /*
 Please dont touch this query unless absolutely necessary, SQL is hard and this chunk is fragile!
@@ -98,14 +114,15 @@ let query = `
       queryParams.push(`%${searchInput}%`);
   }
 
-  if (sort) {
-    query += ` ORDER BY ${sortOptions[sort]}`;
-    // queryParams.push(`%${sort}%`)
+  if (sortOptions) { // Sorting options
+    query += ` ORDER BY ${sortOptions}`;
+    // queryParams.push(`%${sortOptions}%`)
   }
 
-  console.log(`Final query: ${query}`); // DEBUG
-  console.log(`Query parameters: ${queryParams}`); // DEBUG
-  console.log(`Sort query parameter: ${filter_options}`); // DEBUG
+  if (debug){
+    console.log(`Final query: ${query}`);
+    console.log(`Query parameters: ${queryParams}`);
+  }
 
   connection.query(query, queryParams, (err, results) => {
     if (err) {
@@ -114,7 +131,7 @@ let query = `
     }
 
     const recipes = results.map(row => ({
-      src: '/images/icon_orange.png',
+      src: row.img_src,
       alt: 'ingredient.jpg',
       name: row.recipe_name,
       desc: `Time: ${row.total_time}`

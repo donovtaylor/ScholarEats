@@ -15,6 +15,7 @@ const connection = mysql.createPool({
 
 router.get('/', async (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
+  const userID = req.session.user_id;
 
   let query = `SELECT * FROM notifications`;
 
