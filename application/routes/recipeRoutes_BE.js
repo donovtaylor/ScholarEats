@@ -122,6 +122,7 @@ let query = `
   if (debug){
     console.log(`Final query: ${query}`);
     console.log(`Query parameters: ${queryParams}`);
+    console.log(`Sorting method: ${sortOptions}`);
   }
 
   connection.query(query, queryParams, (err, results) => {
@@ -130,21 +131,88 @@ let query = `
       return res.status(500).send('Error fetching recipes');
     }
 
-    const recipes = results.map(row => ({
-      src: row.img_src,
-      alt: 'ingredient.jpg',
-      name: row.recipe_name,
-      desc: `Time: ${row.total_time}`
-    }));
+    const resultCount = results.length; // get the number of results
 
-    res.render('recipes', {
-      style: ['default.css', 'recipes.css'],
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-      dropdown1: dropdownFilters,
-      title: 'Recipes',
-      recipe: recipes,
-      searchInput: searchInput // Preserves the search input. Yippee!
-    });
+    if (debug){
+      console.log(`Results: ${resultCount}`);
+    }
+
+    // Render the results, if there are recipes available
+    if (resultCount > 0) {
+
+      if (debug) {
+        console.log(`Recipes available. Serving generated recipes.`);
+      }
+
+      const recipes = results.map(row => ({
+        src: row.img_src,
+        alt: 'ingredient.jpg',
+        name: row.recipe_name,
+        desc: `Time: ${row.total_time}`
+      }));
+
+      res.render('recipes', {
+        style: ['default.css', 'recipes.css'],
+        script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+        dropdown1: dropdownFilters,
+        title: 'Recipes',
+        recipe: recipes,
+        searchInput: searchInput // Preserves the search input. Yippee!
+      });
+
+      if (debug) {
+        console.log(`Finished serving generated recipes.`);
+      }
+
+    }
+
+    // If no recipes are available
+    if (resultCount === 0) {
+
+      if (debug) {
+        console.log(`Recipes not available. Serving randomly generated recipes.`);
+      }
+
+      const randomSelectionQuery = `
+        SELECT DISTINCT r.*
+        FROM recipes r
+        WHERE r.\`Unnamed: 0\` IN (
+          SELECT MIN(inner_r.\`Unnamed: 0\`)
+          FROM recipes inner_r
+          GROUP BY inner_r.recipe_name
+        )
+        ORDER BY RAND()
+        LIMIT 10
+      `;
+
+      connection.query(randomSelectionQuery, (err, results) => {
+        if (err) {
+          console.error('Error fetching recipes:', err);
+          return res.status(500).send('Error fetching recipes');
+        }
+
+        const randomRecipes = results.map(row => ({
+          src: row.img_src,
+          alt: 'ingredient.jpg',
+          name: row.recipe_name,
+          desc: `Time: ${row.total_time}`
+        }));
+    
+        res.render('recipes', {
+          style: ['default.css', 'recipes.css'],
+          script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+          dropdown1: dropdownFilters,
+          title: 'Recipes',
+          recipe: randomRecipes,
+          searchInput: searchInput // Preserves the search input. Yippee!
+        });
+      });
+
+      if (debug) {
+        console.log(`Finished serving randomly generated recipes.`);
+      }
+
+    }
   });
 });
 
