@@ -122,15 +122,27 @@ app.route('/adminlogin')
   })
 });
 
+// serve admintools page
 app.route('/admintools')
 .get((req, res) => {
   res.render('admintools', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'login.css'],
+    style: ['default.css', 'admintools.css'],
     dropdown1: app.locals.dropdownFilters,
     title: 'admintools'
   })
 });
+
+// serve landing page
+app.route('/landingpage')
+  .get((req, res) => {
+    res.render('landingpage', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      style: ['default.css', 'landingpage.css'],
+      dropdown1: app.locals.dropdownFilters,
+      title: 'landingpage'
+    })
+  });
 
 // serve forgot password page
 app.get('/forgotpassword', (req, res) => {
