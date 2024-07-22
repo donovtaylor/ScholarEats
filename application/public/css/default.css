@@ -2,6 +2,7 @@ body {
   display: grid;
   grid-template-areas:
   "leftSpacer  header   rightSpacer"
+  "leftSpacer modeSelect rightSpacer"
   "leftSpacer container rightSpacer"
   "leftSpacer  footer   rightSpacer";
   grid-template-columns: 1fr 3fr 1fr;
@@ -24,6 +25,19 @@ header {
 
 h1 {
   color: orange;
+}
+
+h4 {
+  color: orange;
+}
+
+select {
+  width: fit-content;
+  height: fit-content;
+}
+
+h4, select {
+  display: inline-block;
 }
 
 .footer {
