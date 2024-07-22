@@ -95,7 +95,7 @@ router.post('/login', IS_LOGGED_OUT, async (req, res) => {
     const [sessionResults] = await connection.execute('SELECT * FROM sessions WHERE user_id = ? AND session_end IS NULL', [user.uuid]);
    
     role = 'user;'
-    if (Number(user.role_id) === 0) {
+    if (Number(user.role_id) === 3) {
       role = 'admin';
     }
 
