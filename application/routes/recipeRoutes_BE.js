@@ -92,10 +92,11 @@ router.get('/', (req, res) => {
 
     res.render('recipes', {
       style: ['default.css', 'recipes.css'],
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
       dropdown1: dropdownFilters,
       title: 'Recipes',
-      recipe: recipes
+      recipe: recipes,
+      mode: 'recipes'
     });
   });
 });
