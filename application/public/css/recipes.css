@@ -18,6 +18,7 @@
 }
 
 .recipes{
+  border-radius: 5px;
   grid-area: recipes;
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -25,8 +26,10 @@
 }
 
 .recipe {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-areas:
+  "recipeImg recipeName"
+  "recipeImg recipeDesc";
   border: 1px solid #ddd;
   align-items: center;
   margin-bottom: 20px;
@@ -34,14 +37,19 @@
 
 }
 
-.recipe img {
-  width: 50px;
-  height: 50px;
+.recipeImage {
+  grid-area: recipeImg;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
   border: 1px solid #ddd;
   margin-right: 20px;
 }
 
-.recipe div {
-  flex-grow: 1;
+.recipeName {
+  grid-area: recipeName;
+}
+
+.recipeDesc {
+  grid-area: recipeDesc;
 }

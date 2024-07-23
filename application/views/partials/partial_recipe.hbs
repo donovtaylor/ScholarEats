@@ -1,19 +1,5 @@
-<a href="/ingredients/{{id}}" class="recipe">
-  <img src="{{src}}" alt="{{alt}}">
-  <div><b>{{name}}</b></div>
-  <div>{{desc}}</div>
+<a href="/recipes/{{id}}" class="recipe">
+  <img src="{{src}}" alt="{{alt}}" class="recipeImage" width="150px" height="150px">
+  <h2 class="recipeName">{{name}}</h2>
+  <p class="recipeDesc">{{desc}}</p>
 </a>
-
-<script>
-  // Example admin status variable
-  var isAdmin = true; // Set this based on your actual admin login status
-
-  // Show edit buttons if the user is an admin
-  if (isAdmin) {
-    var editDropdowns = document.querySelectorAll('.edit-dropdown');
-    editDropdowns.forEach(function (dropdown) {
-      dropdown.style.display = 'block';
-    });
-  }
-
-</script>
