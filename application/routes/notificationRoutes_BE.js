@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
 
     res.render('notifications', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-      style: ['default.css'],
+      style: ['default.css', 'notifications.css'],
       dropdown1: dropdownFilters,
       notification: notifications,
       title: 'Notifications'
