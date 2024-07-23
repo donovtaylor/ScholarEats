@@ -182,11 +182,8 @@ router.route('/')
         LIMIT 10
       `;
 
-        connection.query(randomSelectionQuery, (err, results) => {
-          if (err) {
-            console.error('Error fetching recipes:', err);
-            return res.status(500).send('Error fetching recipes');
-          }
+        try {
+          const [results] = await connection.execute(randomSelectionQuery);
 
           const randomRecipes = results.map(row => ({
             id: row['Unnamed: 0'],
@@ -204,7 +201,10 @@ router.route('/')
             recipe: randomRecipes,
             searchInput: searchInput // Preserves the search input. Yippee!
           });
-        });
+        } catch (err) {
+          console.error('Error fetching recipes:', err);
+          return res.status(500).send('Error fetching recipes');
+        }
 
         if (debug) {
           console.log(`Finished serving randomly generated recipes.`);
@@ -220,24 +220,24 @@ router.route('/')
 
 router.get('/:id', async (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
-  let query = 'SELECT * FROM recipes WHERE id = ?';
+  let query = 'SELECT * FROM recipes WHERE \`Unnamed: 0\` = ?';
 
   try {
     const [result] = await connection.execute(query, [req.params.id]);
-
+    console.log(result);
     if (result.length > 0) {
 
       res.render('individual_recipes_view', {
-        style: ['default.css', 'recipes.css'],
+        style: ['default.css', 'individualRecipe.css'],
         script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
         dropdown1: dropdownFilters,
         title: result[0].recipe_name,
-        image: result[0].img_src,
+        src: result[0].img_src,
         prepTime: result[0].prep_time,
         cookTime: result[0].cook_time,
         servings: result[0].servings,
-        ingredients: result[0].ingredients,
-        instructions: result[0].directions
+        ingredients: [result[0].ingredients],
+        instructions: [result[0].directions]
       });
     } else {
       console.log('No results found.');
