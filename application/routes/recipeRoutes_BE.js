@@ -52,25 +52,25 @@ router.get('/', (req, res) => {
 
   // Sorting options
   const sortOptionsQueryMap = { // map for the SQL queries
-    'Calories Ascending'  : 'calories ASC',
-    'Calories Descending' : 'calories DESC',
-    'Protein Ascending'   : 'protein ASC',
-    'Protein Descending'  : 'protein DESC',
-    'Fat Ascending'       : 'fat ASC',
-    'Fat Descending'      : 'fat DESC',
-    'Fiber Ascending'     : 'fiber ASC',
-    'Fiber Descending'    : 'fiber DESC'
+    'Calories Ascending': 'calories ASC',
+    'Calories Descending': 'calories DESC',
+    'Protein Ascending': 'protein ASC',
+    'Protein Descending': 'protein DESC',
+    'Fat Ascending': 'fat ASC',
+    'Fat Descending': 'fat DESC',
+    'Fiber Ascending': 'fiber ASC',
+    'Fiber Descending': 'fiber DESC'
   }; const sortOptions = sortOptionsQueryMap[sort];
 
-/*
-Please dont touch this query unless absolutely necessary, SQL is hard and this chunk is fragile!
-
-This query gets all of the reipes that can be made just with what is available in the inventory.
-It also filters out duplicate recipes, becuase there are currently about 4 copies of each recipe
-in the "recipes" table. Additionally, the column "Unnamed: 0" represents the recipe ID, and this
-name is expeced to change.
-*/
-let query = `
+  /*
+  Please dont touch this query unless absolutely necessary, SQL is hard and this chunk is fragile!
+  
+  This query gets all of the reipes that can be made just with what is available in the inventory.
+  It also filters out duplicate recipes, becuase there are currently about 4 copies of each recipe
+  in the "recipes" table. Additionally, the column "Unnamed: 0" represents the recipe ID, and this
+  name is expeced to change.
+  */
+  let query = `
     SELECT DISTINCT r.*
     FROM recipes r
     WHERE r.\`Unnamed: 0\` IN (
@@ -110,8 +110,8 @@ let query = `
   }
 
   if (searchInput) { // Search
-      query += ' AND `recipe_name` LIKE ?';
-      queryParams.push(`%${searchInput}%`);
+    query += ' AND `recipe_name` LIKE ?';
+    queryParams.push(`%${searchInput}%`);
   }
 
   if (sortOptions) { // Sorting options
@@ -119,7 +119,7 @@ let query = `
     // queryParams.push(`%${sortOptions}%`)
   }
 
-  if (debug){
+  if (debug) {
     console.log(`Final query: ${query}`);
     console.log(`Query parameters: ${queryParams}`);
     console.log(`Sorting method: ${sortOptions}`);
@@ -133,7 +133,7 @@ let query = `
 
     const resultCount = results.length; // get the number of results
 
-    if (debug){
+    if (debug) {
       console.log(`Results: ${resultCount}`);
     }
 
@@ -199,7 +199,7 @@ let query = `
           name: row.recipe_name,
           desc: `Time: ${row.total_time}`
         }));
-    
+
         res.render('recipes', {
           style: ['default.css', 'recipes.css'],
           script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
