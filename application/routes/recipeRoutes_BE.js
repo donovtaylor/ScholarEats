@@ -219,25 +219,42 @@ router.route('/')
 
 
 router.get('/:id', async (req, res) => {
+
   var dropdownFilters = req.app.locals.dropdownFilters;
+
+  // Fetch the recipe from the db
   let query = 'SELECT * FROM recipes WHERE \`Unnamed: 0\` = ?';
+  
+  // Fetch the ingredients for that recipe from the db
+  let ingredientQuery = `
+    SELECT i.name
+    FROM recipe_ingredient ri
+    JOIN ingredient i ON ri.ingredient_id = i.ingredient_id
+    WHERE ri.recipe_id = ?
+  `;
 
   try {
-    const [result] = await connection.execute(query, [req.params.id]);
-    console.log(result);
-    if (result.length > 0) {
+    const [recipeResult] = await connection.execute(query, [req.params.id]);
+    const [ingredientsResult] = await connection.execute(ingredientQuery, [req.params.id]);
+
+    console.log(recipeResult);
+    if (recipeResult.length > 0) {
+
+      const recipe = recipeResult[0];
+      const ingredients = ingredientsResult.map(ingredient => ingredient.name); // Map the ingredients to their name
+      const directions = recipe.directions.split('\n').filter(step => step.trim() !== ''); // Split the directions apart by \n, will probably change if we use AI
 
       res.render('individual_recipes_view', {
         style: ['default.css', 'individualRecipe.css'],
         script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
         dropdown1: dropdownFilters,
-        title: result[0].recipe_name,
-        src: result[0].img_src,
-        prepTime: result[0].prep_time,
-        cookTime: result[0].cook_time,
-        servings: result[0].servings,
-        ingredients: [result[0].ingredients],
-        instructions: [result[0].directions]
+        title: recipe.recipe_name,
+        src: recipe.img_src,
+        prepTime: recipe.prep_time,
+        cookTime: recipe.cook_time,
+        servings: recipe.servings,
+        ingredients: ingredients,
+        instructions: directions
       });
     } else {
       console.log('No results found.');
