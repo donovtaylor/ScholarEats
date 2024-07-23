@@ -149,7 +149,7 @@ app.route('/landingpage')
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css', 'landingpage.css'],
       dropdown1: app.locals.dropdownFilters,
-      title: 'landingpage'
+      title: 'Landing Page'
     })
   });
 
