@@ -122,11 +122,12 @@ let query = `
 
     res.render('recipes', {
       style: ['default.css', 'recipes.css'],
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
       dropdown1: dropdownFilters,
       title: 'Recipes',
       recipe: recipes,
-      searchInput: searchInput // Preserves the search input. Yippee!
+      searchInput: searchInput, // Preserves the search input. Yippee!
+      mode: 'recipes'
     });
   });
 });

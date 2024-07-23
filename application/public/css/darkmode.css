@@ -81,3 +81,24 @@ input {
 .autocomplete-suggestion {
     background: #121212;
 }
+
+.recipe-description {
+    color: #eee;
+}
+
+.ingredient-description {
+    color: #eee;
+}
+
+.recipe {
+    background: #42414d;
+}
+
+.ingredient {
+    background: #42414d;
+}
+
+.landing-page {
+    background: #121212;
+    border: 1px solid orange;
+}
