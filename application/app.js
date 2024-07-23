@@ -132,7 +132,7 @@ app.route('/admintools')
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'admintools.css'],
     dropdown1: app.locals.dropdownFilters,
-    title: 'admintools'
+    title: 'Admin Tools'
   })
 });
 

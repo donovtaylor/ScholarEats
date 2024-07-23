@@ -158,6 +158,7 @@ a img {
   font-size: 1.3em;
   width: 100%;
   border: 1px solid orange;
+  padding-left: 5px;
 }
 
 .autocomplete-suggestions {
@@ -167,6 +168,12 @@ a img {
   background-color: darkslategray;
   border-radius: 5px;
   box-shadow: 0px 5px 10px black;
+
+}
+
+.navbar .autocomplete-suggestion {
+  text-align: left;
+  padding-left: 5px;
 }
 
 .autocomplete-suggestions div:hover {
