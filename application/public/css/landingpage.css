@@ -1,76 +1,79 @@
-  .container {
-    display: grid;
-    justify-content: center;
-    align-items: center;
-  }
+  
   
   .landing-page {
-    width: 80%;
-    max-width: 1200px;
     background-color: white;
-    padding: 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    min-height: 600px;
   }
   
   .landing-header {
     text-align: center;
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: darkorange;
+    font-size: 3em;
+    color: orange;
   }
   
   .content-section {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     justify-content: space-between;
-    flex-wrap: wrap;
   }
   
   .section-title {
     font-size: 1.5em;
-    color: green;
+    color: darkslategray;
     margin-bottom: 20px;
     width: 100%;
   }
   
   .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 20px;
   }
   
   .recipe, .ingredient {
     display: flex;
+    color: orange;
+    width: 200px;
+    height: 300px;
     flex-direction: column;
     align-items: center;
     background-color: lightgray;
     padding: 15px;
-    border-radius: 10px;
+    border-radius: 5px;
     border: 1px solid orange;
+    transition: background-color 0.3s, color 0.3s ;
+  }
+
+  a.recipe:hover h3 {
+    transition: background-color 0.3s, color 0.3s ;
+    color: white;
   }
   
   .recipe-image, .ingredient-image {
     width: 100%;
     height: auto;
     border-radius: 5px;
-    margin-bottom: 10px;
+  }
+
+  .recipes-section, .ingredients-section {
+    padding: 5px;
+
   }
   
-  .recipe-title, .ingredient-title {
-    font-size: 1.2em;
-    color: darkorange;
+  .recipe-title {
+    color: orange;
+    margin-top: 5px;
+  }
+
+  .ingredient-title {
+    font-size: 1.3em;
   }
   
   .recipe-description, .ingredient-description {
     text-align: center;
     color: #333;
-  }
-  
-  .leftSpacer, .rightSpacer {
-    flex: 1;
-  }
-  
-  .recipes-section, .ingredients-section {
-    width: 48%;
   }
   

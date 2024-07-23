@@ -74,12 +74,9 @@ router.get('/', (req, res) => {
                 style: ['default.css', 'landingpage.css'],
                 script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
                 dropdown1: dropdownFilters,
-                recipes: recipeResults.map(row => ({
-                    recipeID: row['Unnamed: 0'],
-                    recipe_name: row['recipe_name'],
-                    img_src: row['img_src']
-                })),
-                ingredients: ingredientsResults
+                recipes: recipeResults,
+                ingredients: ingredientsResults,
+                title: 'Landing Page'
             });
         });
     });

@@ -10,11 +10,11 @@
         <div class="grid-container">
 
           {{#each recipes}}
-            <div class="recipe">
+            <a href="/recipes/{{this.[Unnamed: 0]}}" class="recipe">
               <img src="{{this.img_src}}" alt="{{this.recipe_name}}" class="recipe-image">
               <h3 class="recipe-title">{{this.recipe_name}}</h3>
               <p class="recipe-description">{{this.Description}}</p>
-            </div>
+            </a>
           {{/each}}
 
         </div>

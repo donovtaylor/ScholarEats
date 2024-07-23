@@ -2,6 +2,7 @@ body {
   display: grid;
   grid-template-areas:
   "leftSpacer  header   rightSpacer"
+  "leftSpacer modeSelect rightSpacer"
   "leftSpacer container rightSpacer"
   "leftSpacer  footer   rightSpacer";
   grid-template-columns: 1fr 3fr 1fr;
