@@ -34,11 +34,10 @@
   }
   
   .recipe, .ingredient {
-    display: flex;
+    display: grid;
     color: orange;
-    width: 200px;
-    height: 300px;
-    flex-direction: column;
+    max-width: 200px;
+    max-height: 300px;
     align-items: center;
     background-color: lightgray;
     padding: 15px;
