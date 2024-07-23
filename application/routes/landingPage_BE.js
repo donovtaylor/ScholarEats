@@ -46,6 +46,7 @@ router.get('/', (req, res) => {
                 WHERE quantity > 0
             )
         )
+        ORDER BY r.recipe_name DESC
         LIMIT 3
     `;
 
@@ -70,11 +71,14 @@ router.get('/', (req, res) => {
             }
 
             res.render('landingpage', {
-                recipeID: row['Unnamed: 0'],
                 style: ['default.css', 'landingpage.css'],
                 script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
                 dropdown1: dropdownFilters,
-                recipes: recipeResults,
+                recipes: recipeResults.map(row => ({
+                    recipeID: row['Unnamed: 0'],
+                    recipe_name: row['recipe_name'],
+                    img_src: row['img_src']
+                })),
                 ingredients: ingredientsResults
             });
         });
