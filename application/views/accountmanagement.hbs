@@ -13,6 +13,16 @@
     <input type="password" name="verify-password" id="verify-password" placeholder="Verify Password">
     <button type="submit">Submit</button>
   </form>
+   <h3>Bio</h3>
+  <form class="account-form" id="update-bio-form" action="/submit" method="post">
+    <textarea name="bio" id="bio" placeholder="Tell us about yourself..." rows="4" required></textarea>
+    <button type="submit">Submit</button>
+  </form>
+  <h3>Pronouns</h3>
+  <form class="account-form" id="update-pronouns-form" action="/submit" method="post">
+    <input type="text" name="pronouns" id="pronouns" placeholder="Your Pronouns" required>
+    <button type="submit">Submit</button>
+  </form>
   <h3>Change Dietary Restrictions</h3>
   <form class="account-form" id="change-dietary-restrictions" action="/submit" method="post">
     {{>dropdown dropdown2}}
@@ -20,7 +30,14 @@
   </form>
   <h3>Change Allergies</h3>
     <form class="account-form" id="change-allergies-from" action="/submit" method="post">
-      {{>dropdown dropdown3}}
+      <div class="dropdown">
+        <button type="button" name="allergies" class="dropbtn">Filter</button>
+        <div id="allergies" class="dropdown_content">
+          {{#each allergies}}
+          <p><input type="checkbox" class="allergy-checkbox" name="{{this}}" value="{{this}}"> {{this}}</p>
+          {{/each}}
+        </div>
+      </div>
       <button type="submit">Submit</button>
     </form>
 

@@ -1,10 +1,11 @@
 <div class="leftSpacer"></div>
+
 {{>header}}
 <div class="container">
   <div class="team-members">
     {{#each teamMembers}}
     <div class="team-member">
-      <h3>{{role}} : {{fName}}</h3>
+      <h3>{{role}} : {{name}}</h3>
       <img src={{src}} alt={{alt}} width="150" height="150">
       <p>Email: <a class="no-style" href="mailto:{{email}}">{{email}}</a></p>
     </div>
