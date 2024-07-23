@@ -8,9 +8,10 @@ const MySQLStore = require('express-mysql-session')(session);
 const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
 const userRoutes = require('./routes/userRoutes_BE');                        // User
 const recipeRoutes = require('./routes/recipeRoutes_BE');                    // Recipe
-const about = require('./routes/about');                                 // About
+const about = require('./routes/about');                                     // About
 const autocomplete = require('./routes/autocomplete');
 const notificationRoutes = require('./routes/notificationRoutes_BE');
+const landingPage = require('./routes/landingPage_BE');                      // Landing Page
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.use("/users", userRoutes); // User Routes
 app.use("/about", about);
 app.use("/suggestions", autocomplete);
 app.use("/notifications", notificationRoutes);
+app.use("/landingpage", landingPage); // Landing page
 
 
 // Middleware to configure Handlebars
@@ -77,15 +79,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //this piece of code is to pass the dropdown variables between routes
-app.locals.dropdownFilters = {value: 'Filter', id: 'filter_options',
-  checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard'],
-  radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']};
+app.locals.dropdownFilters = {
+  value: 'Filter', id: 'filter_options',
+  checkbox_option: ['Vegan', 'Gluten Free', 'Oven Required', 'Stove Required', 'Easy', 'Medium', 'Hard'],
+  radio_option: ['Calories Ascending', 'Calories Descending', 'Protein Ascending', 'Protein Descending', 'Fat Ascending', 'Fat Descending', 'Fiber Ascending', 'Fiber Descending']
+};
 
-app.locals.dietaryRestrictions = {value: 'Dietary Restrictions', id: 'dietary_restrictions',
-  checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']};
+app.locals.dietaryRestrictions = {
+  value: 'Dietary Restrictions', id: 'dietary_restrictions',
+  checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']
+};
 
-app.locals.allergies = {value: 'Allergies', id: 'allergies',
-  checkbox_option: ['Milk', 'Eggs', 'Fish', 'Crustacean Shellfish', 'Tree Nuts', 'Peanuts', 'Wheat', 'Soybeans']};
+app.locals.allergies = {
+  value: 'Allergies', id: 'allergies',
+  checkbox_option: ['Milk', 'Eggs', 'Fish', 'Crustacean Shellfish', 'Tree Nuts', 'Peanuts', 'Wheat', 'Soybeans']
+};
 
 // Add more routes here as needed
 app.route('/')
@@ -111,27 +119,28 @@ app.route('/login')
     })
   });
 
-  // serve login page
+// serve login page
 app.route('/adminlogin')
-.get((req, res) => {
-  res.render('adminlogin', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'login.css'],
-    dropdown1: app.locals.dropdownFilters,
-    title: 'Admin Login'
-  })
-});
+  .get((req, res) => {
+    res.render('adminlogin', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+      style: ['default.css', 'login.css'],
+      dropdown1: app.locals.dropdownFilters,
+      title: 'Admin Login',
+      mode: 'login'
+    })
+  });
 
 // serve admintools page
 app.route('/admintools')
-.get((req, res) => {
-  res.render('admintools', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'admintools.css'],
-    dropdown1: app.locals.dropdownFilters,
-    title: 'Admin Tools'
-  })
-});
+  .get((req, res) => {
+    res.render('admintools', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      style: ['default.css', 'admintools.css'],
+      dropdown1: app.locals.dropdownFilters,
+      title: 'Admin Tools'
+    })
+  });
 
 // serve landing page
 app.route('/landingpage')

@@ -40,20 +40,29 @@ function autoEnrollUniversityPrograms(email) {
 // Handle registration POST request
 router.post('/register', IS_LOGGED_OUT, async (req, res) => {
   const { username, email, password, verify_password } = req.body;
- 
+
   // Check if passwords match
   if (password !== verify_password) {
     return res.status(400).json({ error: 'Passwords do not match!' });
   }
 
+  // Make sure the username and password meet the lenght requireements
+  if (username.length < 5) {
+    return res.status(400).json({ error: 'Username must be at least 5 characters' });
+  }
+
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'Password must be at least 8 characters' });
+  }
+
   try {
-    
+
     const [emailResults] = await connection.execute('SELECT * FROM Users WHERE email = ?', [email]);
     // Checks if email exists
     if (emailResults.length > 0) {
       return res.status(400).json({ error: 'Email already exists' });
     }
-    
+
     const [userResults] = await connection.execute('SELECT * FROM Users WHERE username = ?', [username]);
     // Checks if username exists
     if (userResults.length > 0) {
@@ -61,13 +70,13 @@ router.post('/register', IS_LOGGED_OUT, async (req, res) => {
     }
 
     // Hash the password
-    
+
     const hash = await bcrypt.hash(password, 10);
     console.log("TEST 5");
     await connection.execute('INSERT INTO Users (uuid, email, username, password_hash) VALUES (UUID(), ?, ?, ?)', [email, username, hash]);
     autoEnrollUniversityPrograms(email);
     return res.json({ message: 'User registered successfully' });
-    
+
   } catch (err) {
     console.error('Error during registration:', err);
     return res.status(500).json({ error: 'An error occurred during registration' });
@@ -93,7 +102,7 @@ router.post('/login', IS_LOGGED_OUT, async (req, res) => {
     }
 
     const [sessionResults] = await connection.execute('SELECT * FROM sessions WHERE user_id = ? AND session_end IS NULL', [user.uuid]);
-   
+
     role = 'user;'
     if (Number(user.role_id) === 3) {
       role = 'admin';
@@ -174,9 +183,9 @@ router.post("/change-username", IS_LOGGED_IN, async (req, res) => {
 
   const newUsername = req.body.newUsername;
 
-  try{
+  try {
     const [results] = await connection.execute('SELECT * FROM Users where Username = ?', [newUsername]);
-    if (results.length > 0){
+    if (results.length > 0) {
       return res.status(400).json({ error: "username is taken" });
     }
 
@@ -184,7 +193,7 @@ router.post("/change-username", IS_LOGGED_IN, async (req, res) => {
     req.session.user.username = newUsername;
     return res.json({ message: 'successfully changed username!' });
 
-  } catch (err){
+  } catch (err) {
     return res.json({ error: err });
   }
 });
@@ -194,10 +203,10 @@ router.post("/set-allergies", IS_LOGGED_IN, async (req, res) => {
   const userId = req.session.user.userId;
   const allergiesJoin = allergies.join(',');
 
-  try{
+  try {
     await connection.execute('UPDATE user_info SET allergies = ? WHERE user_id = ?', [allergiesJoin, userId]);
     return res.json({ message: 'Successfully Updated Allgeries' });
-  } catch (err){
+  } catch (err) {
     return res.json({ error: err });
   }
 
@@ -208,10 +217,10 @@ router.post("/set-dietary-restrictions", IS_LOGGED_IN, async (req, res) => {
   const userId = req.session.user.userId;
   const dietaryRestrictionsJoin = dietary_restrictions.join(',');
 
-  try{
+  try {
     await connection.execute('UPDATE user_info SET dietary_restrictions = ? WHERE user_id = ?', [dietaryRestrictionsJoin, userId]);
     return res.json({ message: 'Successfully Updated Dietary Restrictions' });
-  } catch (err){
+  } catch (err) {
     return res.json({ error: err });
   }
 });
