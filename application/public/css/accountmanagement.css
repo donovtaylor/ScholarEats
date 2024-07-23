@@ -28,6 +28,22 @@
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+#bio {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    resize: vertical; 
+}
+
+#pronouns {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
 .account-form button {
     width: 100%;
     padding: 10px;

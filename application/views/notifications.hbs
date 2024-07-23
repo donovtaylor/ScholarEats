@@ -1,0 +1,13 @@
+<div id="leftSpacer"></div>
+{{>header}}
+<div class="container">
+  {{#if notification}}
+  {{#each notification}}
+  {{>partialNotification this}}
+  {{/each}}
+  {{else}}
+  <p>No notifications available.</p>
+  {{/if}}
+</div>
+{{>footer}}
+<div id="rightSpacer"></div>

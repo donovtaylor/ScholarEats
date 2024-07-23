@@ -1,22 +1,22 @@
 <div class="leftSpacer"></div>
 {{>header}}
 <div class="container">
-
   <div class="refinedSearch">
     <h1>Refined Search</h1>
     <form action="/recipes" id="refinedSearch" method="get">
 
-        <!-- HIDDEN ATTRIBUTES -->
-        <input type="hidden" name="searchInput" value="{{searchInput}}"> <!-- For preserving the search input from that other form -->
-        <!-- END HIDDEN ATTRIBUTES -->
+      <!-- HIDDEN ATTRIBUTES -->
+      <input type="hidden" name="searchInput" value="{{searchInput}}">
+      <!-- For preserving the search input from that other form -->
+      <!-- END HIDDEN ATTRIBUTES -->
 
       {{#each dropdownFilters.checkbox_option}}
         <p><input type="checkbox" class="dropdown_option" name="{{this}}">{{this}}</p>
       {{/each}}
       {{#each dropdownFilters.radio_option}}
-        <p><input type="radio" class="dropdown_option" name="filter_options">{{this}}</p>
+        <p><input type="radio" class="dropdown_option" name="sort" value="{{this}}">{{this}}</p>
       {{/each}}
-      
+
       <input type="submit" class="submitbutton" value="Apply Filters">
     </form>
   </div>
@@ -27,7 +27,7 @@
     {{>partial_recipe this}}
     {{/each}}
     {{else}}
-    <p>No recipes available.</p>
+      <p>No recipes available.</p>
     {{/if}}
   </div>
 </div>

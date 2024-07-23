@@ -1,0 +1,104 @@
+:root{
+    background: #121212;
+}
+
+head {
+    color: #eee;
+    background: #121212;
+}
+
+.container {
+    color: #eee;
+    background: #121212;
+}
+
+body {
+    background: #121212;
+}
+
+select {
+    width:fit-content;
+    height: fit-content;
+}
+
+.submitbutton {
+    background: #121212;
+}
+
+.dropbtn {
+    background: #121212;
+}
+
+.modeSelect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.recipes {
+    background: #121212;
+}
+
+.refinedSearch {
+    background: #121212;
+}
+
+.dropdown {
+    background: #121212;
+}
+
+.searchSubmit {
+    background: #121212;
+}
+
+.team-members{
+    color: #eee;
+    background: #121212;
+}
+
+.login-form-container {
+    color: #eee;
+    background: #121212;
+}
+
+input {
+    color: #eee;
+    background: #42414d;
+}
+
+.dark-mode a {
+    fill: #42414d;
+}
+
+.forgot-password-form-container {
+    background: #121212;
+}
+
+#filter_options {
+    background: #121212;
+}
+
+.autocomplete-suggestion {
+    background: #121212;
+}
+
+.recipe-description {
+    color: #eee;
+}
+
+.ingredient-description {
+    color: #eee;
+}
+
+.recipe {
+    background: #42414d;
+}
+
+.ingredient {
+    background: #42414d;
+}
+
+.landing-page {
+    background: #121212;
+    border: 1px solid orange;
+}

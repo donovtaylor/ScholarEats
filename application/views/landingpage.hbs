@@ -1,0 +1,42 @@
+<div id="leftSpacer"></div>
+{{>header}}
+<div class="container">
+  <div class="landing-page">
+    <header class="landing-header">Welcome to ScholarEats!</header>
+    
+    <section class="content-section">
+      <div class="recipes-section">
+        <h2 class="section-title">Featured Recipes</h2>
+        <div class="grid-container">
+
+          {{#each recipes}}
+            <div class="recipe">
+              <img src="{{this.img_src}}" alt="{{this.recipe_name}}" class="recipe-image">
+              <h3 class="recipe-title">{{this.recipe_name}}</h3>
+              <p class="recipe-description">{{this.Description}}</p>
+            </div>
+          {{/each}}
+
+        </div>
+      </div>
+
+      <div class="ingredients-section">
+        <h2 class="section-title">Featured Ingredients</h2>
+        <div class="grid-container">
+
+          {{#each ingredients}}
+            <div class="ingredient">
+              <img src="{{this.img_src}}" alt="{{this.name}}" class="ingredient-image">
+              <h3 class="ingredient-title">{{this.name}}</h3>
+              <p class="ingredient-description">{{this.Description}}</p>
+            </div>
+          {{/each}}
+
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{{>footer}}
+<div id="rightSpacer"></div>
+<script src="/js/landing.js"></script>

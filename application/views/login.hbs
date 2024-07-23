@@ -53,4 +53,27 @@
   window.onload = function () {
     loadCaptcha();
   };
+
+  /*
+  // option to change between light and dark mode
+  // script moved to mode.js
+  function changeMode() {
+    const modeSelect = document.getElementById("modeSelect");
+    const modeStyleSheetLink = document.getElementById("modeStyleSheetLink");
+    const currentMode = localStorage.getItem("mode") || "login";
+
+    function setMode(modeName) {
+      modeStyleSheetLink.setAttribute("href", `/css/${modeName}.css`);
+    }
+
+    modeSelect.addEventListener("change", () => {
+      setMode(modeSelect.value);
+      localStorage.setItem("mode", modeSelect.value);
+
+    });
+    setMode(currentMode);
+  }
+
+  changeMode();
+*/
 </script>

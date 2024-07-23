@@ -25,7 +25,7 @@ connection.connect(err => {
 router.get('/', (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
     const query = `
-        SELECT s.ingredient_id, s.quantity, i.name
+        SELECT s.ingredient_id, s.quantity, i.name, i.img_src
         FROM store s
         JOIN ingredient i ON s.ingredient_id = i.ingredient_id
     `;
@@ -36,7 +36,7 @@ router.get('/', (req, res) => {
         }
         
         const ingredients = results.map(row => ({
-            src: '/images/icon_orange.png',
+            src: row.img_src,
             alt: 'ingredient.jpg',
             name: row.name,
             desc: `Quantity: ${row.quantity}`
@@ -46,8 +46,9 @@ router.get('/', (req, res) => {
             style: ['default.css', 'ingredients.css'],
             dropdown1: dropdownFilters,
             title: 'Ingredients',
-            script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-            ingredient: ingredients
+            script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+            ingredient: ingredients,
+            mode: 'ingredients'
         });
     });
 });

@@ -8,10 +8,13 @@ const MySQLStore = require('express-mysql-session')(session);
 const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
 const userRoutes = require('./routes/userRoutes_BE');                        // User
 const recipeRoutes = require('./routes/recipeRoutes_BE');                    // Recipe
-const about = require('./routes/about');                                 // About
+const about = require('./routes/about');                                     // About
 const autocomplete = require('./routes/autocomplete');
+const notificationRoutes = require('./routes/notificationRoutes_BE');
+const landingPage = require('./routes/landingPage_BE');                      // Landing Page
 
 const app = express();
+
 
 // app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -55,6 +58,9 @@ app.use("/ingredients", inventoryRoutes); // Inventory Routes
 app.use("/users", userRoutes); // User Routes
 app.use("/about", about);
 app.use("/suggestions", autocomplete);
+app.use("/notifications", notificationRoutes);
+app.use("/landingpage", landingPage); // Landing page
+
 
 // Middleware to configure Handlebars
 const hbs = exphbs.create({
@@ -73,26 +79,33 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //this piece of code is to pass the dropdown variables between routes
-app.locals.dropdownFilters = {value: 'Filter', id: 'filter_options',
-  checkbox_option: ['Vegan','Gluten Free','Oven Required','Stove Required','Easy','Medium','Hard'],
-  radio_option: ['Calories Ascending','Calories Descending','Protein Ascending','Protein Descending','Fat Ascending','Fat Descending','Fiber Ascending','Fiber Descending']};
+app.locals.dropdownFilters = {
+  value: 'Filter', id: 'filter_options',
+  checkbox_option: ['Vegan', 'Gluten Free', 'Oven Required', 'Stove Required', 'Easy', 'Medium', 'Hard'],
+  radio_option: ['Calories Ascending', 'Calories Descending', 'Protein Ascending', 'Protein Descending', 'Fat Ascending', 'Fat Descending', 'Fiber Ascending', 'Fiber Descending']
+};
 
-app.locals.dietaryRestrictions = {value: 'Dietary Restrictions', id: 'dietary_restrictions',
-  checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']};
+app.locals.dietaryRestrictions = {
+  value: 'Dietary Restrictions', id: 'dietary_restrictions',
+  checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']
+};
 
-app.locals.allergies = {value: 'Allergies', id: 'allergies',
-  checkbox_option: ['Milk', 'Eggs', 'Fish', 'Crustacean Shellfish', 'Tree Nuts', 'Peanuts', 'Wheat', 'Soybeans']};
+app.locals.allergies = {
+  value: 'Allergies', id: 'allergies',
+  checkbox_option: ['Milk', 'Eggs', 'Fish', 'Crustacean Shellfish', 'Tree Nuts', 'Peanuts', 'Wheat', 'Soybeans']
+};
 
 // Add more routes here as needed
 app.route('/')
   .get((req, res) => {
     var searchInput = req.query.searchInput;
     res.render('index', {
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
       style: ['default.css'],
       dropdown1: app.locals.dropdownFilters,
       title: 'Team\'s about page',
-      header: 'Team\'s about page'
+      header: 'Team\'s about page',
+      mode: 'default'
     })
   });
 
@@ -100,61 +113,92 @@ app.route('/')
 app.route('/login')
   .get((req, res) => {
     res.render('login', {
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
       style: ['default.css', 'login.css'],
       dropdown1: app.locals.dropdownFilters,
-      title: 'Login'
+      title: 'Login',
+      mode: 'login'
     })
   });
 
-  // serve login page
+// serve login page
 app.route('/adminlogin')
-.get((req, res) => {
-  res.render('adminlogin', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'login.css'],
-    dropdown1: app.locals.dropdownFilters,
-    title: 'adminlogin'
-  })
-});
+  .get((req, res) => {
+    res.render('adminlogin', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+      style: ['default.css', 'login.css'],
+      dropdown1: app.locals.dropdownFilters,
+      title: 'Admin Login',
+      mode: 'login'
+    })
+  });
+
+// serve admintools page
+app.route('/admintools')
+  .get((req, res) => {
+    res.render('admintools', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      style: ['default.css', 'admintools.css'],
+      dropdown1: app.locals.dropdownFilters,
+      title: 'Admin Tools'
+    })
+  });
+
+// // serve landing page
+// app.route('/landingpage')
+//   .get((req, res) => {
+//     res.render('landingpage', {
+//       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+//       style: ['default.css', 'landingpage.css'],
+//       dropdown1: app.locals.dropdownFilters,
+//       title: 'landingpage',
+//       mode: 'landingpage'
+//     })
+//   });
 
 // serve forgot password page
 app.get('/forgotpassword', (req, res) => {
   res.render('forgotpassword', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
     style: ['default.css', 'forgotpassword.css'],
     dropdown1: app.locals.dropdownFilters,
-    title: 'Forgot Password'
+    title: 'Forgot Password',
+    mode: 'forgotpassword'
   });
 });
 
 // serve privacy policy and terms of service page
 app.get('/privacy_policy', (req, res) => {
   res.render('privacy_policy', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
     style: ['default.css'],
-    title: 'Privacy Policy and Terms of Service'
+    dropdown1: app.locals.dropdownFilters,
+    title: 'Privacy Policy and Terms of Service',
+    mode: 'default'
   });
 });
 
 // serve contact us page
 app.get('/contact_us', (req, res) => {
   const teamMembers = [
-    { fName: 'Angelo Arriaga', src: 'images/angelo.jpg', alt: 'angelo.jpg', role: 'Team Lead', email: 'aarriaga1@sfsu.edu' },
-    { fName: 'Donovan Taylor', src: 'images/donovan.jpg', alt: 'donovan.jpg', role: 'Frontend Lead', email: 'dvelasquez1@sfsu.edu' },
-    { fName: 'Hancun Guo', src: 'images/hancun.jpg', alt: 'hancun.jpg', role: 'Frontend', email: 'hguo4@sfsu.edu' },
-    { fName: 'Edward Mcdonald', src: 'images/edward.jpg', alt: 'edward.jpg', role: 'Backend Lead', email: 'emcdonald1@sfsu.edu' },
-    { fName: 'Karl Carsola', src: 'images/karl.jpg', alt: 'karl.jpg', role: 'Backend', email: 'kcarsola@mail.sfsu.edu' },
-    { fName: 'Sai Bavisetti', src: 'images/sai.jpg', alt: 'sai.jpg', role: 'Database', email: 'sbavisetti@sfsu.edu' },
-    { fName: 'Maeve Fitzpatrick', src: 'images/maeve.jpg', alt: 'maeve.jpg', role: 'Docs-Editor', email: 'mfitzpatrick@sfsu.edu' },
-    { fName: 'Sabrina Diaz-Erazo', src: 'images/sabrina.jpg', alt: 'sabrina.jpg', role: 'GitHub Master', email: 'sdiazerazo@sfsu.edu' },
-    { fName: 'Tina Chou', role: 'Frontend', src: 'images/tina.jpg', alt: 'tina.jpg', email: 'ychou@sfsu.edu' }
+    { name: 'Angelo Arriaga', src: 'images/angelo.jpg', alt: 'angelo.jpg', role: 'Team Lead', email: 'aarriaga1@sfsu.edu' },
+    { name: 'Donovan Taylor', src: 'images/donovan.jpg', alt: 'donovan.jpg', role: 'Frontend Lead', email: 'dvelasquez1@sfsu.edu' },
+    { name: 'Hancun Guo', src: 'images/hancun.jpg', alt: 'hancun.jpg', role: 'Frontend', email: 'hguo4@sfsu.edu' },
+    { name: 'Edward Mcdonald', src: 'images/edward.jpg', alt: 'edward.jpg', role: 'Backend Lead', email: 'emcdonald1@sfsu.edu' },
+    { name: 'Karl Carsola', src: 'images/karl.jpg', alt: 'karl.jpg', role: 'Backend', email: 'kcarsola@mail.sfsu.edu' },
+    { name: 'Sai Bavisetti', src: 'images/sai.jpg', alt: 'sai.jpg', role: 'Database', email: 'sbavisetti@sfsu.edu' },
+    { name: 'Maeve Fitzpatrick', src: 'images/maeve.jpg', alt: 'maeve.jpg', role: 'Docs-Editor', email: 'mfitzpatrick@sfsu.edu' },
+    { name: 'Sabrina Diaz-Erazo', src: 'images/sabrina.jpg', alt: 'sabrina.jpg', role: 'GitHub Master', email: 'sdiazerazo@sfsu.edu' },
+    { name: 'Tina Chou', role: 'Frontend', src: 'images/tina.jpg', alt: 'tina.jpg', email: 'ychou@sfsu.edu' }
   ];
   // add styling to contact_us page
   res.render('contact_us', {
     style: ['default.css'],
     dropdown1: app.locals.dropdownFilters,
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    teamMembers
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+    teamMembers,
+    title: 'Contact Us',
+    mode: 'default'
   });
 });
 
@@ -162,26 +206,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 // serve registration page
 app.get('/register', (req, res) => {
   res.render('register', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
     style: ['default.css'],
     dropdown1: app.locals.dropdownFilters,
-    title: 'Register'
-  });
-});
-
-// test page to test new pages before connecting them
-app.get('/test', (req, res) => {
-  res.render('accountmanagement', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'accountmanagement.css'],
-    dropdown1: app.locals.dropdownFilters,
-    title: 'Account Management',
+    title: 'Register',
+    mode: 'default'
   });
 });
 
 app.get('/accountmanagement', (req, res) => {
   res.render('accountmanagement', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
     style: ['default.css', 'accountmanagement.css'],
     dropdown1: app.locals.dropdownFilters,
     dropdown2: app.locals.dietaryRestrictions,
