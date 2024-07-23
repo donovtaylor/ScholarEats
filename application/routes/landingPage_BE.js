@@ -70,6 +70,7 @@ router.get('/', (req, res) => {
             }
 
             res.render('landingpage', {
+                recipeID: row['Unnamed: 0'],
                 style: ['default.css', 'landingpage.css'],
                 script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
                 dropdown1: dropdownFilters,
