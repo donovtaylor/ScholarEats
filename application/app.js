@@ -100,12 +100,11 @@ app.route('/')
   .get((req, res) => {
     var searchInput = req.query.searchInput;
     res.render('index', {
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css'],
       dropdown1: app.locals.dropdownFilters,
       title: 'Team\'s about page',
-      header: 'Team\'s about page',
-      mode: 'default'
+      header: 'Team\'s about page'
     })
   });
 
@@ -113,11 +112,10 @@ app.route('/')
 app.route('/login')
   .get((req, res) => {
     res.render('login', {
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
       style: ['default.css', 'login.css'],
       dropdown1: app.locals.dropdownFilters,
-      title: 'Login',
-      mode: 'login'
+      title: 'Login'
     })
   });
 
@@ -144,37 +142,34 @@ app.route('/admintools')
     })
   });
 
-// // serve landing page
-// app.route('/landingpage')
-//   .get((req, res) => {
-//     res.render('landingpage', {
-//       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
-//       style: ['default.css', 'landingpage.css'],
-//       dropdown1: app.locals.dropdownFilters,
-//       title: 'landingpage',
-//       mode: 'landingpage'
-//     })
-//   });
+// serve landing page
+app.route('/landingpage')
+  .get((req, res) => {
+    res.render('landingpage', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      style: ['default.css', 'landingpage.css'],
+      dropdown1: app.locals.dropdownFilters,
+      title: 'Landing Page'
+    })
+  });
 
 // serve forgot password page
 app.get('/forgotpassword', (req, res) => {
   res.render('forgotpassword', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css', 'forgotpassword.css'],
     dropdown1: app.locals.dropdownFilters,
-    title: 'Forgot Password',
-    mode: 'forgotpassword'
+    title: 'Forgot Password'
   });
 });
 
 // serve privacy policy and terms of service page
 app.get('/privacy_policy', (req, res) => {
   res.render('privacy_policy', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css'],
     dropdown1: app.locals.dropdownFilters,
-    title: 'Privacy Policy and Terms of Service',
-    mode: 'default'
+    title: 'Privacy Policy and Terms of Service'
   });
 });
 
@@ -195,10 +190,9 @@ app.get('/contact_us', (req, res) => {
   res.render('contact_us', {
     style: ['default.css'],
     dropdown1: app.locals.dropdownFilters,
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     teamMembers,
-    title: 'Contact Us',
-    mode: 'default'
+    title: 'Contact Us'
   });
 });
 
@@ -206,14 +200,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 // serve registration page
 app.get('/register', (req, res) => {
   res.render('register', {
-    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css'],
     dropdown1: app.locals.dropdownFilters,
-    title: 'Register',
-    mode: 'default'
+    title: 'Register'
   });
 });
 
+// add dark mode button here
 app.get('/accountmanagement', (req, res) => {
   res.render('accountmanagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],

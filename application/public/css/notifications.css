@@ -1,0 +1,11 @@
+.container {
+  background-color: #fff;
+  border-color: #ddd;
+  border-radius: 5px;
+}
+
+.notification {
+  border-color: #ddd;
+  padding-left: 10px;
+  padding-right: 10px;
+}

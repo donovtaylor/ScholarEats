@@ -1,54 +1,55 @@
 const fetch = require('node-fetch');
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
 const router = express.Router();
 
-let debug = true; // toggle console debug messages
+let debug = false; // toggle console debug messages
 
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
   host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
   user: 'backend_lead',
   password: 'password',
   database: 'ScholarEats'
 });
 
-connection.connect(err => {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-    return;
-  }
-  console.log('Connected to the database');
-});
+// connection.connect(err => {
+//   if (err) {
+//     console.error('Error connecting to the database:', err);
+//     return;
+//   }
+//   console.log('Connected to the database');
+// });
 
 // Rendering recipes dynamically from the database
-router.get('/', (req, res) => {
-  var dropdownFilters = req.app.locals.dropdownFilters;
-  const { dietary_restriction, cooking_aid, sort, searchInput } = req.query; // removed filter_options
+router.route('/')
+  .get(async (req, res) => {
+    var dropdownFilters = req.app.locals.dropdownFilters;
+    const { dietary_restriction, cooking_aid, sort, searchInput } = req.query; // removed filter_options
 
-  /* Extract the checkbox/radio data */
+    /* Extract the checkbox/radio data */
 
-  // Difficulties
-  const difficulties = Object.keys(req.query).filter(key => [
-    'Easy',
-    'Medium',
-    'Hard'].includes(key) && req.query[key] === 'on');
+    // Difficulties
+    const difficulties = Object.keys(req.query).filter(key => [
+      'Easy',
+      'Medium',
+      'Hard'].includes(key) && req.query[key] === 'on');
 
-  // Dietary Restrictions
-  const dietaryRestrictions = Object.keys(req.query).filter(key => [
-    'Vegan',
-    'Keto',
-    'Halal',
-    'Vegetarian',
-    'Pescatarian',
-    'Kosher'].includes(key) && req.query[key] === 'on');
+    // Dietary Restrictions
+    const dietaryRestrictions = Object.keys(req.query).filter(key => [
+      'Vegan',
+      'Keto',
+      'Halal',
+      'Vegetarian',
+      'Pescatarian',
+      'Kosher'].includes(key) && req.query[key] === 'on');
 
-  // Cooking Aids
-  const cookingAids = Object.keys(req.query).filter(key => [
-    'Oven Required',
-    'Stove Required'].includes(key) && req.query[key] === 'on');
+    // Cooking Aids
+    const cookingAids = Object.keys(req.query).filter(key => [
+      'Oven Required',
+      'Stove Required'].includes(key) && req.query[key] === 'on');
 
   // Sorting options
   const sortOptionsQueryMap = { // map for the SQL queries
@@ -87,37 +88,36 @@ router.get('/', (req, res) => {
             FROM store
             WHERE quantity > 0
         )
-    )
-  `;
+    )`;
 
-  let queryParams = [];
+    let queryParams = [];
 
-  // Query parameters, dynamically changes the URL
+    // Query parameters, dynamically changes the URL
 
-  if (dietaryRestrictions.length > 0) { // Dietary restrictions
-    query += ' AND r.`dietary restrictions` IN (' + dietaryRestrictions.map(() => '?').join(', ') + ')';
-    queryParams.push(...dietaryRestrictions);
-  }
+    if (dietaryRestrictions.length > 0) { // Dietary restrictions
+      query += ' AND r.`dietary restrictions` IN (' + dietaryRestrictions.map(() => '?').join(', ') + ')';
+      queryParams.push(...dietaryRestrictions);
+    }
 
-  if (cookingAids.length > 0) { // Cooking aids
-    query += ' AND r.`cooking tip` IN (' + cookingAids.map(() => '?').join(', ') + ')';
-    queryParams.push(...cookingAids);
-  }
+    if (cookingAids.length > 0) { // Cooking aids
+      query += ' AND r.`cooking tip` IN (' + cookingAids.map(() => '?').join(', ') + ')';
+      queryParams.push(...cookingAids);
+    }
 
-  if (difficulties.length > 0) { // Difficulty
-    query += ' AND r.`difficulty` IN (' + difficulties.map(() => '?').join(', ') + ')';
-    queryParams.push(...difficulties);
-  }
+    if (difficulties.length > 0) { // Difficulty
+      query += ' AND r.`difficulty` IN (' + difficulties.map(() => '?').join(', ') + ')';
+      queryParams.push(...difficulties);
+    }
 
   if (searchInput) { // Search
     query += ' AND `recipe_name` LIKE ?';
     queryParams.push(`%${searchInput}%`);
   }
 
-  if (sortOptions) { // Sorting options
-    query += ` ORDER BY ${sortOptions}`;
-    // queryParams.push(`%${sortOptions}%`)
-  }
+    if (sortOptions) { // Sorting options
+      query += ` ORDER BY ${sortOptions}`;
+      // queryParams.push(`%${sortOptions}%`)
+    }
 
   if (debug) {
     console.log(`Final query: ${query}`);
@@ -125,56 +125,52 @@ router.get('/', (req, res) => {
     console.log(`Sorting method: ${sortOptions}`);
   }
 
-  connection.query(query, queryParams, (err, results) => {
-    if (err) {
-      console.error('Error fetching recipes:', err);
-      return res.status(500).send('Error fetching recipes');
-    }
-
-    const resultCount = results.length; // get the number of results
+    try {
+      const [results] = await connection.execute(query, queryParams);
+      const resultCount = results.length; // get the number of results
 
     if (debug) {
       console.log(`Results: ${resultCount}`);
     }
 
-    // Render the results, if there are recipes available
-    if (resultCount > 0) {
+      // Render the results, if there are recipes available
+      if (resultCount > 0) {
 
-      if (debug) {
-        console.log(`Recipes available. Serving generated recipes.`);
+        if (debug) {
+          console.log(`Recipes available. Serving generated recipes.`);
+        }
+
+        const recipes = results.map(row => ({
+          id: row['Unnamed: 0'],
+          src: row.img_src,
+          alt: 'recipe.jpg',
+          name: row.recipe_name,
+          desc: `Time: ${row.total_time}`
+        }));
+
+        res.render('recipes', {
+          style: ['default.css', 'recipes.css'],
+          script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+          dropdown1: dropdownFilters,
+          title: 'Recipes',
+          recipe: recipes,
+          searchInput: searchInput // Preserves the search input. Yippee!
+        });
+
+        if (debug) {
+          console.log(`Finished serving generated recipes.`);
+        }
+
       }
 
-      const recipes = results.map(row => ({
-        id: row['Unnamed: 0'],
-        src: row.img_src,
-        alt: 'ingredient.jpg',
-        name: row.recipe_name,
-        desc: `Time: ${row.total_time}`
-      }));
+      // If no recipes are available
+      if (resultCount === 0) {
 
-      res.render('recipes', {
-        style: ['default.css', 'recipes.css'],
-        script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-        dropdown1: dropdownFilters,
-        title: 'Recipes',
-        recipe: recipes,
-        searchInput: searchInput // Preserves the search input. Yippee!
-      });
+        if (debug) {
+          console.log(`Recipes not available. Serving randomly generated recipes.`);
+        }
 
-      if (debug) {
-        console.log(`Finished serving generated recipes.`);
-      }
-
-    }
-
-    // If no recipes are available
-    if (resultCount === 0) {
-
-      if (debug) {
-        console.log(`Recipes not available. Serving randomly generated recipes.`);
-      }
-
-      const randomSelectionQuery = `
+        const randomSelectionQuery = `
         SELECT DISTINCT r.*
         FROM recipes r
         WHERE r.\`Unnamed: 0\` IN (
@@ -186,36 +182,88 @@ router.get('/', (req, res) => {
         LIMIT 10
       `;
 
-      connection.query(randomSelectionQuery, (err, results) => {
-        if (err) {
+        try {
+          const [results] = await connection.execute(randomSelectionQuery);
+
+          const randomRecipes = results.map(row => ({
+            id: row['Unnamed: 0'],
+            src: row.img_src,
+            alt: 'ingredient.jpg',
+            name: row.recipe_name,
+            desc: `Time: ${row.total_time}`
+          }));
+
+          res.render('recipes', {
+            style: ['default.css', 'recipes.css'],
+            script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+            dropdown1: dropdownFilters,
+            title: 'Recipes',
+            recipe: randomRecipes,
+            searchInput: searchInput // Preserves the search input. Yippee!
+          });
+        } catch (err) {
           console.error('Error fetching recipes:', err);
           return res.status(500).send('Error fetching recipes');
         }
 
-        const randomRecipes = results.map(row => ({
-          id: row['Unnamed: 0'],
-          src: row.img_src,
-          alt: 'ingredient.jpg',
-          name: row.recipe_name,
-          desc: `Time: ${row.total_time}`
-        }));
+        if (debug) {
+          console.log(`Finished serving randomly generated recipes.`);
+        }
 
-        res.render('recipes', {
-          style: ['default.css', 'recipes.css'],
-          script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-          dropdown1: dropdownFilters,
-          title: 'Recipes',
-          recipe: randomRecipes,
-          searchInput: searchInput // Preserves the search input. Yippee!
-        });
-      });
-
-      if (debug) {
-        console.log(`Finished serving randomly generated recipes.`);
       }
-
+    } catch (err) {
+      console.error('Error fetching recipes:', err);
+      return res.status(500).send('Error fetching recipes');
     }
   });
+
+
+router.get('/:id', async (req, res) => {
+
+  var dropdownFilters = req.app.locals.dropdownFilters;
+
+  // Fetch the recipe from the db
+  let query = 'SELECT * FROM recipes WHERE \`Unnamed: 0\` = ?';
+  
+  // Fetch the ingredients for that recipe from the db
+  let ingredientQuery = `
+    SELECT i.name
+    FROM recipe_ingredient ri
+    JOIN ingredient i ON ri.ingredient_id = i.ingredient_id
+    WHERE ri.recipe_id = ?
+  `;
+
+  try {
+    const [recipeResult] = await connection.execute(query, [req.params.id]);
+    const [ingredientsResult] = await connection.execute(ingredientQuery, [req.params.id]);
+
+    console.log(recipeResult);
+    if (recipeResult.length > 0) {
+
+      const recipe = recipeResult[0];
+      const ingredients = ingredientsResult.map(ingredient => ingredient.name); // Map the ingredients to their name
+      const directions = recipe.directions.split('\n').filter(step => step.trim() !== ''); // Split the directions apart by \n, will probably change if we use AI
+
+      res.render('individual_recipes_view', {
+        style: ['default.css', 'individualRecipe.css'],
+        script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+        dropdown1: dropdownFilters,
+        title: recipe.recipe_name,
+        src: recipe.img_src,
+        prepTime: recipe.prep_time,
+        cookTime: recipe.cook_time,
+        servings: recipe.servings,
+        ingredients: ingredients,
+        instructions: directions
+      });
+    } else {
+      console.log('No results found.');
+    }
+  } catch (err) {
+    console.error('Error executing query: ', err);
+    return res.status(500).send('Error executing query');
+  }
+
 });
 
 /* 404 Error handling */

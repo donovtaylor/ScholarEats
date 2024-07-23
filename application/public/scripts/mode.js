@@ -1,7 +1,7 @@
 function changeMode() {
     const modeSelect = document.getElementById("modeSelect");
     const modeStyleSheetLink = document.getElementById("modeStyleSheetLink");
-    const currentMode = sessionStorage.getItem("mode") || "login";
+    const currentMode = sessionStorage.getItem("mode") || "default";
 
     function setMode(modeName) {
       modeStyleSheetLink.setAttribute("href", `/css/${modeName}.css`);

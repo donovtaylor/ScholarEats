@@ -46,6 +46,7 @@ router.get('/', (req, res) => {
                 WHERE quantity > 0
             )
         )
+        ORDER BY r.recipe_name DESC
         LIMIT 3
     `;
 
@@ -74,7 +75,8 @@ router.get('/', (req, res) => {
                 script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
                 dropdown1: dropdownFilters,
                 recipes: recipeResults,
-                ingredients: ingredientsResults
+                ingredients: ingredientsResults,
+                title: 'Landing Page'
             });
         });
     });

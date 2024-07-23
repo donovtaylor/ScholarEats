@@ -46,9 +46,8 @@ router.get('/', (req, res) => {
             style: ['default.css', 'ingredients.css'],
             dropdown1: dropdownFilters,
             title: 'Ingredients',
-            script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
-            ingredient: ingredients,
-            mode: 'ingredients'
+            script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+            ingredient: ingredients
         });
     });
 });

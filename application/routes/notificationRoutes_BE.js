@@ -33,12 +33,11 @@ router.get('/', async (req, res) => {
 
 
     res.render('notifications', {
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
-      style: ['default.css'],
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      style: ['default.css', 'notifications.css'],
       dropdown1: dropdownFilters,
       notification: notifications,
-      title: 'Notifications',
-      mode: 'default'
+      title: 'Notifications'
     });
 
   } catch (err) {

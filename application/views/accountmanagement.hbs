@@ -1,6 +1,12 @@
 <div class="leftSpacer"></div>
 {{>header}}
 <div class="container">
+  <link rel="stylesheet" id="modeStyleSheetLink" href="/css/{{mode}}.css">
+  <h3>Color Scheme Preference</h3>
+  <select id="modeSelect">
+    <option value="{{mode}}">Light Mode</option>
+    <option value="darkmode">Dark Mode</option>
+  </select>
   <h3>Change Username</h3>
   <form class="account-form" id="change-username-form" action="/submit" method="post">
     <input type="text" name="username" id="new-username" placeholder="Username">
@@ -13,15 +19,15 @@
     <input type="password" name="verify-password" id="verify-password" placeholder="Verify Password">
     <button type="submit">Submit</button>
   </form>
-   <h3>Bio</h3>
+  <h3>Bio</h3>
   <form class="account-form" id="update-bio-form" action="/submit" method="post">
     <textarea name="bio" id="bio" placeholder="Tell us about yourself..." rows="4" required></textarea>
-    <button type="submit">Submit</button>
+    <button type="button" class="unfinished_button">Submit</button>
   </form>
   <h3>Pronouns</h3>
   <form class="account-form" id="update-pronouns-form" action="/submit" method="post">
     <input type="text" name="pronouns" id="pronouns" placeholder="Your Pronouns" required>
-    <button type="submit">Submit</button>
+    <button type="button" class="unfinished_button">Submit</button>
   </form>
   <h3>Change Dietary Restrictions</h3>
   <form class="account-form" id="change-dietary-restrictions" action="/submit" method="post">
@@ -29,19 +35,10 @@
     <button type="submit">Submit</button>
   </form>
   <h3>Change Allergies</h3>
-    <form class="account-form" id="change-allergies-from" action="/submit" method="post">
-      <div class="dropdown">
-        <button type="button" name="allergies" class="dropbtn">Filter</button>
-        <div id="allergies" class="dropdown_content">
-          {{#each allergies}}
-          <p><input type="checkbox" class="allergy-checkbox" name="{{this}}" value="{{this}}"> {{this}}</p>
-          {{/each}}
-        </div>
-      </div>
-      <button type="submit">Submit</button>
-    </form>
-
-
+  <form class="account-form" id="change-allergies-from" action="/submit" method="post">
+    {{>dropdown dropdown3}}
+    <button type="submit">Submit</button>
+  </form>
 </div>
 {{>footer}}
 <div class="rightSpacer"></div>

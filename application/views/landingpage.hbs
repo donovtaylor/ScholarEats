@@ -2,19 +2,19 @@
 {{>header}}
 <div class="container">
   <div class="landing-page">
-    <header class="landing-header">Welcome to ScholarEats!</header>
-    
+    <img src="/images/logo_black.png" alt="logo.png" id="bannerLogo">
+    <h2>ScholarEats is a way for Universities across America to provide better access to food-pantry programs to their student bodies</h2>
     <section class="content-section">
       <div class="recipes-section">
         <h2 class="section-title">Featured Recipes</h2>
         <div class="grid-container">
 
           {{#each recipes}}
-            <div class="recipe">
+            <a href="/recipes/{{this.[Unnamed: 0]}}" class="recipe">
               <img src="{{this.img_src}}" alt="{{this.recipe_name}}" class="recipe-image">
               <h3 class="recipe-title">{{this.recipe_name}}</h3>
               <p class="recipe-description">{{this.Description}}</p>
-            </div>
+            </a>
           {{/each}}
 
         </div>
