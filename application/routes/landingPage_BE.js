@@ -25,6 +25,7 @@ connection.connect(err => {
 
 // Rendering recipes dynamically from the database
 router.get('/', (req, res) => {
+    var dropdownFilters = req.app.locals.dropdownFilters;
 
     // Recipes
     const recipeQuery = `
@@ -70,7 +71,8 @@ router.get('/', (req, res) => {
 
             res.render('landingpage', {
                 style: ['default.css', 'landingpage.css'],
-                // script: ['landing.js'],
+                script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+                dropdown1: dropdownFilters,
                 recipes: recipeResults,
                 ingredients: ingredientsResults
             });
