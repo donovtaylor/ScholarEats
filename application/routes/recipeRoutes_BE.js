@@ -145,6 +145,7 @@ let query = `
       }
 
       const recipes = results.map(row => ({
+        id: row['Unnamed: 0'],
         src: row.img_src,
         alt: 'ingredient.jpg',
         name: row.recipe_name,
@@ -192,6 +193,7 @@ let query = `
         }
 
         const randomRecipes = results.map(row => ({
+          id: row['Unnamed: 0'],
           src: row.img_src,
           alt: 'ingredient.jpg',
           name: row.recipe_name,
