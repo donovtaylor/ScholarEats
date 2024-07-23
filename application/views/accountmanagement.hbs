@@ -1,6 +1,12 @@
 <div class="leftSpacer"></div>
 {{>header}}
 <div class="container">
+  <link rel="stylesheet" id="modeStyleSheetLink" href="/css/{{mode}}.css">
+  <h3>Color Scheme Preference</h3>
+  <select id="modeSelect">
+    <option value="{{mode}}">Light Mode</option>
+    <option value="darkmode">Dark Mode</option>
+  </select>
   <h3>Change Username</h3>
   <form class="account-form" id="change-username-form" action="/submit" method="post">
     <input type="text" name="username" id="new-username" placeholder="Username">
@@ -13,7 +19,7 @@
     <input type="password" name="verify-password" id="verify-password" placeholder="Verify Password">
     <button type="submit">Submit</button>
   </form>
-   <h3>Bio</h3>
+  <h3>Bio</h3>
   <form class="account-form" id="update-bio-form" action="/submit" method="post">
     <textarea name="bio" id="bio" placeholder="Tell us about yourself..." rows="4" required></textarea>
     <button type="submit">Submit</button>
@@ -29,12 +35,10 @@
     <button type="submit">Submit</button>
   </form>
   <h3>Change Allergies</h3>
-    <form class="account-form" id="change-allergies-from" action="/submit" method="post">
-      {{>dropdown dropdown3}}
-      <button type="submit">Submit</button>
-    </form>
-
-
+  <form class="account-form" id="change-allergies-from" action="/submit" method="post">
+    {{>dropdown dropdown3}}
+    <button type="submit">Submit</button>
+  </form>
 </div>
 {{>footer}}
 <div class="rightSpacer"></div>
