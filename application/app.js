@@ -201,7 +201,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/register', (req, res) => {
   res.render('register', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css'],
+    style: ['default.css', 'register.css'],
     dropdown1: app.locals.dropdownFilters,
     title: 'Register'
   });
