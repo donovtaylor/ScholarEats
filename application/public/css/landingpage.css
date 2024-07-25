@@ -5,13 +5,16 @@
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 5px;
-    min-height: 600px;
+    min-height: 800px;
   }
   
-  .landing-header {
+  h1#blurb{
+    justify-self:center;
     text-align: center;
-    font-size: 3em;
+    font-size: 2.5em;
     color: orange;
+    -webkit-text-stroke-color: darkslategray;
+    -webkit-text-stroke-width: 1.2px;
   }
 
   img#bannerLogo {
@@ -40,7 +43,7 @@
   .recipe, .ingredient {
     display: grid;
     color: orange;
-    max-width: 200px;
+    width: 200px;
     max-height: 280px;
     align-items: center;
     background-color: lightgray;

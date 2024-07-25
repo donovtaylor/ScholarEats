@@ -104,6 +104,7 @@ a>div {
   grid-area: nav;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 20px;
 }
 
 .navbar a,
@@ -112,7 +113,7 @@ a>div {
   text-decoration: none;
   color: orange;
   border: 1px solid orange;
-  border-radius: 30px;
+  border-radius: 5px;
   transition: background-color 0.3s, color 0.3s;
   align-content: center;
   text-align: center;
@@ -146,13 +147,14 @@ a img {
 }
 
 .navbar form {
+  gap: 20px;
   display: flex;
 }
 
 .searchbar {
   border-style: solid;
   border-color: orange;
-  border-radius: 30px;
+  border-radius: 5px;
   height: 32px;
   font-size: 1.3em;
   width: 100%;
@@ -189,7 +191,7 @@ a img {
   border: 1px solid orange;
   background-color: darkslategray;
   transition: background-color 0.3s, color 0.3s;
-  border-radius: 30px;
+  border-radius: 5px;
   height: 36px;
 }
 
@@ -234,7 +236,7 @@ a img {
 }
 
 .dropdown_option {
-  border-radius: 30px;
+  border-radius: 5px;
 }
 
 .dropdown_option:hover {
