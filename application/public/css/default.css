@@ -300,4 +300,5 @@ img {
   text-decoration: none;
   border: none;
   border-radius: none;
+  display: inline;
 }
