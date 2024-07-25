@@ -9,12 +9,15 @@
   }
   
   h1#blurb{
-    justify-self:center;
     text-align: center;
     font-size: 2.5em;
     color: orange;
     -webkit-text-stroke-color: darkslategray;
     -webkit-text-stroke-width: 1.2px;
+  }
+
+  h2#subBlurb {
+    text-align: center;
   }
 
   img#bannerLogo {
