@@ -74,15 +74,15 @@ router.route('/')
   let query = `
     SELECT DISTINCT r.*
     FROM recipes r
-    WHERE r.\`Unnamed: 0\` IN (
-      SELECT MIN(inner_r.\`Unnamed: 0\`)
+    WHERE r.recipe_id IN (
+      SELECT MIN(inner_r.recipe_id)
       FROM recipes inner_r
       GROUP BY inner_r.recipe_name
     )
     AND NOT EXISTS (
         SELECT 1
         FROM recipe_ingredient ri
-        WHERE ri.recipe_id = r.\`Unnamed: 0\`
+        WHERE ri.recipe_id = r.recipe_id
         AND ri.ingredient_id NOT IN (
             SELECT ingredient_id
             FROM store
@@ -95,12 +95,12 @@ router.route('/')
     // Query parameters, dynamically changes the URL
 
     if (dietaryRestrictions.length > 0) { // Dietary restrictions
-      query += ' AND r.`dietary restrictions` IN (' + dietaryRestrictions.map(() => '?').join(', ') + ')';
+      query += ' AND r.`dietary_restrictions` IN (' + dietaryRestrictions.map(() => '?').join(', ') + ')';
       queryParams.push(...dietaryRestrictions);
     }
 
     if (cookingAids.length > 0) { // Cooking aids
-      query += ' AND r.`cooking tip` IN (' + cookingAids.map(() => '?').join(', ') + ')';
+      query += ' AND r.`cooking_tip` IN (' + cookingAids.map(() => '?').join(', ') + ')';
       queryParams.push(...cookingAids);
     }
 
@@ -141,7 +141,7 @@ router.route('/')
         }
 
         const recipes = results.map(row => ({
-          id: row['Unnamed: 0'],
+          id: row.recipe_id,
           src: row.img_src,
           alt: 'recipe.jpg',
           name: row.recipe_name,
@@ -173,8 +173,8 @@ router.route('/')
         const randomSelectionQuery = `
         SELECT DISTINCT r.*
         FROM recipes r
-        WHERE r.\`Unnamed: 0\` IN (
-          SELECT MIN(inner_r.\`Unnamed: 0\`)
+        WHERE r.recipe_id IN (
+          SELECT MIN(inner_r.recipe_id)
           FROM recipes inner_r
           GROUP BY inner_r.recipe_name
         )
@@ -186,7 +186,7 @@ router.route('/')
           const [results] = await connection.execute(randomSelectionQuery);
 
           const randomRecipes = results.map(row => ({
-            id: row['Unnamed: 0'],
+            id: row.recipe_id,
             src: row.img_src,
             alt: 'ingredient.jpg',
             name: row.recipe_name,
@@ -223,7 +223,7 @@ router.get('/:id', async (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
 
   // Fetch the recipe from the db
-  let query = 'SELECT * FROM recipes WHERE \`Unnamed: 0\` = ?';
+  let query = 'SELECT * FROM recipes WHERE recipe_id = ?';
   
   // Fetch the ingredients for that recipe from the db
   let ingredientQuery = `

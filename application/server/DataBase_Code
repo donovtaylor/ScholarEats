@@ -11,7 +11,7 @@ CREATE TABLE roles (
 INSERT INTO roles (role_name) VALUES ('Student'), ('StoreManager'), ('Admin');
 
 -- Create User table
-CREATE TABLE Users (
+CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     uuid CHAR(36) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -36,7 +36,7 @@ CREATE TABLE user_info (
     favorited_recipes TEXT,
     favorited_ingredients TEXT,
     university VARCHAR(255),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 -- Create recipe table
@@ -60,7 +60,7 @@ CREATE TABLE recipes (
     difficulty VARCHAR(50),
     cooking_tip TEXT,
     accessibility BOOLEAN NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 -- Create user_recipes table
@@ -86,7 +86,7 @@ CREATE TABLE user_recipes (
     accessibility BOOLEAN NOT NULL,
     is_approved BOOLEAN NOT NULL DEFAULT FALSE,
     admin_id INT,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (admin_id) REFERENCES admin(admin_id)
 );
 
@@ -113,7 +113,7 @@ CREATE TABLE store (
     quantity INT NOT NULL,
     expiration_date DATE,
     FOREIGN KEY (ingredient_id) REFERENCES ingredient(ingredient_id),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 -- Create admin table
@@ -140,7 +140,7 @@ CREATE TABLE email_log (
     user_id INT NOT NULL,
     email VARCHAR(255) NOT NULL,
     timestamp DATETIME NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 -- Create manages table
@@ -149,7 +149,7 @@ CREATE TABLE manages (
     user_id INT NOT NULL,
     PRIMARY KEY (admin_id, user_id),
     FOREIGN KEY (admin_id) REFERENCES admin(admin_id),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 -- Create uses table
@@ -157,7 +157,7 @@ CREATE TABLE uses (
     user_id INT NOT NULL,
     recipe_id INT NOT NULL,
     PRIMARY KEY (user_id, recipe_id),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (recipe_id) REFERENCES recipes(recipe_id)
 );
 
@@ -166,7 +166,7 @@ CREATE TABLE has (
     user_id INT NOT NULL,
     university_id INT NOT NULL,
     PRIMARY KEY (user_id, university_id),
-    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
     FOREIGN KEY (university_id) REFERENCES university(university_id)
 );
 
@@ -176,7 +176,7 @@ CREATE TABLE activity_log (
     user_id INT NOT NULL,
     action VARCHAR(255) NOT NULL,
     timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 -- Create notifications table
@@ -186,13 +186,13 @@ CREATE TABLE notifications (
     message TEXT NOT NULL,
     is_read BOOLEAN NOT NULL DEFAULT FALSE,
     timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 -- Add indexes for optimization
-CREATE INDEX idx_user_email ON Users(email);
-CREATE INDEX idx_user_username ON Users(username);
-CREATE INDEX idx_user_uuid ON Users(uuid);
+CREATE INDEX idx_user_email ON users(email);
+CREATE INDEX idx_user_username ON users(username);
+CREATE INDEX idx_user_uuid ON users(uuid);
 
 CREATE INDEX idx_admin_email ON admin(email);
 CREATE INDEX idx_admin_username ON admin(username);
