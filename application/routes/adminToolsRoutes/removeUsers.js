@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
 // Route to get all users for removal
 router.get('/', async (req, res) => {
   try {
-    const [users] = await db.query('SELECT * FROM Users');
+    const [users] = await db.query('SELECT * FROM users');
     res.render('adminToolsViews/removeUsers', { users });
   } catch (err) {
     console.error('Error fetching users:', err);

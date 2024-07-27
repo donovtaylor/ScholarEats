@@ -38,11 +38,11 @@ router.post('/', async (req, res) => {
       req.flash('success_msg', 'No new users to sync.');
     }
 
-    res.redirect('/adminTools/user-authentication');
+    res.redirect('/admin-tools/user-authentication');
   } catch (err) {
     console.error('Error fetching users:', err);
     req.flash('error_msg', 'Error fetching users.');
-    res.redirect('/adminTools/user-authentication');
+    res.redirect('/admin-tools/user-authentication');
   }
 });
 
