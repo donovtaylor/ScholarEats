@@ -1,3 +1,7 @@
+/*****************************************
+* Description: Backend methods and routes relating to user-based actions
+*****************************************/
+
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql2/promise');
@@ -21,7 +25,7 @@ function autoEnrollUniversityPrograms(email) {
   return new Promise((resolve, reject) => {
     const domain = email.split('@')[1];
     const query = `
-        UPDATE Users 
+        UPDATE users 
         SET university = (SELECT name FROM university WHERE email_suffix = ?),
             verification_status = TRUE
         WHERE email = ?
@@ -57,13 +61,13 @@ router.post('/register', IS_LOGGED_OUT, async (req, res) => {
 
   try {
 
-    const [emailResults] = await connection.execute('SELECT * FROM Users WHERE email = ?', [email]);
+    const [emailResults] = await connection.execute('SELECT * FROM users WHERE email = ?', [email]);
     // Checks if email exists
     if (emailResults.length > 0) {
       return res.status(400).json({ error: 'Email already exists' });
     }
 
-    const [userResults] = await connection.execute('SELECT * FROM Users WHERE username = ?', [username]);
+    const [userResults] = await connection.execute('SELECT * FROM users WHERE username = ?', [username]);
     // Checks if username exists
     if (userResults.length > 0) {
       return res.status(400).json({ error: 'Username already exists' });
@@ -73,7 +77,7 @@ router.post('/register', IS_LOGGED_OUT, async (req, res) => {
 
     const hash = await bcrypt.hash(password, 10);
     console.log("TEST 5");
-    await connection.execute('INSERT INTO Users (uuid, email, username, password_hash) VALUES (UUID(), ?, ?, ?)', [email, username, hash]);
+    await connection.execute('INSERT INTO users (uuid, email, username, password_hash) VALUES (UUID(), ?, ?, ?)', [email, username, hash]);
     autoEnrollUniversityPrograms(email);
     return res.json({ message: 'User registered successfully' });
 
@@ -89,7 +93,7 @@ router.post('/login', IS_LOGGED_OUT, async (req, res) => {
   const isAdminLogin = req.body.password;
   try {
 
-    const [results] = await connection.execute('SELECT * FROM Users WHERE username = ?', [username]);
+    const [results] = await connection.execute('SELECT * FROM users WHERE username = ?', [username]);
     // Check if user exists
     if (results.length === 0) {
       return res.status(400).json({ error: 'Invalid Username or Password' });
@@ -152,7 +156,7 @@ router.post('/change-password', IS_LOGGED_IN, async (req, res) => {
   try {
     // Compare current password with the stored hash
 
-    const [result] = await connection.execute('SELECT * FROM Users WHERE username = ?', [req.session.user.username]);
+    const [result] = await connection.execute('SELECT * FROM users WHERE username = ?', [req.session.user.username]);
 
     const user = result[0];
 
@@ -170,7 +174,7 @@ router.post('/change-password', IS_LOGGED_IN, async (req, res) => {
     const hash = await bcrypt.hash(newPass, 10);
 
     // Update the password in the database
-    await connection.execute('UPDATE Users SET password_hash = ? WHERE username = ?', [hash, req.session.user.username]);
+    await connection.execute('UPDATE users SET password_hash = ? WHERE username = ?', [hash, req.session.user.username]);
 
     return res.json({ message: 'Successfully changed password!' });
   } catch (err) {
@@ -184,12 +188,12 @@ router.post("/change-username", IS_LOGGED_IN, async (req, res) => {
   const newUsername = req.body.newUsername;
 
   try {
-    const [results] = await connection.execute('SELECT * FROM Users where Username = ?', [newUsername]);
+    const [results] = await connection.execute('SELECT * FROM users where Username = ?', [newUsername]);
     if (results.length > 0) {
       return res.status(400).json({ error: "username is taken" });
     }
 
-    await connection.execute('UPDATE Users SET username = ? WHERE email = ?', [newUsername, req.session.user.email]);
+    await connection.execute('UPDATE users SET username = ? WHERE email = ?', [newUsername, req.session.user.email]);
     req.session.user.username = newUsername;
     return res.json({ message: 'successfully changed username!' });
 

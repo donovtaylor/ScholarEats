@@ -1,3 +1,7 @@
+/*****************************************
+* Description: Backend methods and routes concerning notification-related actions and events
+*****************************************/
+
 const express = require('express');
 const mysql = require('mysql2/promise');
 const path = require("path");
