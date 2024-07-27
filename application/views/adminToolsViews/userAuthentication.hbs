@@ -15,7 +15,7 @@
         {{#if error_msg}}
         <div class="alert alert-danger">{{error_msg}}</div>
         {{/if}}
-        <button class="btn btn-success" onclick="window.location.href='/admin-tools/authentication/authenticate'">Authenticate Users</button>
+        <button class="btn btn-success" onclick="window.location.href='/admin-tools/user-authentication/authenticate'">Authenticate Users</button>
         <button class="btn btn-warning" onclick="window.location.href='/admin-tools/user-authentication/blacklist'">Blacklist Users</button>
         <button class="btn btn-danger" onclick="window.location.href='/admin-tools/user-authentication/remove'">Remove Users</button>
         <form action="/admin-tools/user-authentication/sync" method="POST" class="mt-3">

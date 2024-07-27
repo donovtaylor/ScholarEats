@@ -31,11 +31,11 @@
                     <td>{{email}}</td>
                     <td>{{username}}</td>
                     <td>
-                        <form action="/authentication/authenticate" method="POST" style="display:inline;">
+                        <form action="/user-authentication/authenticate" method="POST" style="display:inline;">
                             <input type="hidden" name="user_id" value="{{user_id}}">
                             <button type="submit" class="btn btn-success btn-sm">Verify</button>
                         </form>
-                        <form action="/authentication/disapprove" method="POST" style="display:inline;">
+                        <form action="/user-authentication/disapprove" method="POST" style="display:inline;">
                             <input type="hidden" name="user_id" value="{{user_id}}">
                             <button type="submit" class="btn btn-danger btn-sm">Disapprove</button>
                         </form>
