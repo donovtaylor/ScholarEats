@@ -6,8 +6,8 @@ const router = express.Router();
 router.delete('/remove', (req, res) => {
   const { user_id } = req.body;
   const deleteUserInfoSql = 'DELETE FROM user_info WHERE user_id = ?';
-  const deleteUserSql = 'DELETE FROM Users WHERE user_id = ?';
-  const insertEmailLogSql = 'INSERT INTO email_log (user_id, email, timestamp) SELECT user_id, email, NOW() FROM Users WHERE user_id = ?';
+  const deleteUserSql = 'DELETE FROM users WHERE user_id = ?';
+  const insertEmailLogSql = 'INSERT INTO email_log (user_id, email, timestamp) SELECT user_id, email, NOW() FROM users WHERE user_id = ?';
 
   db.query(insertEmailLogSql, [user_id], (err, result) => {
     if (err) throw err;

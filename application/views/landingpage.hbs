@@ -10,7 +10,7 @@
         <div class="grid-container">
 
           {{#each recipes}}
-            <a href="/recipes/{{this.[Unnamed: 0]}}" class="recipe">
+            <a href="/recipes/{{this.recipe_id}}" class="recipe">
               <img src="{{this.img_src}}" alt="{{this.recipe_name}}" class="recipe-image">
               <h3 class="recipe-title">{{this.recipe_name}}</h3>
               <p class="recipe-description">{{this.Description}}</p>
