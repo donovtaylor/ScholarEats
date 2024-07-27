@@ -31,15 +31,15 @@ router.get('/', (req, res) => {
     const recipeQuery = `
         SELECT DISTINCT r.*
         FROM recipes r
-        WHERE r.\`Unnamed: 0\` IN (
-        SELECT MIN(inner_r.\`Unnamed: 0\`)
+        WHERE r.recipe_id IN (
+        SELECT MIN(inner_r.recipe_id)
         FROM recipes inner_r
         GROUP BY inner_r.recipe_name
         )
         AND NOT EXISTS (
             SELECT 1
             FROM recipe_ingredient ri
-            WHERE ri.recipe_id = r.\`Unnamed: 0\`
+            WHERE ri.recipe_id = r.recipe_id
             AND ri.ingredient_id NOT IN (
                 SELECT ingredient_id
                 FROM store
