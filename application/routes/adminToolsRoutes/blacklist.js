@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
     await connection.beginTransaction();
 
     // Get user details
-    const [users] = await connection.query('SELECT user_id, email FROM Users WHERE user_id = ?', [user_id]);
+    const [users] = await connection.query('SELECT user_id, email FROM users WHERE user_id = ?', [user_id]);
     if (users.length === 0) {
       throw new Error('User not found');
     }
@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
 // Route to get all users for blacklisting
 router.get('/', async (req, res) => {
   try {
-    const [users] = await db.query('SELECT * FROM Users WHERE blacklist = 0');
+    const [users] = await db.query('SELECT * FROM users WHERE blacklist = 0');
     res.render('adminToolsViews/blacklistUsers', { users });
   } catch (err) {
     console.error('Error fetching users:', err);

@@ -49,7 +49,7 @@ router.post('/disapprove', async (req, res) => {
 // Route to get unverified users
 router.get('/authenticate', async (req, res) => {
   try {
-    const [users] = await db.query('SELECT * FROM Users WHERE verification_status = 0');
+    const [users] = await db.query('SELECT * FROM users WHERE verification_status = 0');
     res.render('adminToolsViews/authenticateUsers', { users });
   } catch (err) {
     console.error('Error fetching unverified users:', err);

@@ -5,7 +5,7 @@ const router = express.Router();
 // Route to sync users from Users to user_info
 router.post('/', async (req, res) => {
   try {
-    const [users] = await db.query('SELECT user_id FROM Users');
+    const [users] = await db.query('SELECT user_id FROM users');
     console.log('Users fetched successfully:', users);
 
     if (users.length === 0) {
