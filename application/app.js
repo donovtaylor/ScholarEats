@@ -1,3 +1,7 @@
+/*****************************************
+* Description: The main entrypoint for the ScholarEats application
+*****************************************/
+
 const express = require('express');
 const path = require('path');
 const exphbs = require('express-handlebars');

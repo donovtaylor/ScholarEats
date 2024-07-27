@@ -1,3 +1,7 @@
+/*****************************************
+* Description: Backend methods and routes serving suggested recipes and ingredients on the landing page
+*****************************************/
+
 const fetch = require('node-fetch');
 const express = require('express');
 const mysql = require('mysql');

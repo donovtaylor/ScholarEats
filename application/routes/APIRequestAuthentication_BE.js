@@ -1,3 +1,8 @@
+/*****************************************
+* Description: Backend methods and routes to create global variables to
+* check if a user is logged in, is an admin, is a user, and is logged out
+*****************************************/
+
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql');

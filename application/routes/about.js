@@ -1,8 +1,10 @@
+/*****************************************
+* Description: Serves static information to the about page
+*****************************************/
+
 const express = require("express");
 const path = require("path");
 let router = express.Router();
-
-
 
 // server angelo's page dynamically using handlebars
 router.get('/angelo', (req, res) => {
