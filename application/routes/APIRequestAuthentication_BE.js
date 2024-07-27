@@ -4,12 +4,7 @@ const mysql = require('mysql');
 const session = require('express-session');
 const router = express.Router();
 
-const connection = mysql.createPool({
-    host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-    user: 'backend_Devop',
-    password: 'password',
-    database: 'ScholarEats'
-  });
+const connection = require('./db');
 
 // Check if the user is logged in
 function IS_LOGGED_IN(req, res, next) {

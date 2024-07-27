@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticate Users</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        {{#if success_msg}}
+        <div class="alert alert-success">{{success_msg}}</div>
+        {{/if}}
+        {{#if error_msg}}
+        <div class="alert alert-danger">{{error_msg}}</div>
+        {{/if}}
+        <h1>Authenticate Users</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr>
+                    <td>{{user_id}}</td>
+                    <td>{{email}}</td>
+                    <td>{{username}}</td>
+                    <td>
+                        <form action="/authentication/authenticate" method="POST" style="display:inline;">
+                            <input type="hidden" name="user_id" value="{{user_id}}">
+                            <button type="submit" class="btn btn-success btn-sm">Verify</button>
+                        </form>
+                        <form action="/authentication/disapprove" method="POST" style="display:inline;">
+                            <input type="hidden" name="user_id" value="{{user_id}}">
+                            <button type="submit" class="btn btn-danger btn-sm">Disapprove</button>
+                        </form>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <button class="btn btn-secondary" onclick="window.location.href='/user-authentication'">Go Back</button>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

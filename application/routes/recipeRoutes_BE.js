@@ -8,12 +8,7 @@ const router = express.Router();
 
 let debug = false; // toggle console debug messages
 
-const connection = mysql.createPool({
-  host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-  user: 'backend_lead',
-  password: 'password',
-  database: 'ScholarEats'
-});
+const connection = require('./db');
 
 // Rendering recipes dynamically from the database
 router.route('/')

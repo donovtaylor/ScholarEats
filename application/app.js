@@ -4,6 +4,7 @@ const exphbs = require('express-handlebars');
 const mysql = require('mysql');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
+const flash = require('connect-flash');
 
 const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
 const userRoutes = require('./routes/userRoutes_BE');                        // User
@@ -12,6 +13,7 @@ const about = require('./routes/about');                                     // 
 const autocomplete = require('./routes/autocomplete');
 const notificationRoutes = require('./routes/notificationRoutes_BE');
 const landingPage = require('./routes/landingPage_BE');                      // Landing Page
+const adminTools = require('./routes/adminToolsRoutes/adminTools');
 
 const app = express();
 
@@ -26,6 +28,7 @@ const connection = mysql.createPool({
   password: 'password',
   database: 'ScholarEats'
 });
+app.use(flash());
 
 const sessionStore = new MySQLStore({}, connection);
 
@@ -59,7 +62,8 @@ app.use("/users", userRoutes); // User Routes
 app.use("/about", about);
 app.use("/suggestions", autocomplete);
 app.use("/notifications", notificationRoutes);
-app.use("/landingpage", landingPage); // Landing page
+app.use("/landing-page", landingPage); // Landing page
+app.use("/admin-tools", adminTools);
 
 
 // Middleware to configure Handlebars
@@ -131,16 +135,6 @@ app.route('/adminlogin')
     })
   });
 
-// serve admintools page
-app.route('/admintools')
-  .get((req, res) => {
-    res.render('admintools', {
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-      style: ['default.css', 'admintools.css'],
-      dropdown1: app.locals.dropdownFilters,
-      title: 'Admin Tools'
-    })
-  });
 
 // serve landing page
 app.route('/landingpage')

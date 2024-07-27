@@ -6,12 +6,7 @@ const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequest
 const router = express.Router();
 router.use(express.json());
 
-const connection = mysql.createPool({
-  host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-  user: 'backend_lead',
-  password: 'password',
-  database: 'ScholarEats'
-});
+const connection = require('./db');
 
 router.get('/', async (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
@@ -21,7 +16,7 @@ router.get('/', async (req, res) => {
 
   try {
 
-    const [results] = await connection.execute(query, []);
+    const [results] = await connection.execute(query);
 
     const notifications = results.map(row => ({
       id: row.notification_id,
