@@ -4,24 +4,10 @@ const path = require('path');
 let router = express.Router();
 
 // Create connection to the database
-const db = mysql.createConnection({
-  host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-  user: 'admin',
-  password: 'vdpE9YYQiaGl6VWibkiO',
-  database: 'ScholarEats'
-});
-
-// Connect to the database
-db.connect(err => {
-  if (err) {
-      console.error('Error connecting to the database:', err);
-      process.exit(1);  // Exit the process with an error code
-  }
-  console.log('Connected to the database');
-});
+const db = require('./db');
 
 // Endpoint to get recipe suggestions
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   const searchTerm = req.query.q;
   if (!searchTerm) {
       return res.status(400).send('Missing query parameter');
@@ -34,15 +20,15 @@ router.get('/', (req, res) => {
       LIMIT 10
   `;
 
-  db.query(query, [`%${searchTerm}%`], (err, results) => {
-      if (err) {
-          console.error('Error executing query:', err);
-          return res.status(500).send('Internal Server Error');
-      }
+  try {
+      const [results] = await db.execute(query, [`%${searchTerm}%`]);
 
       const suggestions = results.map(row => row.recipe_name);
       res.json(suggestions);
-  });
+  } catch (err) {
+    console.error('Error executing query:', err);
+    return res.status(500).send('Internal Server Error');
+} ;
 });
 
 module.exports = router;

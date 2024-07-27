@@ -15,14 +15,6 @@ const connection = mysql.createPool({
   database: 'ScholarEats'
 });
 
-// connection.connect(err => {
-//   if (err) {
-//     console.error('Error connecting to the database:', err);
-//     return;
-//   }
-//   console.log('Connected to the database');
-// });
-
 // Rendering recipes dynamically from the database
 router.route('/')
   .get(async (req, res) => {
@@ -141,7 +133,7 @@ router.route('/')
         }
 
         const recipes = results.map(row => ({
-          id: row['Unnamed: 0'],
+          id: row['recipe_id'],
           src: row.img_src,
           alt: 'recipe.jpg',
           name: row.recipe_name,
@@ -237,7 +229,6 @@ router.get('/:id', async (req, res) => {
     const [recipeResult] = await connection.execute(query, [req.params.id]);
     const [ingredientsResult] = await connection.execute(ingredientQuery, [req.params.id]);
 
-    console.log(recipeResult);
     if (recipeResult.length > 0) {
 
       const recipe = recipeResult[0];
