@@ -1,3 +1,9 @@
+/*****************************************
+* Description: Backend methods and routes concerning recipe-related actions,
+* such as serving recipes to the recipes page, sorting and filtering searches,
+* and serving/rendering the individual recipes page.
+*****************************************/
+
 const fetch = require('node-fetch');
 const express = require('express');
 const mysql = require('mysql2/promise');
@@ -82,12 +88,12 @@ router.route('/')
     // Query parameters, dynamically changes the URL
 
     if (dietaryRestrictions.length > 0) { // Dietary restrictions
-      query += ' AND r.`dietary restrictions` IN (' + dietaryRestrictions.map(() => '?').join(', ') + ')';
+      query += ' AND r.`dietary_restrictions` IN (' + dietaryRestrictions.map(() => '?').join(', ') + ')';
       queryParams.push(...dietaryRestrictions);
     }
 
     if (cookingAids.length > 0) { // Cooking aids
-      query += ' AND r.`cooking tip` IN (' + cookingAids.map(() => '?').join(', ') + ')';
+      query += ' AND r.`cooking_tip` IN (' + cookingAids.map(() => '?').join(', ') + ')';
       queryParams.push(...cookingAids);
     }
 
@@ -128,7 +134,7 @@ router.route('/')
         }
 
         const recipes = results.map(row => ({
-          id: row['recipe_id'],
+          id: row.recipe_id,
           src: row.img_src,
           alt: 'recipe.jpg',
           name: row.recipe_name,
@@ -173,7 +179,7 @@ router.route('/')
           const [results] = await connection.execute(randomSelectionQuery);
 
           const randomRecipes = results.map(row => ({
-            id: row['Unnamed: 0'],
+            id: row.recipe_id,
             src: row.img_src,
             alt: 'ingredient.jpg',
             name: row.recipe_name,

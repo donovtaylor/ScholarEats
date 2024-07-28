@@ -1,3 +1,7 @@
+/*****************************************
+* Description: Backend methods and routes concerning inventory-related actions and events
+*****************************************/
+
 const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
