@@ -22,7 +22,7 @@ function IS_LOGGED_IN(req, res, next) {
   
 // Check if the user is an Admin
 function IS_ADMIN(req, res, next) {
-  if (req.session.user && req.session.user.user_agent === 'admin') {
+  if (req.session.user && req.session.user.role === 'admin') {
     return next();
   } else {
     res.status(403).send('Error: Forbidden. Admin access only.');
@@ -31,7 +31,7 @@ function IS_ADMIN(req, res, next) {
   
 // Check if the user is a User
 function IS_USER(req, res, next) {
-  if (req.session.user && req.session.user.user_agent === 'user') {
+  if (req.session.user && req.session.user.role === 'user') {
     return next();
   } else {
     res.status(403).send('Error: Forbidden. User access only.');

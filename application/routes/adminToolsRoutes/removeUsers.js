@@ -34,12 +34,12 @@ router.post('/', IS_ADMIN, async (req, res) => {
     await connection.commit();
 
     req.flash('success_msg', 'User removed and logged in email_log');
-    res.redirect('/remove');
+    res.redirect('/admin-tools/user-authentication/remove');
   } catch (err) {
     await connection.rollback();
     console.error('Error removing user:', err);
     req.flash('error_msg', 'Error removing user');
-    res.redirect('/remove');
+    res.redirect('/admin-tools/user-authentication/remove');
   } finally {
     connection.release();
   }

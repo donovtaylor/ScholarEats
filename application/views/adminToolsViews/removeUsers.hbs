@@ -15,6 +15,7 @@
         {{#if error_msg}}
         <div class="alert alert-danger">{{error_msg}}</div>
         {{/if}}
+        <button class="btn btn-secondary" onclick="window.location.href='/admin-tools/user-authentication'">Go Back</button>
         <table class="table">
             <thead>
                 <tr>
@@ -40,7 +41,6 @@
                 {{/each}}
             </tbody>
         </table>
-        <button class="btn btn-secondary" onclick="window.location.href='/admin-tools/user-authentication'">Go Back</button>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

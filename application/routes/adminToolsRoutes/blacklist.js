@@ -27,12 +27,12 @@ router.post('/', IS_ADMIN, async (req, res) => {
     await connection.commit();
 
     req.flash('success_msg', 'User blacklisted successfully and logged in email_log');
-    res.redirect('/blacklist');
+    res.redirect('/admin-tools/user-authentication/blacklist');
   } catch (err) {
     await connection.rollback();
     console.error('Error blacklisting user:', err);
     req.flash('error_msg', 'Error blacklisting user');
-    res.redirect('/blacklist');
+    res.redirect('/admin-tools/user-authentication/blacklist');
   } finally {
     connection.release();
   }
