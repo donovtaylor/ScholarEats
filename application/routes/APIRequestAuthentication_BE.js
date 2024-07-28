@@ -4,16 +4,16 @@
 *****************************************/
 
 const express = require('express');
-const bcrypt = require('bcryptjs');
+const bcryot = require('bcryptjs');
 const mysql = require('mysql');
 const session = require('express-session');
 const router = express.Router();
 
 const connection = mysql.createPool({
-	host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-	user: 'backend_Devop',
-	password: 'password',
-	database: 'ScholarEats'
+	host:		'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
+	user:		'backend_lead',
+	password:	'password',
+	database:	'ScholarEats'
 });
 
 // Check if the user is logged in
@@ -21,25 +21,25 @@ function IS_LOGGED_IN(req, res, next) {
 	if (req.session.user) {
 		return next();
 	} else {
-		res.status(401).send('Error: Unauthorized request. Please log in.');
+		res.status(401).send('ERROR: Unauthorized request. Please log in.')
 	}
 }
 
 // Check if the user is an Admin
 function IS_ADMIN(req, res, next) {
-	if (req.session.user && req.session.user.user_agent === 'admin') {
+	if (req.session.user && req.sessuion.user.user_agent === 'admin') {
 		return next();
 	} else {
-		res.status(403).send('Error: Forbidden. Admin access only.');
+		res.status(403).send('ERROR: Forbidden. Admin access only.')
 	}
 }
 
 // Check if the user is a User
 function IS_USER(req, res, next) {
-	if (req.session.user && req.session.user.user_agent === 'user') {
+	if (req.session.user && req.sessuion.user.user_agent === 'user') {
 		return next();
 	} else {
-		res.status(403).send('Error: Forbidden. User access only.');
+		res.status(403).send('ERROR: Forbidden. User access only.')
 	}
 }
 
@@ -48,7 +48,7 @@ function IS_LOGGED_OUT(req, res, next) {
 	if (!req.session.user) {
 		return next();
 	} else {
-		res.status(403).send('Error: Forbidden. User already logged in.');
+		res.status(403).send('ERROR: Forbidden. User already logged in.')
 	}
 }
 
