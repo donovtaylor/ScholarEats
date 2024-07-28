@@ -19,13 +19,17 @@ const connection = mysql.createPool({
 
 router.get('/', async (req, res) => {
 	var dropdownFilters = req.app.locals.dropdownFilters;
-	const userID = req.session.user_id;
 
-	let query = `SELECT * FROM notifications`;
+	let query = `
+		SELECT *
+		FROM notifications
+		WHERE user_id = ?
+	`;
 
 	try {
+		const userId = req.session.user.userId;
 
-		const [results] = await connection.execute(query, []);
+		const [results] = await connection.execute(query, [userId]);
 
 		const notifications = results.map(row => ({
 			id: row.notification_id,

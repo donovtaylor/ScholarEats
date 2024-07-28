@@ -41,7 +41,7 @@ router.route('/').get(async (req, res) => {
 		if (req.session.user) { // if there is a logged in user
 			isLoggedIn = true;
 
-			console.log('user is LOGGED IN');
+			debugMsg('user is LOGGED IN');
 
 			userId = req.session.user.userId; // User ID
 
@@ -68,7 +68,7 @@ router.route('/').get(async (req, res) => {
 			const universityId = universityIdInfo[0].university_id;
 		}
 	} catch (err) {
-			console.log('User is LOGGED OUT'); // Not a "real error" so a console log is enough, all this means is it couldn't find the info for the logged in user, meaning the user is logged out
+		debugMsg('User is LOGGED OUT'); // Not a "real error" so a console log is enough, all this means is it couldn't find the info for the logged in user, meaning the user is logged out
 	}
 
 		/* Extract the checkbox and radio data */
@@ -308,7 +308,9 @@ router.route('/').get(async (req, res) => {
 });
 
 
-/* Serve each individual recipe page based on the recipe ID */
+/*
+* Serve each individual recipe page based on the recipe ID
+*/
 router.get('/:id', async (req, res) => {
 
 	var dropdownFilters = req.app.locals.dropdownFilters;
@@ -370,6 +372,100 @@ router.get('/:id', async (req, res) => {
 	}
 
 });
+
+/*
+* Reserve a recipe and send a notification to the admin of the university 
+* MERGED FROM reserveRecipeButton_BE.js, since this file is already
+* hooked up to the individual recipes page.
+*/
+router.post('/:id', IS_LOGGED_IN, async (req, res) => {
+	try {
+		const recipeId = req.params.id; // Recipe ID
+		debugMsg(recipeId);
+
+		// get the username and university of the logged in user
+		const userId = req.session.user.userId;
+
+		const userInfoQuery = `
+			SELECT username, university
+			FROM users
+			WHERE user_id = ?
+		`;
+		const [userInfo] = await connection.execute(userInfoQuery, [userId]);
+
+		if (userInfo.length === 0) {
+			return res.status(400).json({ error: 'Error: User not found. Try logging out and logging back in.' })
+		}
+
+		// Recipe name
+		const recipeNameQuery = `
+			SELECT recipe_name
+			FROM recipes
+			WHERE recipe_id = ?
+		`;
+		const [recipeName] = await connection.execute(recipeNameQuery, [recipeId]);
+
+		if (recipeName.length === 0) {
+			return res.status(400).json({ error: 'ERROR: recipe not fount. Try logging out and logging back in.' })
+		}
+
+		const recipe = recipeName[0];
+
+		const { username, university } = userInfo[0];
+
+		let adminId = -1;
+
+		// Searches the User table, but since we also have an admin table it will also search that
+		const adminInfoQuery = `
+			SELECT user_id
+			FROM users
+			WHERE role_id = 3
+			AND university = ?
+		`;
+		const [adminInfo] = await connection.execute(adminInfoQuery, [university]);
+
+		if (adminInfo.length === 0) { // If the user isn't in the user table, it is probably in the admin table
+			debugMsg("admin not found in users table, searching admin table");
+
+			const adminTableInfoQuery = `
+				SELECT user_id
+				FROM admin
+				WHERE role_id = 3
+				AND university = ?
+			`;
+			const [adminTableInfo] = await connection.execute(adminTableInfoQuery, [university]);
+
+			if (adminTableInfo.length === 0) {
+				return res.status(400).json({ error: 'Error: Could not reserve recipe.' })
+			} else {
+				adminId = adminTableInfo[0].user_id;
+			}
+		} else {
+
+			adminId = adminInfo[0].user_id;
+
+			// Push a notifiation to the admins
+			const message = `${username} has reserved ${recipe.recipe_name}`;
+			debugMsg(message);
+
+			const pushNotificaionQuery = `
+				INSERT INTO notifications (user_id, message) VALUES (?, ?)
+            `; // NO UNIVERSITY! University must be NULL, or everyone can see the notification!
+
+			await connection.execute(pushNotificaionQuery, [adminId, message])
+
+			debugMsg("Recipe reserved.")
+
+			return res.json({ message: 'Successfully reserved recipe!' });
+		}
+
+		debugMsg(adminId);
+
+	} catch (err) {
+		console.error('Error reserving recipe:', err);
+		return res.status(500).send('Error reserving this recipe. Please try again later.');
+	}
+})
 
 /* 404 Error handling */
 router.use((req, res, next) => {
