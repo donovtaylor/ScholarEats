@@ -1,3 +1,7 @@
+/*****************************************
+* Description: Backend methods and routes relating to user-based actions
+*****************************************/
+
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const mysql = require('mysql2/promise');

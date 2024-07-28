@@ -1,3 +1,9 @@
+/*****************************************
+* Description: Backend methods and routes concerning recipe-related actions,
+* such as serving recipes to the recipes page, sorting and filtering searches,
+* and serving/rendering the individual recipes page.
+*****************************************/
+
 const fetch = require('node-fetch');
 const express = require('express');
 const mysql = require('mysql2/promise');
