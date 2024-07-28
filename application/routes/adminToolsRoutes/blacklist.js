@@ -1,9 +1,10 @@
 const express = require('express');
 const db = require('../db');
 const router = express.Router();
+const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('../APIRequestAuthentication_BE');
 
 // Route to blacklist users
-router.post('/', async (req, res) => {
+router.post('/', IS_ADMIN, async (req, res) => {
   const { user_id } = req.body;
   const connection = await db.getConnection();
   try {
@@ -21,7 +22,7 @@ router.post('/', async (req, res) => {
     await connection.query('INSERT INTO email_log (user_id, email, timestamp, action) VALUES (?, ?, NOW(), ?)', [user_id, email, 'blacklist']);
 
     // Update the user as blacklisted
-    await connection.query('UPDATE Users SET blacklist = 1 WHERE user_id = ?', [user_id]);
+    await connection.query('UPDATE users SET blacklist = 1 WHERE user_id = ?', [user_id]);
 
     await connection.commit();
 
@@ -38,7 +39,7 @@ router.post('/', async (req, res) => {
 });
 
 // Route to get all users for blacklisting
-router.get('/', async (req, res) => {
+router.get('/', IS_ADMIN, async (req, res) => {
   try {
     const [users] = await db.query('SELECT * FROM users WHERE blacklist = 0');
     res.render('adminToolsViews/blacklistUsers', { users });

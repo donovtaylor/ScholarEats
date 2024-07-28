@@ -31,7 +31,7 @@
                     <td>{{this.username}}</td>
                     <td>{{this.email}}</td>
                     <td>
-                        <form action="/users/remove" method="POST">
+                        <form action="/admin-tools/user-authentication/remove" method="POST">
                             <input type="hidden" name="user_id" value="{{this.user_id}}">
                             <button type="submit" class="btn btn-danger">Remove</button>
                         </form>

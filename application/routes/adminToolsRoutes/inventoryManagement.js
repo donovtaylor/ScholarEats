@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../db');
 const router = express.Router();
 const expiredProductsRoutes = require('./expiredProducts');
+const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('../APIRequestAuthentication_BE');
 
 router.use('/expired-products', expiredProductsRoutes);
 
@@ -18,17 +19,17 @@ async function getNextIngredientId() {
 }
 
 // Inventory Management page
-router.get('/', (req, res) => {
+router.get('/', IS_ADMIN, (req, res) => {
   res.render('adminToolsViews/inventoryManagement');
 });
 
 // Route to display the add ingredient form
-router.get('/add', (req, res) => {
+router.get('/add', IS_ADMIN, (req, res) => {
   res.render('adminToolsViews/addIngredient');
 });
 
 // Route to add an ingredient to the store
-router.post('/add', async (req, res) => {
+router.post('/add', IS_ADMIN, async (req, res) => {
   const { Name, expiration_date, quantity } = req.body;
   try {
     // Check if the ingredient already exists in the ingredient table

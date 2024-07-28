@@ -1,16 +1,17 @@
 const express = require('express');
 const db = require('../db');
 const router = express.Router();
+const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('../APIRequestAuthentication_BE');
 
 // Route to remove user accounts
-router.post('/', async (req, res) => {
+router.post('/', IS_ADMIN, async (req, res) => {
   const { user_id } = req.body;
   const connection = await db.getConnection();
   try {
     await connection.beginTransaction();
 
     // Log the user into email_log
-    const [users] = await connection.query('SELECT user_id, email FROM Users WHERE user_id = ?', [user_id]);
+    const [users] = await connection.query('SELECT user_id, email FROM users WHERE user_id = ?', [user_id]);
     if (users.length === 0) {
       throw new Error('User not found');
     }
@@ -25,7 +26,7 @@ router.post('/', async (req, res) => {
     await connection.query('DELETE FROM user_info WHERE user_id = ?', [user_id]);
 
     // Remove user from parent table
-    await connection.query('DELETE FROM Users WHERE user_id = ?', [user_id]);
+    await connection.query('DELETE FROM users WHERE user_id = ?', [user_id]);
 
     // Re-enable foreign key checks
     await connection.query('SET FOREIGN_KEY_CHECKS = 1');
@@ -45,9 +46,9 @@ router.post('/', async (req, res) => {
 });
 
 // Route to get all users for removal
-router.get('/', async (req, res) => {
+router.get('/', IS_ADMIN, async (req, res) => {
   try {
-    const [users] = await db.query('SELECT * FROM users');
+    const [users] = await db.execute('SELECT * FROM users');
     res.render('adminToolsViews/removeUsers', { users });
   } catch (err) {
     console.error('Error fetching users:', err);

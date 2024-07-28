@@ -8,7 +8,6 @@ const exphbs = require('express-handlebars');
 const mysql = require('mysql');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
-const flash = require('connect-flash');
 
 const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
 const userRoutes = require('./routes/userRoutes_BE');                        // User
@@ -18,6 +17,7 @@ const autocomplete = require('./routes/autocomplete');
 const notificationRoutes = require('./routes/notificationRoutes_BE');
 const landingPage = require('./routes/landingPage_BE');                      // Landing Page
 const adminTools = require('./routes/adminToolsRoutes/adminTools');
+const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./routes/APIRequestAuthentication_BE');
 
 const app = express();
 
@@ -32,7 +32,6 @@ const connection = mysql.createPool({
   password: 'password',
   database: 'ScholarEats'
 });
-app.use(flash());
 
 const sessionStore = new MySQLStore({}, connection);
 
@@ -217,7 +216,7 @@ app.get('/register', (req, res) => {
 
 // add dark mode button here
 app.get('/accountmanagement', (req, res) => {
-  res.render('accountmanagement', {
+  res.render('accountManagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
     style: ['default.css', 'accountmanagement.css'],
     dropdown1: app.locals.dropdownFilters,

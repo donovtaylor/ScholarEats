@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('../db');
 const router = express.Router();
+const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('../APIRequestAuthentication_BE');
 
 async function checkAndMoveExpiredProducts() {
   const connection = await db.getConnection();
@@ -31,7 +32,7 @@ async function checkAndMoveExpiredProducts() {
 }
 
 // Route to get all expired products
-router.get('/', async (req, res) => {
+router.get('/', IS_ADMIN, async (req, res) => {
   try {
     await checkAndMoveExpiredProducts();
     const [results] = await db.query('SELECT * FROM expired_products');
@@ -44,7 +45,7 @@ router.get('/', async (req, res) => {
 });
 
 // Route to remove an expired product
-router.post('/delete', async (req, res) => {
+router.post('/delete', IS_ADMIN, async (req, res) => {
   const { ingredient_id } = req.body;
   try {
     await db.query('DELETE FROM expired_products WHERE ingredient_id = ?', [ingredient_id]);

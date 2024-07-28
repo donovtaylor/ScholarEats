@@ -8,7 +8,6 @@ const fetch = require('node-fetch');
 const express = require('express');
 const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
-const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
 const router = express.Router();
 
@@ -44,27 +43,27 @@ router.route('/')
       'Oven Required',
       'Stove Required'].includes(key) && req.query[key] === 'on');
 
-  // Sorting options
-  const sortOptionsQueryMap = { // map for the SQL queries
-    'Calories Ascending': 'calories ASC',
-    'Calories Descending': 'calories DESC',
-    'Protein Ascending': 'protein ASC',
-    'Protein Descending': 'protein DESC',
-    'Fat Ascending': 'fat ASC',
-    'Fat Descending': 'fat DESC',
-    'Fiber Ascending': 'fiber ASC',
-    'Fiber Descending': 'fiber DESC'
-  }; const sortOptions = sortOptionsQueryMap[sort];
+    // Sorting options
+    const sortOptionsQueryMap = { // map for the SQL queries
+      'Calories Ascending': 'calories ASC',
+      'Calories Descending': 'calories DESC',
+      'Protein Ascending': 'protein ASC',
+      'Protein Descending': 'protein DESC',
+      'Fat Ascending': 'fat ASC',
+      'Fat Descending': 'fat DESC',
+      'Fiber Ascending': 'fiber ASC',
+      'Fiber Descending': 'fiber DESC'
+    }; const sortOptions = sortOptionsQueryMap[sort];
 
-  /*
-  Please dont touch this query unless absolutely necessary, SQL is hard and this chunk is fragile!
-  
-  This query gets all of the reipes that can be made just with what is available in the inventory.
-  It also filters out duplicate recipes, becuase there are currently about 4 copies of each recipe
-  in the "recipes" table. Additionally, the column "Unnamed: 0" represents the recipe ID, and this
-  name is expeced to change.
-  */
-  let query = `
+    /*
+    Please dont touch this query unless absolutely necessary, SQL is hard and this chunk is fragile!
+    
+    This query gets all of the reipes that can be made just with what is available in the inventory.
+    It also filters out duplicate recipes, becuase there are currently about 4 copies of each recipe
+    in the "recipes" table. Additionally, the column "Unnamed: 0" represents the recipe ID, and this
+    name is expeced to change.
+    */
+    let query = `
     SELECT DISTINCT r.*
     FROM recipes r
     WHERE r.recipe_id IN (
@@ -102,29 +101,29 @@ router.route('/')
       queryParams.push(...difficulties);
     }
 
-  if (searchInput) { // Search
-    query += ' AND `recipe_name` LIKE ?';
-    queryParams.push(`%${searchInput}%`);
-  }
+    if (searchInput) { // Search
+      query += ' AND `recipe_name` LIKE ?';
+      queryParams.push(`%${searchInput}%`);
+    }
 
     if (sortOptions) { // Sorting options
       query += ` ORDER BY ${sortOptions}`;
       // queryParams.push(`%${sortOptions}%`)
     }
 
-  if (debug) {
-    console.log(`Final query: ${query}`);
-    console.log(`Query parameters: ${queryParams}`);
-    console.log(`Sorting method: ${sortOptions}`);
-  }
+    if (debug) {
+      console.log(`Final query: ${query}`);
+      console.log(`Query parameters: ${queryParams}`);
+      console.log(`Sorting method: ${sortOptions}`);
+    }
 
     try {
       const [results] = await connection.execute(query, queryParams);
       const resultCount = results.length; // get the number of results
 
-    if (debug) {
-      console.log(`Results: ${resultCount}`);
-    }
+      if (debug) {
+        console.log(`Results: ${resultCount}`);
+      }
 
       // Render the results, if there are recipes available
       if (resultCount > 0) {
@@ -217,7 +216,7 @@ router.get('/:id', async (req, res) => {
 
   // Fetch the recipe from the db
   let query = 'SELECT * FROM recipes WHERE recipe_id = ?';
-  
+
   // Fetch the ingredients for that recipe from the db
   let ingredientQuery = `
     SELECT i.name

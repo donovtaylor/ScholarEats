@@ -1,9 +1,10 @@
 const express = require('express');
 const db = require('../db');
 const router = express.Router();
+const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('../APIRequestAuthentication_BE');
 
 // Route to sync users from Users to user_info
-router.post('/', async (req, res) => {
+router.post('/', IS_ADMIN, async (req, res) => {
   try {
     const [users] = await db.query('SELECT user_id FROM users');
     console.log('Users fetched successfully:', users);
