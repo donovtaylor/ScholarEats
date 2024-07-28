@@ -54,7 +54,7 @@ document.addEventListener(IS_LOGGED_IN, (event) => {
 	`;
     const [adminInfo] = await connection.execute(adminInfoQuery, [university]);
 
-    if (adminInfo.length === 0) {
+    if (adminInfo.length === 0) { // If the user isn't in the user table, it is probably in the admin table
         console.log("admin not found in users table, searching admin table");
 
         const adminTableInfoQuery = `

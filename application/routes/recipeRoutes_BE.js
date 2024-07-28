@@ -16,14 +16,6 @@ const connection = mysql.createPool({
 	database: 'ScholarEats'
 });
 
-// connection.connect(err => {
-//   if (err) {
-//     console.error('Error connecting to the database:', err);
-//     return;
-//   }
-//   console.log('Connected to the database');
-// });
-
 // Rendering recipes dynamically from the database
 router.route('/').get(async (req, res) => {
 	var dropdownFilters = req.app.locals.dropdownFilters;
