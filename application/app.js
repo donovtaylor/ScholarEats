@@ -203,7 +203,6 @@ app.get('/contact_us', (req, res) => {
   });
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
 // serve registration page
 app.get('/register', (req, res) => {
   res.render('register', {
