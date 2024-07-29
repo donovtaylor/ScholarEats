@@ -332,7 +332,7 @@ router.get('/:id', async (req, res) => {
 
 	// Fetch the ingredients for that recipe from the db
 	let ingredientQuery = `
-		SELECT i.name
+		SELECT i.*
 		FROM recipe_ingredient ri
 		JOIN ingredient i ON ri.ingredient_id = i.ingredient_id
 		WHERE ri.recipe_id = ?
@@ -352,6 +352,7 @@ router.get('/:id', async (req, res) => {
 			res.render('individual_recipes_view', {
 				style:			['default.css', 'individualRecipe.css'],
 				script:			['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+				id:				recipe.recipe_id,
 				dropdown1:		dropdownFilters,
 				isLoggedIn:		isLoggedIn,
 				title:			recipe.recipe_name,
@@ -381,7 +382,7 @@ router.get('/:id', async (req, res) => {
 router.post('/:id', IS_LOGGED_IN, async (req, res) => {
 	try {
 		const recipeId = req.params.id; // Recipe ID
-		debugMsg(recipeId);
+		debugMsg(`RecipeID 348: ${recipeId}`);
 
 		// get the username and university of the logged in user
 		const userId = req.session.user.userId;
@@ -409,9 +410,14 @@ router.post('/:id', IS_LOGGED_IN, async (req, res) => {
 			return res.status(400).json({ error: 'ERROR: recipe not fount. Try logging out and logging back in.' })
 		}
 
-		const recipe = recipeName[0];
+		const recipe = recipeName[0].recipe_name;
 
 		const { username, university } = userInfo[0];
+
+		debugMsg(`University: ${university}`);
+		debugMsg(`Username: ${username}`);
+		debugMsg(`Recipe Name 418: ${recipeName}`);
+		debugMsg(`Recipe Name 419: ${recipe}`);
 
 		let adminId = -1;
 
@@ -435,7 +441,7 @@ router.post('/:id', IS_LOGGED_IN, async (req, res) => {
 			`;
 			const [adminTableInfo] = await connection.execute(adminTableInfoQuery, [university]);
 
-			if (adminTableInfo.length === 0) {
+			if (adminTableInfo.length === 0 || adminInfo === 0) {
 				return res.status(400).json({ error: 'Error: Could not reserve recipe.' })
 			} else {
 				adminId = adminTableInfo[0].user_id;
@@ -445,14 +451,22 @@ router.post('/:id', IS_LOGGED_IN, async (req, res) => {
 			adminId = adminInfo[0].user_id;
 
 			// Push a notifiation to the admins
-			const message = `${username} has reserved ${recipe.recipe_name}`;
+			const message = `${username} has reserved ${recipe}`;
 			debugMsg(message);
+
+			const userMessage = `You have reserved ${recipe}`;
+			debugMsg(userMessage);
 
 			const pushNotificaionQuery = `
 				INSERT INTO notifications (user_id, message) VALUES (?, ?)
             `; // NO UNIVERSITY! University must be NULL, or everyone can see the notification!
 
+			const userPushNotification = `
+				INSERT INTO notifications (user_id, message) VALUES (?, ?)
+			`;
+
 			await connection.execute(pushNotificaionQuery, [adminId, message])
+			await connection.execute(pushNotificaionQuery, [userId, userMessage])
 
 			debugMsg("Recipe reserved.")
 
@@ -463,7 +477,7 @@ router.post('/:id', IS_LOGGED_IN, async (req, res) => {
 
 	} catch (err) {
 		console.error('Error reserving recipe:', err);
-		return res.status(500).send('Error reserving this recipe. Please try again later.');
+		return res.status(400).send({error: 'Error reserving this recipe. Please try again later.'});
 	}
 })
 

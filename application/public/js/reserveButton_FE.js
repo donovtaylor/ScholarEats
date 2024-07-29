@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
 			const recipeId = reserveRecipeButton.getAttribute('recipeInfo'); // Check this if broken, I think I have one too many things named "recipeId"
 			debugMsg('BUTTON RECIPE ID: ', recipeId);
 
-			fetch(`/recipes/:id`, {
+			fetch(`/recipes/${recipeId}`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						alert(data.error);
 					} else {
 						alert(data.message);
-						window.location.href = '/';
+						window.location.href = `/recipes/${recipeId}`;
 					}
 				})
 				.catch(error => {

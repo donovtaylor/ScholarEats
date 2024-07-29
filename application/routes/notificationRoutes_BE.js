@@ -19,26 +19,52 @@ const connection = mysql.createPool({
 
 router.get('/', async (req, res) => {
 	var dropdownFilters = req.app.locals.dropdownFilters;
+	let isLoggedIn = false;
 
-	let query = `
-		SELECT *
-		FROM notifications
-		WHERE user_id = ?
-	`;
 
-	try {
-		const userId = req.session.user.userId;
+	if (req.session.user) {
+		isLoggedIn = true;
+	}
 
-		const [results] = await connection.execute(query, [userId]);
+	if (isLoggedIn) {
+		try {
 
-		const notifications = results.map(row => ({
-			id: row.notification_id,
-			uid: row.user_id,
-			message: row.message,
-			isRead: row.isRead,
-			timestamp: row.timestamp
-		}));
+			let query = `
+				SELECT *
+				FROM notifications
+				WHERE user_id = ?
+			`;
 
+			const userId = req.session.user.userId;
+
+			const [results] = await connection.execute(query, [userId]);
+
+			const notifications = results.map(row => ({
+				id: row.notification_id,
+				uid: row.user_id,
+				message: row.message,
+				isRead: row.isRead,
+				timestamp: row.timestamp
+			}));
+
+
+			res.render('notifications', {
+				script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+				style: ['default.css', 'notifications.css'],
+				dropdown1: dropdownFilters,
+				notification: notifications,
+				title: 'Notifications'
+			});
+
+		} catch (err) {
+			console.error('Error fetching notifications: ', err);
+			return res.status(400).send({error: 'Error fetching notifications'});
+		}
+	} else {
+
+		const notifications = {
+			message: `Please log in`,
+		};
 
 		res.render('notifications', {
 			script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
@@ -47,10 +73,6 @@ router.get('/', async (req, res) => {
 			notification: notifications,
 			title: 'Notifications'
 		});
-
-	} catch (err) {
-		console.error('Error fetching notifications: ', err);
-		return res.status(500).send('Error fetching notifications');
 	}
 });
 
