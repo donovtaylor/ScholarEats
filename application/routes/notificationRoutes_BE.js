@@ -11,48 +11,74 @@ const router = express.Router();
 router.use(express.json());
 
 const connection = mysql.createPool({
-  host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-  user: 'backend_lead',
-  password: 'password',
-  database: 'ScholarEats'
+	host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
+	user: 'backend_lead',
+	password: 'password',
+	database: 'ScholarEats'
 });
 
 router.get('/', async (req, res) => {
-  var dropdownFilters = req.app.locals.dropdownFilters;
-  const userID = req.session.user_id;
-
-  let query = `SELECT * FROM notifications`;
-
-  try {
-
-    const [results] = await connection.execute(query, []);
-
-    const notifications = results.map(row => ({
-      id: row.notification_id,
-      uid: row.user_id,
-      message: row.message,
-      isRead: row.isRead,
-      timestamp: row.timestamp
-    }));
+	var dropdownFilters = req.app.locals.dropdownFilters;
+	let isLoggedIn = false;
 
 
-    res.render('notifications', {
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-      style: ['default.css', 'notifications.css'],
-      dropdown1: dropdownFilters,
-      notification: notifications,
-      title: 'Notifications'
-    });
+	if (req.session.user) {
+		isLoggedIn = true;
+	}
 
-  } catch (err) {
-    console.error('Error fetching notifications: ', err);
-    return res.status(500).send('Error fetching notifications');
-  }
+	if (isLoggedIn) {
+		try {
+
+			let query = `
+				SELECT *
+				FROM notifications
+				WHERE user_id = ?
+			`;
+
+			const userId = req.session.user.userId;
+
+			const [results] = await connection.execute(query, [userId]);
+
+			const notifications = results.map(row => ({
+				id: row.notification_id,
+				uid: row.user_id,
+				message: row.message,
+				isRead: row.isRead,
+				timestamp: row.timestamp
+			}));
+
+
+			res.render('notifications', {
+				script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+				style: ['default.css', 'notifications.css'],
+				dropdown1: dropdownFilters,
+				notification: notifications,
+				title: 'Notifications'
+			});
+
+		} catch (err) {
+			console.error('Error fetching notifications: ', err);
+			return res.status(400).send({error: 'Error fetching notifications'});
+		}
+	} else {
+
+		const notifications = {
+			message: `Please log in`,
+		};
+
+		res.render('notifications', {
+			script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+			style: ['default.css', 'notifications.css'],
+			dropdown1: dropdownFilters,
+			notification: notifications,
+			title: 'Notifications'
+		});
+	}
 });
 
 /* 404 Error handling */
 router.use((req, res, next) => {
-  res.status(404).send('404 Page Not Found');
+	res.status(404).send('404 Page Not Found');
 });
 
 module.exports = router;
