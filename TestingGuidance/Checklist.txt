@@ -3,3 +3,4 @@ As of June 28th.
     - Are Images rendering
     - Does each button either A) Load a new page B) perform an action or C) Report to user that the button has not been implemented
 - No excessive latency
+
