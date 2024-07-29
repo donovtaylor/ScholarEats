@@ -1,0 +1,53 @@
+<div class="leftSpacer"></div>
+{{>header}}
+<div class="container">
+  <link rel="stylesheet" id="modeStyleSheetLink" href="/css/{{mode}}.css">
+  
+  <h3>Color Scheme Preference</h3>
+  <select id="modeSelect">
+    <option value="{{mode}}">Light Mode</option>
+    <option value="darkmode">Dark Mode</option>
+  </select>
+
+  <div class="form-group">
+    <label for="new-username">Change Username</label>
+    <input type="text" name="username" id="new-username" placeholder="Username">
+  </div>
+
+  <div class="form-group">
+    <label for="current-password">Change Password</label>
+    <div class="password-fields">
+      <input type="password" name="current-password" id="current-password" placeholder="Current Password">
+      <input type="password" name="new-password" id="new-password" placeholder="New Password">
+      <input type="password" name="verify-password" id="verify-password" placeholder="Verify Password">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="pronouns">Pronouns</label>
+    <input type="text" name="pronouns" id="pronouns" placeholder="Your Pronouns" required>
+  </div>
+
+  <div class="form-group">
+    <label for="bio">Bio</label>
+    <textarea name="bio" id="bio" placeholder="Tell us about yourself..." rows="4" required></textarea>
+    <button type="button" class="unfinished_button">Submit</button>
+  </div>
+
+  <div class="form-group">
+    <label for="dietary-restrictions">Change Dietary Restrictions</label>
+    {{>dropdown dropdown2}}
+    <button type="submit">Submit</button>
+  </div>
+
+  <div class="form-group">
+    <label for="allergies">Change Allergies</label>
+    {{>dropdown dropdown3}}
+    <button type="submit">Submit</button>
+  </div>
+
+</div>
+
+{{>footer}}
+<div class="rightSpacer"></div>
+<script src="/js/accountmangement.js"></script>

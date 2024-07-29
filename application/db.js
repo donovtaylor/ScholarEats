@@ -1,3 +1,7 @@
+/*****************************************
+* Description: Provides database connection information
+*****************************************/
+
 const mysql = require('mysql2');
 const dbname = test_db_scholareats;
 const connection = mysql.createConnection({

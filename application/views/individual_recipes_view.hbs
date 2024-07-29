@@ -2,13 +2,18 @@
 {{>header}}
 <div class="container">
   <article>
-    <img src="/{{src}}" alt="{{title}}.jpg" class="recipe-image" width="200px" height="200px">
+    <img src="{{src}}" alt="{{title}}.jpg" class="recipe-image" width="200px" height="200px">
     
     <div class="recipe-info">
         <p><strong>Prep Time:</strong> {{prepTime}}</p>
         <p><strong>Cook Time:</strong> {{cookTime}}</p>
         <p><strong>Servings:</strong> {{servings}}</p>
     </div>
+
+    {{#if isLoggedIn}}
+        <button id="reserveRecipeButton" recipeInfo="{{id}}">RESERVE</button>
+        <script src="/js/reserveButton_FE.js"></script>
+    {{/if}}
 
     <div class="ingredients">
         <h2>Ingredients</h2>

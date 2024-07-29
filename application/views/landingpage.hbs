@@ -3,14 +3,15 @@
 <div class="container">
   <div class="landing-page">
     <img src="/images/logo_black.png" alt="logo.png" id="bannerLogo">
-    <h2>ScholarEats is a way for Universities across America to provide better access to food-pantry programs to their student bodies</h2>
+    <h1 id="blurb">ScholarEats is a way for Universities across America to provide better access to food-pantry programs to their student bodies</h1>
+    <h2 id="subBlurb">Browse our wide selection of Recipes and Ingredients</h2>
     <section class="content-section">
       <div class="recipes-section">
         <h2 class="section-title">Featured Recipes</h2>
         <div class="grid-container">
 
           {{#each recipes}}
-            <a href="/recipes/{{this.[Unnamed: 0]}}" class="recipe">
+            <a href="/recipes/{{this.recipe_id}}" class="recipe">
               <img src="{{this.img_src}}" alt="{{this.recipe_name}}" class="recipe-image">
               <h3 class="recipe-title">{{this.recipe_name}}</h3>
               <p class="recipe-description">{{this.Description}}</p>
