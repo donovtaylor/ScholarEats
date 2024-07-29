@@ -8,6 +8,7 @@ const fetch = require('node-fetch');
 const express = require('express');
 const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
+const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
 const router = express.Router();
 
@@ -15,6 +16,12 @@ const debug = true; // toggle console debug messages
 let noResults = false; // Track if there are recipes available
 
 const connection = require('./db');
+
+function debugMsg(string) {
+  if (debug) {
+    console.log(string);
+  }
+}
 
 // Rendering recipes dynamically from the database
 router.route('/').get(async (req, res) => {
