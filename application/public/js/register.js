@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     const registerForm = document.getElementById("register-form");
+    const alertMessage = document.getElementById("alert-message");
+    const message = document.getElementById("message");
+
     registerForm.addEventListener("submit", function(event){
         event.preventDefault();
         const email = document.getElementById('email').value;
@@ -17,9 +20,9 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                alert(data.error);
+                alertMessage.textContent = data.error;
             } else {
-                alert(data.message);
+                message.textContent = data.message;
                 window.location.href = '/login';
             }
         })

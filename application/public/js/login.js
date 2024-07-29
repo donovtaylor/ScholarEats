@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById("login-form");
+    const message = document.getElementById("message");
+    const alertMessage = document.getElementById("alert-message");
+
     
 
 
@@ -17,10 +20,11 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                alert(data.error);
+                alertMessage.textContent = data.error;
             } else {
-                alert(data.message);
-                window.location.href = '/';
+            message.textContent = "You have successfully logged in.";
+            message.classList.remove('hidden');
+            setTimeout(() => { window.location.href = '/'; }, 2000);
             }
         })
         .catch(error => {

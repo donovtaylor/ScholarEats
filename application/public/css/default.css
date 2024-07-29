@@ -302,3 +302,19 @@ img {
   border: none;
   border-radius: none;
 }
+
+#alert-message {
+  color: rgb(255, 41, 41);
+  margin-top: 25px;
+}
+
+.message {
+  font-size: 16px;
+  background-color: #ff5e00;
+  color: green;
+  
+}
+
+.hidden {
+  display: none;
+}

@@ -229,5 +229,17 @@ router.post("/set-dietary-restrictions", IS_LOGGED_IN, async (req, res) => {
 	}
 });
 
+router.post('/set-pronouns', IS_LOGGED_IN, async (req, res) => {
+	const pronouns = req.body.pronouns;
+	const userId = req.session.user.userId;
+
+	try {
+		await connection.execute('UPDATE user_info SET pronouns = ? WHERE user_id ?', [pronouns, userId]);
+		return res.json({ message: 'Successfully Updated Pronouns' });
+	} catch (err){
+		return res.json({ error: err });
+	}
+});
+
 
 module.exports = router;
