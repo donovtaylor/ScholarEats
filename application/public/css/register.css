@@ -61,17 +61,6 @@ a:hover {
     height: 20px;
 }
 
-.captcha {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.captcha img {
-    margin-left: 10px;
-}
-
 #register-form {
     display: flex;
     flex-direction: column;

@@ -1,5 +1,7 @@
 <div class="leftSpacer"></div>
 {{>header}}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</script>
 <div class="container">
   <div class="login-form-container">
     <header>Login</header>
@@ -11,9 +13,7 @@
       <label>
         <input type="checkbox" id="remember_me" name="remember_me"> Remember me
       </label>
-      <div id="captcha-container">
-        <!-- CAPTCHA will be dynamically inserted here -->
-      </div>
+      <div class="g-recaptcha" data-sitekey="6LcfLhsqAAAAAKJOOzs_wZ1YiNxJf2wfJtlLwuFP"></div>
       <input type="submit" id="login-submit" value="Login">
       <div id="error-message" class="error-message"></div>
       <a href="/register">Register</a>
@@ -44,16 +44,6 @@
 
     return true;
   }
-
-  // Example CAPTCHA implementation (replace with actual CAPTCHA)
-  function loadCaptcha() {
-    var captchaContainer = document.getElementById("captcha-container");
-    captchaContainer.innerHTML = '<img src="captcha-image-url" alt="CAPTCHA">';
-  }
-
-  window.onload = function () {
-    loadCaptcha();
-  };
 
   /*
   // option to change between light and dark mode
