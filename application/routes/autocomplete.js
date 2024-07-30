@@ -70,13 +70,13 @@ router.get('/', async (req, res) => {
 	try {
 
 		if (isLoggedIn) { // If youre logged in, you also need to pass your userId
-			const [results] = await db.execute(query, [`%${searchTerm}%`, userId]);
+			const [results] = await connection.execute(query, [`%${searchTerm}%`, userId]);
 
 			const suggestions = results.map(row => row.recipe_name);
 			res.json(suggestions);
 			
 		} else {
-			const [results] = await db.execute(query, [`%${searchTerm}%`]);
+			const [results] = await connection.execute(query, [`%${searchTerm}%`]);
 
 			const suggestions = results.map(row => row.recipe_name);
 			res.json(suggestions);
