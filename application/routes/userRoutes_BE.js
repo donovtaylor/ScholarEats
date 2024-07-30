@@ -8,13 +8,7 @@ const mysql = require('mysql2/promise');
 const router = express.Router();
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
-// Fix these when connecting to the actual db
-const connection = mysql.createPool({
-	host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-	user: 'backend_Devop',
-	password: 'password',
-	database: 'ScholarEats'
-});
+const connection = require('./db');
 
 
 router.use(express.json());
@@ -22,23 +16,22 @@ router.use(express.urlencoded({ extended: true }));
 
 // Function to automatically enroll users in university programs based on email domain
 function autoEnrollUniversityPrograms(email) {
-	return new Promise((resolve, reject) => {
-		const domain = email.split('@')[1];
-		const query = `
+  return new Promise(async (resolve, reject) => {
+    const domain = email.split('@')[1];
+    const query = `
         UPDATE users 
         SET university = (SELECT name FROM university WHERE email_suffix = ?),
             verification_status = TRUE
         WHERE email = ?
       `;
-		connection.query(query, [domain, email], (err, results) => {
-			if (err) {
-				console.error('Error enrolling user in university program:', err);
-				reject(err);
-			} else {
-				resolve(results);
-			}
-		});
-	});
+    try {
+      const results = await connection.execute(query, [domain, email]);
+      resolve(results);
+    } catch (err) {
+      console.error('Error enrolling user in university program:', err);
+      reject(err);
+    }
+  });
 }
 
 // Handle registration POST request

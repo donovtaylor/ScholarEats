@@ -9,12 +9,7 @@ const mysql = require('mysql');
 const session = require('express-session');
 const router = express.Router();
 
-const connection = mysql.createPool({
-	host:		'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-	user:		'backend_lead',
-	password:	'password',
-	database:	'ScholarEats'
-});
+const connection = require('./db');
 
 // Check if the user is logged in
 function IS_LOGGED_IN(req, res, next) {
@@ -27,20 +22,20 @@ function IS_LOGGED_IN(req, res, next) {
 
 // Check if the user is an Admin
 function IS_ADMIN(req, res, next) {
-	if (req.session.user && req.session.user.user_agent === 'admin') {
-		return next();
-	} else {
-		res.status(403).send('ERROR: Forbidden. Admin access only.')
-	}
+  if (req.session.user && req.session.user.role === 'admin') {
+    return next();
+  } else {
+    res.status(403).send('Error: Forbidden. Admin access only.');
+  }
 }
 
 // Check if the user is a User
 function IS_USER(req, res, next) {
-	if (req.session.user && req.session.user.user_agent === 'user') {
-		return next();
-	} else {
-		res.status(403).send('ERROR: Forbidden. User access only.')
-	}
+  if (req.session.user && req.session.user.role === 'user') {
+    return next();
+  } else {
+    res.status(403).send('Error: Forbidden. User access only.');
+  }
 }
 
 // Check if the user is logged out

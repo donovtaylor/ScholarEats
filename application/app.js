@@ -16,6 +16,8 @@ const about = require('./routes/about');                                     // 
 const autocomplete = require('./routes/autocomplete');
 const notificationRoutes = require('./routes/notificationRoutes_BE');
 const landingPage = require('./routes/landingPage_BE');                      // Landing Page
+const adminTools = require('./routes/adminToolsRoutes/adminTools');
+const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./routes/APIRequestAuthentication_BE');
 
 const app = express();
 
@@ -63,7 +65,8 @@ app.use("/users", userRoutes); // User Routes
 app.use("/about", about);
 app.use("/suggestions", autocomplete);
 app.use("/notifications", notificationRoutes);
-app.use("/landingpage", landingPage); // Landing page
+app.use("/landing-page", landingPage); // Landing page
+app.use("/admin-tools", adminTools);
 
 
 // Middleware to configure Handlebars
@@ -135,16 +138,6 @@ app.route('/adminlogin')
     })
   });
 
-// serve admintools page
-app.route('/admintools')
-  .get((req, res) => {
-    res.render('admintools', {
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-      style: ['default.css', 'admintools.css'],
-      dropdown1: app.locals.dropdownFilters,
-      title: 'Admin Tools'
-    })
-  });
 
 // serve landing page
 app.route('/landingpage')
@@ -167,13 +160,23 @@ app.get('/forgotpassword', (req, res) => {
   });
 });
 
-// serve privacy policy and terms of service page
+// serve privacy policy page
 app.get('/privacy_policy', (req, res) => {
   res.render('privacy_policy', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     style: ['default.css'],
     dropdown1: app.locals.dropdownFilters,
-    title: 'Privacy Policy and Terms of Service'
+    title: 'Privacy Policy'
+  });
+});
+
+// serve terms of service page
+app.get('/termsofservice', (req, res) => {
+  res.render('termsofservice', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css'],
+    dropdown1: app.locals.dropdownFilters,
+    title: 'Terms of Service'
   });
 });
 
@@ -200,12 +203,11 @@ app.get('/contact_us', (req, res) => {
   });
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
 // serve registration page
 app.get('/register', (req, res) => {
   res.render('register', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css'],
+    style: ['default.css', 'register.css'],
     dropdown1: app.locals.dropdownFilters,
     title: 'Register'
   });
@@ -213,7 +215,7 @@ app.get('/register', (req, res) => {
 
 // add dark mode button here
 app.get('/accountmanagement', (req, res) => {
-  res.render('accountmanagement', {
+  res.render('accountManagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
     style: ['default.css', 'accountmanagement.css'],
     dropdown1: app.locals.dropdownFilters,

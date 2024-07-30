@@ -10,7 +10,7 @@
 
 .refinedSearch {
   grid-area: rS;
-  background-color: white;
+  background-color: darkslategrey;
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 10px;
@@ -22,7 +22,7 @@
   grid-area: recipes;
   display:grid;
   grid-template-columns: 1fr 1fr;
-  background-color: white;
+  background-color: darkslategrey;
 }
 
 .recipe {

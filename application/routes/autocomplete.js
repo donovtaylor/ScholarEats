@@ -8,21 +8,7 @@ const path = require('path');
 let router = express.Router();
 
 // Create connection to the database
-const db = mysql.createConnection({
-	host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-	user: 'admin',
-	password: 'vdpE9YYQiaGl6VWibkiO',
-	database: 'ScholarEats'
-});
-
-// Connect to the database
-db.connect(err => {
-	if (err) {
-		console.error('Error connecting to the database:', err);
-		process.exit(1);  // Exit the process with an error code
-	}
-	console.log('Connected to the database');
-});
+const db = require('./db');
 
 // Endpoint to get recipe suggestions
 router.get('/', (req, res) => {
