@@ -284,7 +284,7 @@ a:hover:not(.no-style) {
 .container {
   display: grid;
   grid-area: container;
-  background-color: darkslategrey;
+  background-color: rgb(73, 113, 113);
 
 }
 
