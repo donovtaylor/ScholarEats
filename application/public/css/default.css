@@ -71,7 +71,7 @@ h4, select {
 
 .footer-logo {
   display: flex;
-  max-width: 100%;
+  width: fit-content;
   justify-content: flex-end;
   align-items: center;
   gap: 25px;
@@ -375,9 +375,39 @@ img {
     flex-direction: column;
   }
 
-  footer{
-    padding: 0%;
-    margin: 0;
+  .footer{
+    padding: 0px;
+    margin: 0px;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: 
+    "footer-logo footer-info social-icons"
+    "footer-logo footer-links social-icons";
+gap: 5px;
+  }
+ 
+  .footer-info{
+    grid-area: footer-info;
+    flex-direction: column;
+    width: fit-content;
+    padding-top: 5px;
+  }
+
+  .footer-logo {
+    grid-area: footer-logo;
+    width: fit-content;
+  }
+
+  .footer-links {
+    grid-area: footer-links;
+    width: 100%;
+  }
+
+  .social-icons {
+    grid-area: social-icons;
+    flex-direction: column;
+    width: 100%;
   }
 
   h1 {
