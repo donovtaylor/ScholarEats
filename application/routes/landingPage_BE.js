@@ -4,7 +4,7 @@
 
 const fetch = require('node-fetch');
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
@@ -12,27 +12,34 @@ const router = express.Router();
 
 let debug = true; // toggle console debug messages
 
-const connection = mysql.createConnection({
-    host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-    user: 'backend_lead',
-    password: 'password',
-    database: 'ScholarEats'
+function debugMsg(input) { // Use this for debug messages, I got tired of doing a ton of if (debug) statements
+	if (debug) {
+		console.log(input);
+	}
+}
+
+const connection = mysql.createPool({
+	host:		process.env.DB_HOST,
+	user:		process.env.DB_USER,
+	password:	process.env.DB_PASS,
+	database:	process.env.DB_NAME
 });
 
-connection.connect(err => {
-    if (err) {
-        console.error('Error connecting to the database:', err);
-        return;
-    }
-    console.log('Connected to the database');
-});
+
+// connection.connect(err => {
+//     if (err) {
+//         console.error('Error connecting to the database:', err);
+//         return;
+//     }
+//     console.log('Connected to the database');
+// });
 
 // Rendering recipes dynamically from the database
-router.get('/', (req, res) => {
-    var dropdownFilters = req.app.locals.dropdownFilters;
+router.get('/', async (req, res) => {
+	var dropdownFilters = req.app.locals.dropdownFilters;
 
-    // Recipes
-    const recipeQuery = `
+	// Recipes
+	const recipeQuery = `
         SELECT DISTINCT r.*
         FROM recipes r
         WHERE r.recipe_id IN (
@@ -54,42 +61,38 @@ router.get('/', (req, res) => {
         LIMIT 3
     `;
 
-    // Ingredients
-    const ingredientsQuery = `
+	// Ingredients
+	const ingredientsQuery = `
         SELECT s.ingredient_id, s.quantity, i.name, i.img_src
         FROM store s
         JOIN ingredient i ON s.ingredient_id = i.ingredient_id
         LIMIT 3
     `;
 
-    connection.query(recipeQuery, (err, recipeResults) => {
-        if (err){
-            console.error('Error fetching recipes');
-            return res.status(500).send('Error fetching recipes');
-        }
-        
-        connection.query(ingredientsQuery, (err, ingredientsResults) => {
-            if (err){
-                console.error('Error fetching ingredients');
-                return res.status(500).send('Error fetching ingredients');
-            }
+	try {
+		const [recipeResults] = await connection.execute(recipeQuery);
+		debugMsg(recipeResults);
 
-            res.render('landingpage', {
-                style: ['default.css', 'landingpage.css'],
-                script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
-                dropdown1: dropdownFilters,
-                recipes: recipeResults,
-                ingredients: ingredientsResults,
-                title: 'Landing Page'
-            });
-        });
-    });
+		const [ingredientsResults] = await connection.execute(ingredientsQuery);
+		debugMsg(ingredientsResults);
 
+		res.render('landingpage', {
+			style: ['default.css', 'landingpage.css'],
+			script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+			dropdown1: dropdownFilters,
+			recipes: recipeResults,
+			ingredients: ingredientsResults,
+			title: 'Landing Page'
+		});
+	} catch (err) {
+		console.error('Error fetching ingredients');
+		return res.status(500).send('Error fetching ingredients');
+	}
 });
 
 /* 404 Error handling */
 router.use((req, res, next) => {
-    res.status(404).send('404 Page Not Found');
+	res.status(404).send('404 Page Not Found');
 });
 
 module.exports = router;

@@ -12,6 +12,8 @@ services:
     restart: always
     depends_on:
       - mysql
+    env_file: 
+      - process.env
 
   mysql:
     image: mysql:latest

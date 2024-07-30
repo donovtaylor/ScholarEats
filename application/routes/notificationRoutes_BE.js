@@ -2,6 +2,8 @@
 * Description: Backend methods and routes concerning notification-related actions and events
 *****************************************/
 
+// reverse notification population
+
 const express = require('express');
 const mysql = require('mysql2/promise');
 const path = require("path");
@@ -11,11 +13,12 @@ const router = express.Router();
 router.use(express.json());
 
 const connection = mysql.createPool({
-	host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-	user: 'backend_lead',
-	password: 'password',
-	database: 'ScholarEats'
+	host:		process.env.DB_HOST,
+	user:		process.env.DB_USER,
+	password:	process.env.DB_PASS,
+	database:	process.env.DB_NAME
 });
+
 
 router.get('/', async (req, res) => {
 	var dropdownFilters = req.app.locals.dropdownFilters;
@@ -33,6 +36,7 @@ router.get('/', async (req, res) => {
 				SELECT *
 				FROM notifications
 				WHERE user_id = ?
+				ORDER BY timestamp DESC
 			`;
 
 			const userId = req.session.user.userId;
