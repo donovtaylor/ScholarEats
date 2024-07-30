@@ -8,12 +8,13 @@ const path = require('path');
 let router = express.Router();
 
 // Create connection to the database
-const db = mysql.createPool({ // createPool handles multiple connections at once, which could make this faster
-	host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-	user: 'admin',
-	password: 'vdpE9YYQiaGl6VWibkiO',
-	database: 'ScholarEats'
+const connection = mysql.createPool({
+	host:		process.env.DB_HOST,
+	user:		process.env.DB_USER,
+	password:	process.env.DB_PASS,
+	database:	process.env.DB_NAME
 });
+
 
 // // Connect to the database
 // db.connect(err => {

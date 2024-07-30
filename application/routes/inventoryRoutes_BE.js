@@ -12,11 +12,12 @@ const router = express.Router();
 const app = express();
 
 const connection = mysql.createPool({
-	host:		'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-	user:		'backend_lead',
-	password:	'password',
-	database:	'ScholarEats'
+	host:		process.env.DB_HOST,
+	user:		process.env.DB_USER,
+	password:	process.env.DB_PASS,
+	database:	process.env.DB_NAME
 });
+
 
 // // Connect to the database error checker
 // connection.connect(err => {

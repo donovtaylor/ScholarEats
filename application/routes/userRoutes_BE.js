@@ -10,11 +10,12 @@ const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequest
 
 // Fix these when connecting to the actual db
 const connection = mysql.createPool({
-	host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-	user: 'backend_Devop',
-	password: 'password',
-	database: 'ScholarEats'
+	host:		process.env.DB_HOST,
+	user:		process.env.DB_USER,
+	password:	process.env.DB_PASS,
+	database:	process.env.DB_NAME
 });
+
 
 
 router.use(express.json());

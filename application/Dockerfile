@@ -15,4 +15,10 @@ COPY . .
 
 EXPOSE 3000
 
+# environment variables
+ENV DB_HOST=csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com
+ENV DB_USER=backend_lead
+ENV DB_PASS=password
+ENV DB_NAME=ScholarEats
+
 CMD [ "node", "app.js" ]
