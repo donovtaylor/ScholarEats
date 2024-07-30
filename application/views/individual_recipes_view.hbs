@@ -1,8 +1,13 @@
+{{!-- /*****************************************
+* Description: Frontend handling of displaying an individual recipe,
+* as well as displaying the "reserve" button for reserving a recipe
+*****************************************/ --}}
+
 <div class="leftSpacer"></div>
 {{>header}}
 <div class="container">
   <article>
-    <img src="{{src}}" alt="{{title}}.jpg" class="recipe-image" width="200px" height="200px">
+    <img src="/{{src}}" alt="{{title}}.jpg" class="recipe-image" width="200px" height="200px">
     
     <div class="recipe-info">
         <p><strong>Prep Time:</strong> {{prepTime}}</p>

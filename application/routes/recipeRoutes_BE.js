@@ -8,6 +8,7 @@ const fetch = require('node-fetch');
 const express = require('express');
 const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv').config();
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
 const router = express.Router();
@@ -28,9 +29,9 @@ router.route('/').get(async (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
   const { dietary_restriction, cooking_aid, sort, searchInput } = req.query;
 
-  // Issue with IS_LOGGED_IN, ise this instead
-  let isLoggedIn = false;
-  let userId = -1;
+	// Issue with IS_LOGGED_IN, use this instead
+	let isLoggedIn = false;
+	let userId = -1;
 
   try {		// get the info for the logged in user
     if (req.session.user) { // if there is a logged in user
@@ -46,9 +47,9 @@ router.route('/').get(async (req, res) => {
       // Just covering my bases source-wise
       const [userUniversityInfo] = await connection.execute(userUniversityQuery, [userId]);
 
-      if (userUniversityInfo == 0) { // No user info
-        return res.status(400).json({ error: 'There was an error retreving user data. Please try again later. Error code: RR_BE:47' }) // Error code refrences which line tripped
-      }
+			if (userUniversityInfo == 0 ) { // No user info
+				return res.status(400).json({ error: 'There was an error retreving user data. Please try again later. Error code: 181847'}) // Error code refrences which line tripped
+			}
 
       const userUniversity = userUniversityInfo[0].university; // User's university
 
@@ -56,9 +57,9 @@ router.route('/').get(async (req, res) => {
       const universityIdQuery = `SELECT university_id FROM university WHERE name = ?`;
       const [universityIdInfo] = await connection.execute(universityIdQuery, [userUniversity]);
 
-      if (universityIdInfo === 0) {
-        return res.status(400).json({ error: 'There was an error retreving university data. Please try again later. Error code: RR_BE: 57' }); // Error code refrences which line tripped
-      }
+			if (universityIdInfo === 0) {
+				return res.status(400).json({ error: 'There was an error retreving university data. Please try again later. Error code: 181857'}); // Error code refrences which line tripped
+			}
 
       const universityId = universityIdInfo[0].university_id;
     }
@@ -149,7 +150,7 @@ router.route('/').get(async (req, res) => {
 						FROM store s
 						JOIN university u ON s.university_id = u.university_id
 						JOIN users usrs ON usrs.university = u.name
-						WHERE quantity > 0 AND usrs.user_id = ${userId}
+						WHERE quantity > 0 AND usrs.user_id = ?
 					)
 				)`;
   }
@@ -189,11 +190,19 @@ router.route('/').get(async (req, res) => {
   debugMsg(`Query parameters: ${queryParams}`);
   debugMsg(`Sorting method: ${sortOptions}`);
 
-  try {
-    const [results] = await connection.execute(query, queryParams); // Execute the funal query
-    const resultCount = results.length; // Number of results
+		try {
 
-    debugMsg(`Result count: ${resultCount}`);
+			let results = [];
+			let resultCount;
+
+			if (isLoggedIn) {
+				[results] = await connection.execute(query, [userId, queryParams]); // Execute the funal query
+				resultCount = results.length; // Number of results
+			} else {
+				[results] = await connection.execute(query, queryParams); // Execute the funal query
+				resultCount = results.length; // Number of results
+			}
+			debugMsg(`Result count: ${resultCount}`);
 
     if (resultCount > 0) {
       noResults = false;

@@ -3,93 +3,99 @@
 *****************************************/
 
 const express = require('express');
-const mysql = require('mysql');
-const bodyParser = require('body-parser');
+const bodyparser = require('body-parser');
 const session = require('express-session');
+const path = require('path');
+const mysql = require('mysql2/promise');
 const connection = require('./db');
 const router = express.Router();
 const app = express();
 
-// Populate available food and serve Ingredients page
+function debugMsg (input) { // Use this for debug messages, I got tired of doing a ton of if statements
+	if (debug) {
+		console.log(input);
+	}
+}
+
+// populate available food and serve ingredients page
 router.get('/', async (req, res) => {
-  var dropdownFilters = req.app.locals.dropdownFilters;
-  let isLoggedIn = false;
-  let userId = -1;
+    var dropdownFilters = req.app.locals.dropdownFilters;
 
-  try { // Check if the user is logged in and get the id
-    if (req.session.user) {
-      isLoggedIn = true;
-      userId = req.session.user.userId; // ID of the logged in user
+    let isLoggedIn = false;
+    let userId = -1 // "You have to initialize this variable, or you're gonna have a bad time" - That one guy from south park
+                    // -1 is an invalid userId, but this shouldnt matter because the userId is only used when a user is logged in,
+                    // and then the ID is immedietely changed into the actual userID
+    try {
+        if (req.session.user) { // Check if the user is logged in and get info
+            isLoggedIn = true;
+            userId = req.session.user.userId; // ID of logged in user
+        }
+    } catch (err) {
+        debugMsg(`User is LOGGED OUT`)
     }
-  } catch (err) {
-    console.log('User is logged out');
-  }
 
-  // if the user is logged out
-  let query = `
-        SELECT s.ingredient_id, s.quantity, i.name, i.img_src
-        FROM store s
-        JOIN ingredient i ON s.ingredient_id = i.ingredient_id
+    // if the user is logged out
+    let ingredientQuery = `
+        SELECT i.*
+        FROM ingredient i
     `;
 
-  // If the user is logged in
-  if (isLoggedIn) {
-    query = `
-            SELECT s.ingredient_id, s.quantity, i.name, i.img_src
+    // if the user is logged out
+    if (isLoggedIn) {
+        ingredientQuery = `
+            SELECT s.*, i.*
             FROM store s
             JOIN ingredient i ON s.ingredient_id = i.ingredient_id
             JOIN university u ON s.university_id = u.university_id
             JOIN users usrs ON usrs.university = u.name
-            WHERE usrs.user_id = ${userId}
+            WHERE usrs.user_id = ?
         `;
   }
 
-  try {
-    const [results] = await connection.execute(query);
-    const ingredients = results.map(row => ({
-      src: row.img_src,
-      alt: 'ingredient.jpg',
-      name: row.name,
-      desc: `Quantity: ${row.quantity}`
-    }));
+    // If the user is logged in
+    try {
+        if (isLoggedIn) {
+            const [results] = await connection.execute(ingredientQuery, [userId]); // Includes userId, would throw an error if logged out
 
-    res.render('ingredients', {
-      style: ['default.css', 'ingredients.css'],
-      dropdown1: dropdownFilters,
-      title: 'Ingredients',
-      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-      ingredient: ingredients
-    });
-  } catch (err) {
-    console.error('Error fetching ingredients:', err);
-    return res.status(500).json({ message: 'Database error' });
-  };
-});
+            const ingredients = results.map(row => ({
+                src:    row.img_src,
+                alt:    'ingredient.jpg',
+                name:   row.name,
+                desc:   `Quantity: ${row.quantity}`
+            }));
 
-// Update expired status of food items
-router.get('/checkExpired', (req, res) => {
-  const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+            res.render('ingredients', {
+                style:      ['default.css', 'ingredients.css'],
+                dropdown1:  dropdownFilters,
+                title:      'Ingredients',
+                script:     ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+                ingredient: ingredients
+            });
 
-  const query = 'UPDATE store SET expired = TRUE WHERE expiration_date <= ?';
-  connection.query(query, [currentDate], (err, results) => {
-    if (err) {
-      console.error('Error updating expired status:', err);
-      return res.status(500).json({ message: 'Database error' });
+        // If the user is logged out
+        } else {
+            const [results] = await connection.execute(ingredientQuery);
+
+            const ingredients = results.map(row => ({
+                src:    row.img_src,
+                alt:    'ingredient.jpg',
+                name:   row.name,
+                desc:   ``
+            }));
+
+            res.render('ingredients', {
+                style:      ['default.css', 'ingredients.css'],
+                dropdown1:  dropdownFilters,
+                title:      'Ingredients',
+                script:     ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+                ingredient: ingredients
+            });
+        }
+    } catch (err) {
+        console.error('Error fetching ingredients:', err);
+        return res.status(500).send('Error fetching ingredients');
     }
-    res.json({ message: 'Expired items updated successfully' });
-  });
-});
 
-// Remove items that are out of stock
-router.get('/checkOutOfStock', (req, res) => {
-  const query = 'DELETE FROM store WHERE quantity_available <= 0';
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error('Error removing out of stock items:', err);
-      return res.status(500).json({ message: 'Database error' });
-    }
-    res.json({ message: 'Out of stock items removed successfully' });
-  });
-});
+})
 
 module.exports = router;
