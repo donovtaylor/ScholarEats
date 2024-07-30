@@ -2,9 +2,23 @@ const express = require('express');
 const db = require('../db');
 const router = express.Router();
 const expiredProductsRoutes = require('./expiredProducts');
+const dotenv = require('dotenv').config();
+const mysql = require('mysql2/promise');
+
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('../APIRequestAuthentication_BE');
 
 router.use('/expired-products', expiredProductsRoutes);
+
+const connection = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  port: 3306,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
 // Helper function to get the next store_id
 async function getNextStoreId() {
@@ -32,6 +46,28 @@ router.get('/add', IS_ADMIN, (req, res) => {
 router.post('/add', IS_ADMIN, async (req, res) => {
   const { Name, expiration_date, quantity } = req.body;
   try {
+
+    // get the admin university id
+    const userId = req.session.user.userId; // User ID
+
+    console.log(userId);
+
+    const universityIdQuery = `
+      SELECT u.university_id
+      FROM users AS usrs
+      JOIN university AS u
+      ON usrs.university = u.name
+      WHERE usrs.user_id = ?
+    `;
+    const [universityRow] = await connection.execute(universityIdQuery, [userId]);
+
+    const universityId = universityRow[0].university_id;
+
+    console.log(universityId);
+
+    // Default img
+    const img = `images/ingredients/default_ingredients_image.jpg`;
+
     // Check if the ingredient already exists in the ingredient table
     const [existingIngredients] = await db.query('SELECT * FROM ingredient WHERE Name = ?', [Name]);
 
@@ -42,12 +78,12 @@ router.post('/add', IS_ADMIN, async (req, res) => {
     } else {
       // Ingredient does not exist, create new ingredient_id and add to ingredient table
       ingredient_id = await getNextIngredientId();
-      await db.query('INSERT INTO ingredient (ingredient_id, Name) VALUES (?, ?)', [ingredient_id, Name]);
+      await db.query('INSERT INTO ingredient (ingredient_id, Name, img_src) VALUES (?, ?, ?)', [ingredient_id, Name, img]);
     }
 
     // Add ingredient to the store table with a new store_id
     const store_id = await getNextStoreId();
-    await db.query('INSERT INTO store (store_id, ingredient_id, Name, expiration_date, quantity) VALUES (?, ?, ?, ?, ?)', [store_id, ingredient_id, Name, expiration_date, quantity]);
+    await db.query('INSERT INTO store (store_id, ingredient_id, Name, expiration_date, quantity, university_id) VALUES (?, ?, ?, ?, ?, ?)', [store_id, ingredient_id, Name, expiration_date, quantity, universityId]);
 
     req.flash('success_msg', 'Ingredient added to store');
     res.redirect('/adminTools/inventory-management/add');
