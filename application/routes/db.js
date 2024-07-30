@@ -1,10 +1,10 @@
 const mysql = require('mysql2/promise');
 
 const db = mysql.createPool({
-  host: 'csc648database.cfgu0ky6ydzi.us-east-2.rds.amazonaws.com',
-  user: 'admin',
-  password: 'vdpE9YYQiaGl6VWibkiO',
-  database: 'ScholarEats',
+  host:		process.env.DB_HOST,
+	user:		process.env.DB_USER,
+	password:	process.env.DB_PASS,
+	database:	process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0

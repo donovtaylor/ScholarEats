@@ -4,7 +4,7 @@
 
 const fetch = require('node-fetch');
 const express = require('express');
-const mysql = require('mysql2/promise');
+const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
@@ -18,12 +18,7 @@ function debugMsg(input) { // Use this for debug messages, I got tired of doing 
 	}
 }
 
-const connection = mysql.createPool({
-	host:		process.env.DB_HOST,
-	user:		process.env.DB_USER,
-	password:	process.env.DB_PASS,
-	database:	process.env.DB_NAME
-});
+const connection = require('./db')
 
 
 // connection.connect(err => {

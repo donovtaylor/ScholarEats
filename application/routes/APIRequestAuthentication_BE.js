@@ -5,7 +5,7 @@
 
 const express = require('express');
 const bcryot = require('bcryptjs');
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 const session = require('express-session');
 const router = express.Router();
 
