@@ -1,7 +1,5 @@
 .container {
   grid-template-columns: 1fr 1fr;
-  background-color: darkslategrey;
-  border: 1px solid #ddd;
 }
 
 .ingredient {
