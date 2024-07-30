@@ -10,6 +10,10 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const dotenv = require('dotenv').config();
 
+const blacklistRoutes = require('./routes/blacklist');
+const authenticationRoutes = require('./routes/authentication');
+const removeUsersRoutes = require('./routes/removeusers');
+const storeRoutes = require('./routes/store');
 const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
 const userRoutes = require('./routes/userRoutes_BE');                        // User
 const recipeRoutes = require('./routes/recipeRoutes_BE');                    // Recipe
@@ -65,7 +69,10 @@ app.use("/about", about);
 app.use("/suggestions", autocomplete);
 app.use("/notifications", notificationRoutes);
 app.use("/landingpage", landingPage); // Landing page
-
+app.use('/blacklist', blacklistRoutes);
+app.use('/authenticate', authenticationRoutes);
+app.use('/remove', removeUsersRoutes);
+app.use('/store', storeRoutes);
 
 // Middleware to configure Handlebars
 const hbs = exphbs.create({

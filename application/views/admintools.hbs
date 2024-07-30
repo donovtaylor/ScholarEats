@@ -5,15 +5,17 @@
     <header>Admin Tools</header>
     <!-- Manage Users Section -->
     <div class="admin-tool">
-      <form class="tool-form" action="/manage-users" method="POST" id="manage-users-form">
+      <form class="tool-form" id="manage-users-form">
         <h3>Manage Users</h3>
         <input type="text" name="username" id="manage-username" placeholder="Username" required>
         <select name="action" id="user-action" required>
           <option value="add">Add User</option>
           <option value="remove">Remove User</option>
-          <option value="update">Update User</option>
+          <option value="blacklist">Blacklist User</option>
         </select>
         <input type="submit" id="manage-submit" value="Submit">
+        <div id="manage-users-error-message" class="error-message"></div> <!-- Error message placeholder -->
+        <div id="manage-users-success-message" class="success-message"></div> <!-- Success message placeholder -->
       </form>
     </div>
     <!-- View Logs Section -->
@@ -26,15 +28,16 @@
     </div>
     <!-- Manage Ingredients Section -->
     <div class="admin-tool">
-      <form class="tool-form" action="/manage-ingredients" method="POST" id="manage-ingredients-form">
+      <form class="tool-form" id="manage-ingredients-form">
         <h3>Manage Ingredients</h3>
-        <input type="text" name="ingredient-name" id="ingredient-name" placeholder="Ingredient Name" required>
+        <input type="text" name="name" id="ingredient-name" placeholder="Ingredient Name" required>
         <select name="action" id="ingredient-action" required>
           <option value="add">Add Ingredient</option>
           <option value="remove">Remove Ingredient</option>
-          <option value="edit">Edit Ingredient</option>
         </select>
         <input type="submit" id="ingredient-submit" value="Submit">
+        <div id="manage-ingredients-error-message" class="error-message"></div> <!-- Error message placeholder -->
+        <div id="manage-ingredients-success-message" class="success-message"></div> <!-- Success message placeholder -->
       </form>
     </div>
     <!-- Manage Recipes Section -->
@@ -45,9 +48,9 @@
         <select name="action" id="recipe-action" required>
           <option value="add">Add Recipe</option>
           <option value="remove">Remove Recipe</option>
-          <option value="edit">Edit Recipe</option>
         </select>
         <input type="submit" id="recipe-submit" value="Submit">
+        <div id="manage-recipes-error-message" class="error-message"></div> <!-- Error message placeholder -->
       </form>
     </div>
   </div>
@@ -57,41 +60,111 @@
 <script src="/js/admin-tools.js"></script>
 
 <script>
-  // Add any necessary JavaScript for the admin tools page here
+  async function handleManageUsersFormSubmit(event) {
+    event.preventDefault();
 
-  function validateManageUsersForm() {
-    var username = document.getElementById("manage-username").value;
-    var action = document.getElementById("user-action").value;
-    var errorMessage = document.getElementById("manage-users-error-message");
+    const username = document.getElementById('manage-username').value;
+    const action = document.getElementById('user-action').value;
+    const errorMessage = document.getElementById('manage-users-error-message');
+    const successMessage = document.getElementById('manage-users-success-message');
 
-    errorMessage.textContent = "";
+    console.log('Captured username:', username); // Log captured username
+    console.log('Selected action:', action); // Log selected action
 
-    if (username === "") {
-      errorMessage.textContent = "Username must be filled out";
-      return false;
+    errorMessage.textContent = '';
+    successMessage.textContent = '';
+
+    if (username === '') {
+      errorMessage.textContent = 'Username must be filled out';
+      return;
     }
 
-    return true;
-  }
-
-  document.getElementById("manage-users-form").onsubmit = validateManageUsersForm;
-
-  function validateManageIngredientsForm() {
-    var ingredientName = document.getElementById("ingredient-name").value;
-    var action = document.getElementById("ingredient-action").value;
-    var errorMessage = document.getElementById("manage-ingredients-error-message");
-
-    errorMessage.textContent = "";
-
-    if (ingredientName === "") {
-      errorMessage.textContent = "Ingredient Name must be filled out";
-      return false;
+    let url;
+    switch (action) {
+      case 'add':
+        url = '/authenticate';
+        break;
+      case 'remove':
+        url = '/remove';
+        break;
+      case 'blacklist':
+        url = '/blacklist';
+        break;
+      default:
+        errorMessage.textContent = 'Invalid action selected';
+        return;
     }
 
-    return true;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username })
+      });
+
+      const result = await response.json();
+      console.log('Backend response:', result); // Log the response from the backend
+
+      if (response.ok) {
+        successMessage.textContent = result.message;
+      } else {
+        errorMessage.textContent = result.message;
+      }
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      errorMessage.textContent = 'Error submitting form';
+    }
   }
 
-  document.getElementById("manage-ingredients-form").onsubmit = validateManageIngredientsForm;
+  document.getElementById('manage-users-form').addEventListener('submit', handleManageUsersFormSubmit);
+
+  async function handleManageIngredientsFormSubmit(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('ingredient-name').value;
+    const action = document.getElementById('ingredient-action').value;
+    const errorMessage = document.getElementById('manage-ingredients-error-message');
+    const successMessage = document.getElementById('manage-ingredients-success-message');
+
+    console.log('Captured ingredient name:', name); // Log captured ingredient name
+    console.log('Selected action:', action); // Log selected action
+
+    errorMessage.textContent = '';
+    successMessage.textContent = '';
+
+    if (name === '') {
+      errorMessage.textContent = 'Ingredient name must be filled out';
+      return;
+    }
+
+    let url = '/store/manage-ingredients'; // Ensure the correct URL is used
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, action })
+      });
+
+      const result = await response.json();
+      console.log('Backend response:', result); // Log the response from the backend
+
+      if (response.ok) {
+        successMessage.textContent = result.message;
+      } else {
+        errorMessage.textContent = result.message;
+      }
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      errorMessage.textContent = 'Error submitting form';
+    }
+  }
+
+  document.getElementById('manage-ingredients-form').addEventListener('submit', handleManageIngredientsFormSubmit);
 
   function validateManageRecipesForm() {
     var recipeName = document.getElementById("recipe-name").value;
