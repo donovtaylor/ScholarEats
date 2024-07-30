@@ -214,7 +214,6 @@ a img {
   transition: background-color 0.3s, color 0.3s;
   border-radius: 5px;
   height: 36px;
-  background-color: rgb(73, 113, 113);
 }
 
 .applyfiltersbutton {
