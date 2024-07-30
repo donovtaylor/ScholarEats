@@ -8,23 +8,38 @@ const path = require('path');
 let router = express.Router();
 
 // Create connection to the database
-const db = require('./db');
+const connection = mysql.createPool({
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASS,
+	database: process.env.DB_NAME
+});
+
+
+// // Connect to the database
+// db.connect(err => {
+// 	if (err) {
+// 		console.error('Error connecting to the database:', err);
+// 		process.exit(1);  // Exit the process with an error code
+// 	}
+// 	console.log('Connected to the database');
+// });
 
 // Endpoint to get recipe suggestions
 router.get('/', async (req, res) => {
 
-    let isLoggedIn = false;
-    let userId = -1;
+	let isLoggedIn = false;
+	let userId = -1;
 
-    try { // Check if the user is logged in and get the id
-        if (req.session.user) {
-            isLoggedIn = true;
+	try { // Check if the user is logged in and get the id
+		if (req.session.user) {
+			isLoggedIn = true;
 			userId = req.session.user.userId; // ID of the logged in user
-        }
-    }  catch (err) {
+		}
+	} catch (err) {
 		console.log('User is logged out');
 	}
-	
+
 	const searchTerm = req.query.q;
 	if (!searchTerm) {
 		return res.status(400).send('Missing query parameter');
@@ -38,11 +53,11 @@ router.get('/', async (req, res) => {
 		LIMIT 10
 	`;
 
-    // If the user is logged in
+	// If the user is logged in
 	// This should be the same query as the one in recipeRoutes_BE.js,
 	// EXCEPT the first chunk needs to take in the searchTerm
-    if (isLoggedIn) {
-        query = `
+	if (isLoggedIn) {
+		query = `
 			SELECT DISTINCT r.*
 			FROM recipes r
 			WHERE r.recipe_id IN (
@@ -65,7 +80,7 @@ router.get('/', async (req, res) => {
 			)
 			LIMIT 10
 		`;
-    }
+	}
 
 	try {
 
@@ -74,7 +89,7 @@ router.get('/', async (req, res) => {
 
 			const suggestions = results.map(row => row.recipe_name);
 			res.json(suggestions);
-			
+
 		} else {
 			const [results] = await connection.execute(query, [`%${searchTerm}%`]);
 
