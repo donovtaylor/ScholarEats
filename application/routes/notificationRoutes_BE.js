@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 				SELECT *
 				FROM notifications
 				WHERE user_id = ?
-				ORDER BY timestamp ASC
+				ORDER BY timestamp DESC
 			`;
 
 			const userId = req.session.user.userId;

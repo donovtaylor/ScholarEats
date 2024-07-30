@@ -196,7 +196,7 @@ router.route('/').get(async (req, res) => {
 			let resultCount;
 
 			if (isLoggedIn) {
-				[results] = await connection.execute(query, [userId, queryParams]); // Execute the funal query
+				[results] = await connection.execute(query, [userId, ...queryParams]); // Execute the funal query
 				resultCount = results.length; // Number of results
 			} else {
 				[results] = await connection.execute(query, queryParams); // Execute the funal query
