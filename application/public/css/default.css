@@ -217,6 +217,16 @@ a img {
   background-color: rgb(73, 113, 113);
 }
 
+.applyfiltersbutton {
+  font-size: 1.3em;
+  color: orange;
+  border: 1px solid orange;
+  background-color: rgb(73, 113, 113);
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 5px;
+  height: 36px;
+}
+
 .dropbtn {
   margin-left: 0px;
   border: 1px solid orange;
