@@ -167,7 +167,17 @@ app.get('/privacy_policy', (req, res) => {
 		script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
 		style: ['default.css'],
 		dropdown1: app.locals.dropdownFilters,
-		title: 'Privacy Policy and Terms of Service'
+		title: 'Privacy Policy'
+	});
+});
+
+// serve terms of service page
+app.get('/termsofservice', (req, res) => {
+	res.render('termsofservice', {
+		script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+		style: ['default.css'],
+		dropdown1: app.locals.dropdownFilters,
+		title: 'Terms of Service'
 	});
 });
 
