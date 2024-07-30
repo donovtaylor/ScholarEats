@@ -8,22 +8,7 @@ const path = require('path');
 let router = express.Router();
 
 // Create connection to the database
-const connection = mysql.createPool({
-	host:		process.env.DB_HOST,
-	user:		process.env.DB_USER,
-	password:	process.env.DB_PASS,
-	database:	process.env.DB_NAME
-});
-
-
-// // Connect to the database
-// db.connect(err => {
-// 	if (err) {
-// 		console.error('Error connecting to the database:', err);
-// 		process.exit(1);  // Exit the process with an error code
-// 	}
-// 	console.log('Connected to the database');
-// });
+const db = require('./db');
 
 // Endpoint to get recipe suggestions
 router.get('/', async (req, res) => {

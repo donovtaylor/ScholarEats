@@ -6,8 +6,14 @@
     <input type="text" name="email" placeholder="Email" id="email">
     <input type="password" name="password" placeholder="Password" id="password">
     <input type="password" name="verify_password" placeholder="Verify Password" id="verify-password">
+    <div class="privacypolicytos">
+      <input class="no-style" type="checkbox" name="privacypolicytos" id="privacypolicytos" required> I accept the <a
+        class="no-style" href="/privacy_policy">Privacy Policy</a> and <a class="no-style"
+        href="/termsofservice">Terms of Service</a>
+    </div>
     <input type="submit" value="Register">
   </form>
+  <div id="alert-message"></div>
 </div>
 <script src="/js/register.js"></script>
 {{>footer}}

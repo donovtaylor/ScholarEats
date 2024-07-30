@@ -12,13 +12,7 @@ const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequest
 const router = express.Router();
 router.use(express.json());
 
-const connection = mysql.createPool({
-	host:		process.env.DB_HOST,
-	user:		process.env.DB_USER,
-	password:	process.env.DB_PASS,
-	database:	process.env.DB_NAME
-});
-
+const connection = require('./db');
 
 router.get('/', async (req, res) => {
 	var dropdownFilters = req.app.locals.dropdownFilters;

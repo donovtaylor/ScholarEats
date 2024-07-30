@@ -3,7 +3,31 @@ document.addEventListener("DOMContentLoaded", function() {
     const changeUsernameForm = document.getElementById('change-username-form');
     const setDietaryRestrictionsForm = document.getElementById('change-dietary-restrictions');
     const setAllergies = document.getElementById('change-allergies-from');
+    const setPronouns = document.getElementById('update-pronouns-form');
 
+    const alertMessage = document.getElementById("alert-message");
+    const message = document.getElementById("message");
+
+    setPronouns.addEventListener('submit', function(event){
+        const pronouns = document.getElementById('pronouns');
+        
+        fetch('users/set-pronouns', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ pronouns })
+        })
+        .then(response => response.json())
+        .then(data => {
+            message.textContent = data.message;
+            message.classList.remove('hidden');
+            setTimeout(() => { location.reload(); }, 2000);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
     // Allows us to change password
     changePasswordForm.addEventListener("submit", function(event){
         event.preventDefault();
@@ -21,10 +45,12 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                alert(data.error);
+                alertMessage.textContent = data.error;
             } else if (data.message) {
-                alert(data.message);
-                location.reload();
+                message.textContent = data.message;
+                message.classList.remove('hidden');
+                setTimeout(() => { location.reload(); }, 2000);
+                
             } else {
                 alert('Unexpected response from the server.');
             }
@@ -48,10 +74,18 @@ document.addEventListener("DOMContentLoaded", function() {
             },
             body: JSON.stringify({ newUsername })
         })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            alert(data);
-            location.reload();
+            if (data.error) {
+                alertMessage.textContent = data.error;
+            } else if (data.message) {
+                alertMessage.textContent = data.message;
+                alertMessage.classList.remove('hidden');
+                setTimeout(() => { location.reload(); }, 2000);
+                
+            } else {
+                alert('Unexpected response from the server.');
+            }
         })
         .catch(error => {
             console.error('Error:', error);
@@ -78,8 +112,9 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
-            location.reload();
+            message.textContent = data.message;
+            message.classList.remove('hidden');
+            setTimeout(() => { location.reload(); }, 2000);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -88,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     setAllergies.addEventListener('submit', function(event) {
         event.preventDefault();
-        const checkboxes = document.querySelectorAll('.dropdown_option');
+        const checkboxes = document.querySelectorAll('.checkbox_option');
         const allergies = [];
         checkboxes.forEach((checkbox) => {
             if (checkbox.checked) {
@@ -105,8 +140,9 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(data => {
-            alert(data.message);
-            location.reload();
+            message.textContent = data.message;
+            message.classList.remove('hidden');
+            setTimeout(() => { location.reload(); }, 2000);
         })
         .catch(error => {
             console.error('Error:', error);

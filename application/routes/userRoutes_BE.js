@@ -8,14 +8,7 @@ const mysql = require('mysql2/promise');
 const router = express.Router();
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
 
-// Fix these when connecting to the actual db
-const connection = mysql.createPool({
-	host:		process.env.DB_HOST,
-	user:		process.env.DB_USER,
-	password:	process.env.DB_PASS,
-	database:	process.env.DB_NAME
-});
-
+const connection = require('./db');
 
 
 router.use(express.json());
@@ -226,6 +219,18 @@ router.post("/set-dietary-restrictions", IS_LOGGED_IN, async (req, res) => {
 		await connection.execute('UPDATE user_info SET dietary_restrictions = ? WHERE user_id = ?', [dietaryRestrictionsJoin, userId]);
 		return res.json({ message: 'Successfully Updated Dietary Restrictions' });
 	} catch (err) {
+		return res.json({ error: err });
+	}
+});
+
+router.post('/set-pronouns', IS_LOGGED_IN, async (req, res) => {
+	const pronouns = req.body.pronouns;
+	const userId = req.session.user.userId;
+
+	try {
+		await connection.execute('UPDATE user_info SET pronouns = ? WHERE user_id ?', [pronouns, userId]);
+		return res.json({ message: 'Successfully Updated Pronouns' });
+	} catch (err){
 		return res.json({ error: err });
 	}
 });

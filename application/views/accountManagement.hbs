@@ -2,6 +2,8 @@
 {{>header}}
 <div class="container">
   <link rel="stylesheet" id="modeStyleSheetLink" href="/css/{{mode}}.css">
+  <div id="alert-message"></div>
+  <div id="message"></div>
   <h3>Color Scheme Preference</h3>
   <select id="modeSelect">
     <option value="{{mode}}">Light Mode</option>
@@ -27,7 +29,7 @@
   <h3>Pronouns</h3>
   <form class="account-form" id="update-pronouns-form" action="/submit" method="post">
     <input type="text" name="pronouns" id="pronouns" placeholder="Your Pronouns" required>
-    <button type="button" class="unfinished_button">Submit</button>
+    <button type="button">Submit</button>
   </form>
   <h3>Change Dietary Restrictions</h3>
   <form class="account-form" id="change-dietary-restrictions" action="/submit" method="post">
@@ -35,11 +37,13 @@
     <button type="submit">Submit</button>
   </form>
   <h3>Change Allergies</h3>
-  <form class="account-form" id="change-allergies-from" action="/submit" method="post">
-    {{>dropdown dropdown3}}
-    <button type="submit">Submit</button>
-  </form>
+    <form class="account-form" id="change-allergies-from" action="/submit" method="post">
+      {{>dropdown dropdown3}}
+      <button type="submit">Submit</button>
+    </form>
+  
+
 </div>
 {{>footer}}
 <div class="rightSpacer"></div>
-<script src="/js/accountmangement.js"></script>
+<script src="/js/accountMangement.js"></script>

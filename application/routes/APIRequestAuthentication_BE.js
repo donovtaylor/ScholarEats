@@ -5,25 +5,11 @@
 
 const express = require('express');
 const bcryot = require('bcryptjs');
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 const session = require('express-session');
 const router = express.Router();
 
-const connection = mysql.createPool({
-	host:		process.env.DB_HOST,
-	user:		process.env.DB_USER,
-	password:	process.env.DB_PASS,
-	database:	process.env.DB_NAME
-});
-
-/*
-* USER ROLES
-* 	1: USER
-*	2: Unknown
-*	3: ADMIN
-*
-*	In the sesion data, they are stored as strings of their name
-*/
+const connection = require('./db');
 
 // Check if the user is logged in
 function IS_LOGGED_IN(req, res, next) {
@@ -41,20 +27,21 @@ function IS_LOGGED_IN(req, res, next) {
 
 // Check if the user is an Admin
 function IS_ADMIN(req, res, next) {
-	if (req.session.user && req.session.user.user_agent === 'admin') {
-		return next();
-	} else {
-		res.status(403).send('ERROR: Forbidden. Admin access only.')
-	}
+  if (req.session.user && req.session.user.role === 'admin') {
+    return next();
+  } else {
+    res.status(403).send('Error: Forbidden. Admin access only.');
+  }
 }
 
 // Check if the user is a User
 function IS_USER(req, res, next) {
-	if (req.session.user && req.session.user.user_agent === 'user') {
-		return next();
-	} else {
-		res.status(403).send('ERROR: Forbidden. User access only.')
-	}
+  if (req.session.user && req.session.user.role === 'user') {
+    return next();
+  } else {
+    res.status(403).send('Error: Forbidden. User access only.');
+  }
+
 }
 
 // Check if the user is an OPTION 2

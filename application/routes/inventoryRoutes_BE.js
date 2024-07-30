@@ -7,26 +7,9 @@ const bodyparser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
 const mysql = require('mysql2/promise');
-
+const connection = require('./db');
 const router = express.Router();
 const app = express();
-
-const connection = mysql.createPool({
-	host:		process.env.DB_HOST,
-	user:		process.env.DB_USER,
-	password:	process.env.DB_PASS,
-	database:	process.env.DB_NAME
-});
-
-
-// // Connect to the database error checker
-// connection.connect(err => {
-// 	if (err) {
-// 		console.error('Error connecting to the database:', err);
-// 		process.exit(1);  // Exit the process with an error code
-// 	}
-// 	console.log('Connected to the database');
-// });
 
 function debugMsg (input) { // Use this for debug messages, I got tired of doing a ton of if statements
 	if (debug) {
@@ -67,7 +50,7 @@ router.get('/', async (req, res) => {
             JOIN users usrs ON usrs.university = u.name
             WHERE usrs.user_id = ?
         `;
-    }
+  }
 
     // If the user is logged in
     try {

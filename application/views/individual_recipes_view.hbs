@@ -14,11 +14,12 @@
         <p><strong>Cook Time:</strong> {{cookTime}}</p>
         <p><strong>Servings:</strong> {{servings}}</p>
     </div>
-
+    
     {{#if isLoggedIn}}
-        <button id="reserveRecipeButton" recipeInfo="{{id}}">RESERVE</button>
+        <button class = "reserveButton" id="reserveRecipeButton" recipeInfo="{{id}}">RESERVE</button>
         <script src="/js/reserveButton_FE.js"></script>
     {{/if}}
+
 
     <div class="ingredients">
         <h2>Ingredients</h2>

@@ -1,26 +1,37 @@
 body {
   display: grid;
   grid-template-areas:
-  "leftSpacer  header   rightSpacer"
-  "leftSpacer modeSelect rightSpacer"
+  "header  header   header"
   "leftSpacer container rightSpacer"
-  "leftSpacer  footer   rightSpacer";
+  "footer  footer   footer";
   grid-template-columns: 1fr 3fr 1fr;
+  margin: 0px;
   font-family: Arial, sans-serif;
-  background-color: darkslategray;
+  background-color: darkslategrey;
 }
+
 
 #leftSpacer {
   grid-area: leftSpacer;
+  background-color: rgb(73, 113, 113);
+  
 }
+
 
 #rightSpacer {
   grid-area: rightSpacer;
+  background-color: rgb(73, 113, 113);
 }
+
 
 header {
   grid-area: header;
   display: block;
+  border-radius: 10px;
+  padding-top: 1%;
+  padding-left: 20%;
+  padding-right: 20%;
+  
 }
 
 h1 {
@@ -46,7 +57,11 @@ h4, select {
   grid-template-columns: 1fr 1fr 2fr 1fr;
   align-items: start;
   gap: 20px;
-  padding: 20px;
+  padding-top: 1%;
+  padding-left: 20%;
+  padding-right: 20%;
+  padding-bottom: 1%;
+  border-radius: 10px;
 }
 
 .footer span {
@@ -56,6 +71,7 @@ h4, select {
 
 .footer-logo {
   display: flex;
+  max-width: 100%;
   justify-content: flex-end;
   align-items: center;
   gap: 25px;
@@ -64,6 +80,8 @@ h4, select {
 
 .footer-info {
   text-align: left;
+  display: flex;
+  align-items: center;
 }
 
 .footer-links {
@@ -105,6 +123,7 @@ a>div {
   grid-area: nav;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 20px;
 }
 
 .navbar a,
@@ -113,7 +132,7 @@ a>div {
   text-decoration: none;
   color: orange;
   border: 1px solid orange;
-  border-radius: 30px;
+  border-radius: 5px;
   transition: background-color 0.3s, color 0.3s;
   align-content: center;
   text-align: center;
@@ -147,13 +166,14 @@ a img {
 }
 
 .navbar form {
+  gap: 20px;
   display: flex;
 }
 
 .searchbar {
   border-style: solid;
   border-color: orange;
-  border-radius: 30px;
+  border-radius: 5px;
   height: 32px;
   font-size: 1.3em;
   width: 100%;
@@ -190,7 +210,17 @@ a img {
   border: 1px solid orange;
   background-color: darkslategray;
   transition: background-color 0.3s, color 0.3s;
-  border-radius: 30px;
+  border-radius: 5px;
+  height: 36px;
+}
+
+.applyfiltersbutton {
+  font-size: 1.3em;
+  color: orange;
+  border: 1px solid orange;
+  background-color: rgb(73, 113, 113);
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 5px;
   height: 36px;
 }
 
@@ -235,7 +265,7 @@ a img {
 }
 
 .dropdown_option {
-  border-radius: 30px;
+  border-radius: 5px;
 }
 
 .dropdown_option:hover {
@@ -261,6 +291,8 @@ a:hover:not(.no-style) {
 .container {
   display: grid;
   grid-area: container;
+  background-color: rgb(73, 113, 113);
+
 }
 
 .aboutContents {
@@ -301,4 +333,86 @@ img {
   text-decoration: none;
   border: none;
   border-radius: none;
+}
+
+#alert-message {
+  color: rgb(255, 41, 41);
+  margin-top: 25px;
+}
+
+#message {
+  font-size: 16px;
+  background-color: #ff5e00;
+  color: green;
+  
+}
+
+.hidden {
+  display: none;
+}
+
+
+@media screen and (min-width: 344px) and (max-width: 500px){
+  body {
+    display: grid;
+    grid-template-areas: 
+    "header"
+    "container"
+    "footer";
+    grid-template-columns: 1fr;
+  }
+  #leftSpacer {
+   display: none;
+  }
+  #rightSpacer {
+    display: none;
+  }
+
+  header{
+   padding-left: 2%;
+   padding-right: 2%;
+  }
+  footer{
+    grid-template-columns: 1fr;
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+  .navbar {
+    grid-area: nav;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap:10px;
+    padding: 2px;;
+  }
+  .navbar a {
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+  .navbar .search {
+    flex-direction: column;
+    align-items: center;
+  }
+  .navbar form {
+    flex-direction: column;
+  }
+
+}
+
+@media screen and (min-width: 501px) and (max-width: 1025px){
+  body {
+    display: grid;
+    grid-template-areas: 
+    "header"
+    "container"
+    "footer";
+    grid-template-columns: 1fr;
+  }
+  #leftSpacer {
+   display: none;
+  }
+  #rightSpacer {
+    display: none;
+  }
 }
