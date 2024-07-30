@@ -121,7 +121,6 @@ router.route('/').get(async (req, res) => {
 				FROM recipes inner_r
 				GROUP BY inner_r.recipe_name
 			)
-					LIMIT 10
 		`;
 
 
