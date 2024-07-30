@@ -79,8 +79,8 @@ document.addEventListener("DOMContentLoaded", function() {
             if (data.error) {
                 alertMessage.textContent = data.error;
             } else if (data.message) {
-                message.textContent = data.message;
-                message.classList.remove('hidden');
+                alertMessage.textContent = data.message;
+                alertMessage.classList.remove('hidden');
                 setTimeout(() => { location.reload(); }, 2000);
                 
             } else {
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     setAllergies.addEventListener('submit', function(event) {
         event.preventDefault();
-        const checkboxes = document.querySelectorAll('.dropdown_option');
+        const checkboxes = document.querySelectorAll('.checkbox_option');
         const allergies = [];
         checkboxes.forEach((checkbox) => {
             if (checkbox.checked) {

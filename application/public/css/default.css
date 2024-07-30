@@ -337,7 +337,7 @@ img {
   margin-top: 25px;
 }
 
-.message {
+#message {
   font-size: 16px;
   background-color: #ff5e00;
   color: green;

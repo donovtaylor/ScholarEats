@@ -2,52 +2,48 @@
 {{>header}}
 <div class="container">
   <link rel="stylesheet" id="modeStyleSheetLink" href="/css/{{mode}}.css">
-  
+  <div id="alert-message"></div>
+  <div id="message"></div>
   <h3>Color Scheme Preference</h3>
   <select id="modeSelect">
     <option value="{{mode}}">Light Mode</option>
     <option value="darkmode">Dark Mode</option>
   </select>
-
-  <div class="form-group">
-    <label for="new-username">Change Username</label>
+  <h3>Change Username</h3>
+  <form class="account-form" id="change-username-form" action="/submit" method="post">
     <input type="text" name="username" id="new-username" placeholder="Username">
-  </div>
-
-  <div class="form-group">
-    <label for="current-password">Change Password</label>
-    <div class="password-fields">
-      <input type="password" name="current-password" id="current-password" placeholder="Current Password">
-      <input type="password" name="new-password" id="new-password" placeholder="New Password">
-      <input type="password" name="verify-password" id="verify-password" placeholder="Verify Password">
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label for="pronouns">Pronouns</label>
-    <input type="text" name="pronouns" id="pronouns" placeholder="Your Pronouns" required>
-  </div>
-
-  <div class="form-group">
-    <label for="bio">Bio</label>
+    <button type="submit">Submit</button>
+  </form>
+  <h3>Change Password</h3>
+  <form class="account-form" id="change-password-form" action="/submit" method="post">
+    <input type="password" name="current-password" id="current-password" placeholder="Current Password">
+    <input type="password" name="new-password" id="new-password" placeholder="New Password">
+    <input type="password" name="verify-password" id="verify-password" placeholder="Verify Password">
+    <button type="submit">Submit</button>
+  </form>
+  <h3>Bio</h3>
+  <form class="account-form" id="update-bio-form" action="/submit" method="post">
     <textarea name="bio" id="bio" placeholder="Tell us about yourself..." rows="4" required></textarea>
     <button type="button" class="unfinished_button">Submit</button>
-  </div>
-
-  <div class="form-group">
-    <label for="dietary-restrictions">Change Dietary Restrictions</label>
+  </form>
+  <h3>Pronouns</h3>
+  <form class="account-form" id="update-pronouns-form" action="/submit" method="post">
+    <input type="text" name="pronouns" id="pronouns" placeholder="Your Pronouns" required>
+    <button type="button">Submit</button>
+  </form>
+  <h3>Change Dietary Restrictions</h3>
+  <form class="account-form" id="change-dietary-restrictions" action="/submit" method="post">
     {{>dropdown dropdown2}}
     <button type="submit">Submit</button>
-  </div>
-
-  <div class="form-group">
-    <label for="allergies">Change Allergies</label>
-    {{>dropdown dropdown3}}
-    <button type="submit">Submit</button>
-  </div>
+  </form>
+  <h3>Change Allergies</h3>
+    <form class="account-form" id="change-allergies-from" action="/submit" method="post">
+      {{>dropdown dropdown3}}
+      <button type="submit">Submit</button>
+    </form>
+  
 
 </div>
-
 {{>footer}}
 <div class="rightSpacer"></div>
-<script src="/js/accountmangement.js"></script>
+<script src="/js/accountMangement.js"></script>
