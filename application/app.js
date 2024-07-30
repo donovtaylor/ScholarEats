@@ -9,30 +9,24 @@ const mysql = require('mysql2/promise');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 const dotenv = require('dotenv').config();
+const flash = require('connect-flash');
 
 const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
 const userRoutes = require('./routes/userRoutes_BE');                        // User
 const recipeRoutes = require('./routes/recipeRoutes_BE');                    // Recipe
 const about = require('./routes/about');                                     // About
 const autocomplete = require('./routes/autocomplete');
-const notificationRoutes = require('./routes/notificationRoutes_BE');
-const landingPage = require('./routes/landingPage_BE');                      // Landing Page
+const notificationRoutes = require('./routes/notificationRoutes_BE');                   // Landing Page
 const adminTools = require('./routes/adminToolsRoutes/adminTools');
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./routes/APIRequestAuthentication_BE');
 
 const app = express();
 
-
 // app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true })); // for form data
 
-const connection = mysql.createPool({
-	host: process.env.DB_HOST,
-	user: process.env.DB_USER,
-	password: process.env.DB_PASS,
-	database: process.env.DB_NAME
-});
+const connection = require('./routes/db');
 
 const sessionStore = new MySQLStore({}, connection);
 
@@ -66,7 +60,6 @@ app.use("/users", userRoutes); // User Routes
 app.use("/about", about);
 app.use("/suggestions", autocomplete);
 app.use("/notifications", notificationRoutes);
-app.use("/landing-page", landingPage); // Landing page
 app.use("/admin-tools", adminTools);
 
 
@@ -85,6 +78,13 @@ app.set('view engine', 'hbs');
 //Middleware Functions to parse json
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(flash());
+
+function debugMsg(input) { // Use this for debug messages, I got tired of doing a ton of if (debug) statements
+	if (debug) {
+		console.log(input);
+	}
+}
 
 //this piece of code is to pass the dropdown variables between routes
 app.locals.dropdownFilters = {
@@ -103,8 +103,61 @@ app.locals.allergies = {
 	checkbox_option: ['Milk', 'Eggs', 'Fish', 'Crustacean Shellfish', 'Tree Nuts', 'Peanuts', 'Wheat', 'Soybeans']
 };
 
+// Rendering recipes dynamically from the database
+app.get('/', async (req, res) => {
+
+  // Recipes
+  const recipeQuery = `
+        SELECT DISTINCT r.*
+        FROM recipes r
+        WHERE r.recipe_id IN (
+        SELECT MIN(inner_r.recipe_id)
+        FROM recipes inner_r
+        GROUP BY inner_r.recipe_name
+        )
+        AND NOT EXISTS (
+            SELECT 1
+            FROM recipe_ingredient ri
+            WHERE ri.recipe_id = r.recipe_id
+            AND ri.ingredient_id NOT IN (
+                SELECT ingredient_id
+                FROM store
+                WHERE quantity > 0
+            )
+        )
+        ORDER BY r.recipe_name DESC
+        LIMIT 3
+    `;
+
+	// Ingredients
+	const ingredientsQuery = `
+        SELECT s.ingredient_id, s.quantity, i.name, i.img_src
+        FROM store s
+        JOIN ingredient i ON s.ingredient_id = i.ingredient_id
+        LIMIT 3
+    `;
+
+	try {
+		const [recipeResults] = await connection.execute(recipeQuery);
+
+		const [ingredientsResults] = await connection.execute(ingredientsQuery);
+
+		res.render('landingpage', {
+			style: ['default.css', 'landingpage.css'],
+			script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+			dropdown1: app.locals.dropdownFilters,
+			recipes: recipeResults,
+			ingredients: ingredientsResults,
+			title: 'Landing Page'
+		});
+	} catch (err) {
+		console.error('Error fetching ingredients');
+		return res.status(500).send('Error fetching ingredients');
+	}
+});
+
 // Add more routes here as needed
-app.route('/')
+app.route('/about')
 	.get((req, res) => {
 		var searchInput = req.query.searchInput;
 		res.render('index', {
@@ -139,17 +192,6 @@ app.route('/adminlogin')
 		})
 	});
 
-
-// serve landing page
-app.route('/landingpage')
-	.get((req, res) => {
-		res.render('landingpage', {
-			script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-			style: ['default.css', 'landingpage.css'],
-			dropdown1: app.locals.dropdownFilters,
-			title: 'Landing Page'
-		})
-	});
 
 // serve forgot password page
 app.get('/forgotpassword', (req, res) => {

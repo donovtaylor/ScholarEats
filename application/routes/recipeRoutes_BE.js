@@ -379,7 +379,7 @@ router.get('/:id', async (req, res) => {
 
 });
 
-/*
+/* 
 * Reserve a recipe and send a notification to the admin of the university 
 * MERGED FROM reserveRecipeButton_BE.js, since this file is already
 * hooked up to the individual recipes page.

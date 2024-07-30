@@ -40,7 +40,7 @@ router.get('/', IS_ADMIN, async (req, res) => {
   } catch (err) {
     console.error('Error fetching expired products:', err);
     req.flash('error_msg', 'Error fetching expired products');
-    res.redirect('/admin-tools/inventory-management/expired-products');
+    res.redirect('/admin-tools/inventory-management');
   }
 });
 
