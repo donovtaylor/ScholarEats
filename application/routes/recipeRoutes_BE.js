@@ -153,7 +153,7 @@ router.route('/').get(async (req, res) => {
 						FROM store s
 						JOIN university u ON s.university_id = u.university_id
 						JOIN users usrs ON usrs.university = u.name
-						WHERE quantity > 0 AND usrs.user_id = ${userId}
+						WHERE quantity > 0 AND usrs.user_id = ?
 					)
 				)`;
 		}
@@ -194,9 +194,17 @@ router.route('/').get(async (req, res) => {
 		debugMsg(`Sorting method: ${sortOptions}`);
 
 		try {
-			const [results] = await connection.execute(query, queryParams); // Execute the funal query
-			const resultCount = results.length; // Number of results
 
+			let results = [];
+			let resultCount;
+
+			if (isLoggedIn) {
+				[results] = await connection.execute(query, userId, queryParams); // Execute the funal query
+				resultCount = results.length; // Number of results
+			} else {
+				[results] = await connection.execute(query, queryParams); // Execute the funal query
+				resultCount = results.length; // Number of results
+			}
 			debugMsg(`Result count: ${resultCount}`);
 
 			if (resultCount > 0) {

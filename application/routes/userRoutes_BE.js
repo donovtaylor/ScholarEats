@@ -21,24 +21,22 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 // Function to automatically enroll users in university programs based on email domain
-function autoEnrollUniversityPrograms(email) {
-	return new Promise((resolve, reject) => {
-		const domain = email.split('@')[1];
-		const query = `
-        UPDATE users 
-        SET university = (SELECT name FROM university WHERE email_suffix = ?),
-            verification_status = TRUE
-        WHERE email = ?
-      `;
-		connection.query(query, [domain, email], (err, results) => {
-			if (err) {
-				console.error('Error enrolling user in university program:', err);
-				reject(err);
-			} else {
-				resolve(results);
-			}
-		});
-	});
+async function autoEnrollUniversityPrograms(email) {
+	const domain = email.split('@')[1];
+	const query = `
+		UPDATE users 
+		SET university = (SELECT name FROM university WHERE email_suffix = ?),
+			verification_status = TRUE
+		WHERE email = ?
+	`;
+	
+	try {
+		const [results] = await connection.execute(query, [domain, email]);
+		resolve(results);
+	} catch (err) {
+		console.error('Error enrolling user in university program:', err);
+		reject(err);
+	}
 }
 
 // Handle registration POST request
@@ -133,11 +131,13 @@ router.post('/login', IS_LOGGED_OUT, async (req, res) => {
 
 router.post('/logout', (req, res) => {
 	if (req.session) {
-		connection.query('UPDATE sessions SET session_end = ? WHERE session_id = ?', [new Date(), req.session.id], (err) => {
-			if (err) {
-				return err;
-			}
-		});
+
+		try {
+			connection.execute('UPDATE sessions SET session_end = ? WHERE session_id = ?', [new Date(), req.session.id]);
+		} catch (err) {
+
+			return res.json({ error: err });
+		}
 
 		req.session.destroy((err) => {
 			if (err) {
