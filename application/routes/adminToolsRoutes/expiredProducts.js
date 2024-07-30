@@ -34,13 +34,13 @@ async function checkAndMoveExpiredProducts() {
 // Route to get all expired products
 router.get('/', IS_ADMIN, async (req, res) => {
   try {
-    await checkAndMoveExpiredProducts();
-    const [results] = await db.query('SELECT * FROM expired_products');
+    //await checkAndMoveExpiredProducts();
+    const [results] = await db.query('SELECT * FROM store WHERE expiration_date < CURDATE()');
     res.render('adminToolsViews/expiredProducts', { expiredProducts: results });
   } catch (err) {
     console.error('Error fetching expired products:', err);
     req.flash('error_msg', 'Error fetching expired products');
-    res.redirect('/expired-products');
+    res.redirect('/admin-tools/inventory-management');
   }
 });
 
@@ -50,11 +50,11 @@ router.post('/delete', IS_ADMIN, async (req, res) => {
   try {
     await db.query('DELETE FROM expired_products WHERE ingredient_id = ?', [ingredient_id]);
     req.flash('success_msg', 'Product removed successfully');
-    res.redirect('/expired-products');
+    res.redirect('admin-tools/inventory-management/expired-products');
   } catch (err) {
     console.error('Error removing product:', err);
     req.flash('error_msg', 'Error removing product');
-    res.redirect('/expired-products');
+    res.redirect('/admin-tools/inventory-management/expired-products');
   }
 });
 
