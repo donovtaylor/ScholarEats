@@ -6,25 +6,21 @@ body {
   "footer  footer   footer";
   grid-template-columns: 1fr 3fr 1fr;
   margin: 0px;
-  /* grid-template-areas:
-  "header"
-  "container"
-  "footer"; */
   font-family: Arial, sans-serif;
-  background-color: rgb(73, 113, 113);
+  background-color: darkslategrey;
 }
 
 
 #leftSpacer {
   grid-area: leftSpacer;
-  background-color: darkslategrey;
+  background-color: rgb(73, 113, 113);
   
 }
 
 
 #rightSpacer {
   grid-area: rightSpacer;
-  background-color: darkslategrey;
+  background-color: rgb(73, 113, 113);
 }
 
 
