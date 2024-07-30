@@ -354,12 +354,9 @@ img {
 
 @media screen and (min-width: 344px) and (max-width: 500px){
   body {
-    display: grid;
-    grid-template-areas: 
-    "header"
-    "container"
-    "footer";
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
   }
   #leftSpacer {
    display: none;
@@ -369,38 +366,81 @@ img {
   }
 
   header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
    padding-left: 2%;
    padding-right: 2%;
+    width: 100%;
+    flex-direction: column;
   }
+
   footer{
-    grid-template-columns: 1fr;
-    padding-left: 2%;
-    padding-right: 2%;
+    padding: 0%;
+    margin: 0;
+  }
+
+  h1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
   }
   .navbar {
     grid-area: nav;
     display: flex;
     align-items: center;
     flex-direction: column;
+    width: 100%;
     gap:10px;
-    padding: 2px;;
+    padding: 2px;
+
   }
+
   .navbar a {
     width: 100%;
     display: block;
     text-align: center;
+
   }
   .navbar .search {
+    display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+ 
   }
   .navbar form {
+    display: flex;
     flex-direction: column;
+    align-items: center;
+    width: 100%;
+  } 
+  .aboutContents {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .aboutContents > a {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
   }
 
 }
 
 @media screen and (min-width: 501px) and (max-width: 1025px){
+  * {
+    box-sizing: border-box;
+    max-width: 100%;
+  }
   body {
     display: grid;
     grid-template-areas: 
@@ -408,6 +448,7 @@ img {
     "container"
     "footer";
     grid-template-columns: 1fr;
+    justify-items: center;
   }
   #leftSpacer {
    display: none;
