@@ -152,12 +152,13 @@ app.get('/', async (req, res) => {
 		if (req.session.user) {
 			isLoggedIn = true;
 			ingredientsQuery = `
-				SELECT s.*, i.*
+				SELECT DISTINCT s.store_id, i.*
 				FROM store s
 				JOIN ingredient i ON s.ingredient_id = i.ingredient_id
 				JOIN university u ON s.university_id = u.university_id
 				JOIN users usrs ON usrs.university = u.name
 				WHERE usrs.user_id = ?
+				LIMIT 3
 			`;
 			console.log(`User is LOGGED IN`);
 		}

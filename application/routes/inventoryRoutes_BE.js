@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
     // if the user is logged out
     if (isLoggedIn) {
         ingredientQuery = `
-            SELECT s.*, i.*
+            SELECT DISTINCT s.ingredient_id, s.quantity, i.*
             FROM store s
             JOIN ingredient i ON s.ingredient_id = i.ingredient_id
             JOIN university u ON s.university_id = u.university_id
