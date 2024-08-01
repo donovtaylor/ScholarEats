@@ -45,3 +45,12 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	}
 });
+
+function shareLink() {
+
+	var link = window.location.href; // Link to be copied
+	navigator.clipboard.writeText(link);
+
+	alert('Link copied to clipboard.');
+	debugMsg(`Link copied`);
+}

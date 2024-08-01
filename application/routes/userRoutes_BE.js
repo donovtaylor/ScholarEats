@@ -14,6 +14,28 @@ const connection = require('./db');
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
+// Check if email is valid university email
+async function universityEmailAuthentication(email) {
+	const domain = email.split('@')[1];
+	const checkEmailQuery = `
+		SELECT name FROM university WHERE email_suffix = ?
+	`;
+
+	try {
+
+		const [checkEmailResults] = await connection.execute(checkEmailQuery, [domain]);
+
+		if (checkEmailResults.length === 0) {
+			return false;
+		} else {
+			return true;
+		}
+
+	} catch (err) {
+		console.error('Error enrolling user in university program:', err);
+	}
+}
+
 // Function to automatically enroll users in university programs based on email domain
 async function autoEnrollUniversityPrograms(email) {
 	const domain = email.split('@')[1];
@@ -23,7 +45,7 @@ async function autoEnrollUniversityPrograms(email) {
 			verification_status = TRUE
 		WHERE email = ?
 	`;
-	
+
 	try {
 		const [results] = await connection.execute(query, [domain, email]);
 	} catch (err) {
@@ -50,6 +72,10 @@ router.post('/register', IS_LOGGED_OUT, async (req, res) => {
 	}
 
 	try {
+
+		if (!(await universityEmailAuthentication(email))) {
+			return res.status(400).json({ error: 'Email must be a valid university email' });
+		}
 
 		const [emailResults] = await connection.execute('SELECT * FROM users WHERE email = ?', [email]);
 		// Checks if email exists
@@ -102,13 +128,38 @@ router.post('/login', IS_LOGGED_OUT, async (req, res) => {
 			role = 'admin';
 		}
 
+		var mode = '';
+
+		const modeQuery = `
+			SELECT ui.modes
+			FROM user_info ui
+			JOIN users u ON ui.user_id
+			= u.user_id
+			WHERE u.user_id = ?
+		`;
+
+		try {
+			const [results] = await connection.execute(modeQuery, [user.user_id]);
+			if (results.length > 0) {
+				if (results[0].modes == 'darkmode') {
+					mode = 'darkmode';
+				} else {
+					mode = 'lightmode';
+				}
+			}
+		} catch (err) {
+			console.error('Error fetching mode:', err);
+			return res.status(500).send('Error fetching mode');
+		}
+
 		req.session.user = {
 			email: user.email,
 			username: user.username,
 			uuid: user.uuid,
 			sessionStart: new Date(),
 			userId: user.user_id,
-			role: role
+			role: role,
+			mode: mode
 		};
 
 
@@ -241,10 +292,39 @@ router.post('/set-bio', IS_LOGGED_IN, async (req, res) => {
 	try {
 		await connection.execute('UPDATE user_info SET bio = ? WHERE user_id = ?', [bio, userId]);
 		return res.json({ message: 'Successfully Updated Bio' });
-	} catch (err){
+	} catch (err) {
 		return res.json({ error: err });
 	}
 });
+
+// set color scheme preference
+router.post("/set-mode", IS_LOGGED_IN, async (req, res) => {
+
+	const mode = req.body.mode;
+	const userId = req.session.user.userId;
+
+	try {
+		await connection.execute('UPDATE user_info SET modes = ? WHERE user_id = ?', [mode, userId]);
+		req.session.user.mode = mode;
+		return res.json({ message: 'Successfully Updated Color Scheme' });
+	} catch (err) {
+		return res.json({ error: err });
+	}
+
+});
+
+// get color scheme preference
+router.get("/get-modes", IS_LOGGED_IN, async (req, res) => {
+	const userId = req.execute.userId;
+	try {
+		await connection.execute('SELECT modes FROM user_info WHERE user_id = ?', [userId]);
+		return res.json({ message: 'Successfully Retrieved Color Scheme' });
+	} catch (err) {
+		return res.json({ error: err });
+	}
+});
+
+
 
 
 module.exports = router;

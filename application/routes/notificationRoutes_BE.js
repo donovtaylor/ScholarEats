@@ -2,8 +2,6 @@
 * Description: Backend methods and routes concerning notification-related actions and events
 *****************************************/
 
-// reverse notification population
-
 const express = require('express');
 const mysql = require('mysql2/promise');
 const path = require("path");
@@ -17,7 +15,19 @@ const connection = require('./db');
 router.get('/', async (req, res) => {
 	var dropdownFilters = req.app.locals.dropdownFilters;
 	let isLoggedIn = false;
+	let universityId = -1;
 
+  var styles = ['default.css', 'notifications.css'];
+
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
 
 	if (req.session.user) {
 		isLoggedIn = true;
@@ -25,17 +35,30 @@ router.get('/', async (req, res) => {
 
 	if (isLoggedIn) {
 		try {
+			const userId = req.session.user.userId;
 
-			let query = `
+			// Get the university
+			const universityIdQuery = `
+				SELECT u.university_id
+				FROM users AS usrs
+				JOIN university AS u
+				ON usrs.university = u.name
+				WHERE usrs.user_id = ?
+			`;
+			const [universityRow] = await connection.execute(universityIdQuery, [userId]);
+
+			universityId = universityRow[0].university_id;
+
+
+			let notificationQuery = `
 				SELECT *
 				FROM notifications
 				WHERE user_id = ?
+				OR university = ?
 				ORDER BY timestamp DESC
 			`;
 
-			const userId = req.session.user.userId;
-
-			const [results] = await connection.execute(query, [userId]);
+			const [results] = await connection.execute(notificationQuery, [userId, universityId]);
 
 			const notifications = results.map(row => ({
 				id: row.notification_id,
@@ -48,7 +71,7 @@ router.get('/', async (req, res) => {
 
 			res.render('notifications', {
 				script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-				style: ['default.css', 'notifications.css'],
+				style: styles,
 				dropdown1: dropdownFilters,
 				notification: notifications,
 				title: 'Notifications'

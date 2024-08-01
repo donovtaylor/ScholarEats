@@ -1,14 +1,16 @@
-<div class="leftSpacer"></div>
+<div id="leftSpacer"></div>
 {{>header}}
 <div class="container">
-  <link rel="stylesheet" id="modeStyleSheetLink" href="/css/{{mode}}.css">
-  <div id="alert-message"></div>
+ <div id="alert-message"></div>
   <div id="message"></div>
   <h3>Color Scheme Preference</h3>
-  <select id="modeSelect">
-    <option value="{{mode}}">Light Mode</option>
-    <option value="darkmode">Dark Mode</option>
-  </select>
+  <form action="/submit" id="themeSelector" method="post">
+    <select name="modeSelect" id="modeSelect">
+      <option value="lightmode">Light Mode</option>
+      <option value="darkmode">Dark Mode</option>
+    </select>
+    <button type="submit" name="modeBtn" id="modeBtn">Submit</button>
+  </form>
   <h3>Change Username</h3>
   <form class="account-form" id="change-username-form" action="/submit" method="post">
     <input type="text" name="username" id="new-username" placeholder="Username">
@@ -37,13 +39,13 @@
     <button type="submit">Submit</button>
   </form>
   <h3>Change Allergies</h3>
-    <form class="account-form" id="change-allergies-from" action="/submit" method="post">
-      {{>dropdown dropdown3}}
-      <button type="submit">Submit</button>
-    </form>
-  
+  <form class="account-form" id="change-allergies-from" action="/submit" method="post">
+    {{>dropdown dropdown3}}
+    <button type="submit">Submit</button>
+  </form>
+
 
 </div>
 {{>footer}}
-<div class="rightSpacer"></div>
+<div id="rightSpacer"></div>
 <script src="/js/accountMangement.js"></script>

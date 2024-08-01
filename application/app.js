@@ -33,26 +33,26 @@ const connection = require('./routes/db');
 const sessionStore = new MySQLStore({}, connection);
 
 app.use(session({
-	key: 'cookie_id',
-	secret: 'secret-key',
-	store: sessionStore,
-	resave: false,
-	saveUninitialized: false,
-	cookie: {
-		maxAge: 1000 * 60 * 60 * 24
-	}
+  key: 'cookie_id',
+  secret: 'secret-key',
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24
+  }
 }));
 
 app.use((req, res, next) => {
-	res.locals.isLoggedIn = req.session.user ? true : false;
-	if (res.locals.isLoggedIn) {
-		res.locals.isAdmin = req.session.user.role === 'admin';
-	} else {
-		res.locals.isAdmin = false;
-	}
-	//console.log('isLoggedIn:' + res.locals.isLoggedIn);
-	//console.log('isAdmin:' + res.locals.isAdmin);
-	next();
+  res.locals.isLoggedIn = req.session.user ? true : false;
+  if (res.locals.isLoggedIn) {
+    res.locals.isAdmin = req.session.user.role === 'admin';
+  } else {
+    res.locals.isAdmin = false;
+  }
+  //console.log('isLoggedIn:' + res.locals.isLoggedIn);
+  //console.log('isAdmin:' + res.locals.isAdmin);
+  next();
 });
 
 // Mount routes
@@ -68,10 +68,10 @@ app.use("/admin-tools", adminTools);
 
 // Middleware to configure Handlebars
 const hbs = exphbs.create({
-	layoutsDir: path.join(__dirname, 'views/layouts'),
-	partialsDir: path.join(__dirname, 'views/partials'),
-	defaultLayout: 'defaultLayout',
-	extname: 'hbs',
+  layoutsDir: path.join(__dirname, 'views/layouts'),
+  partialsDir: path.join(__dirname, 'views/partials'),
+  defaultLayout: 'defaultLayout',
+  extname: 'hbs',
 });
 
 app.engine('hbs', hbs.engine);
@@ -84,30 +84,45 @@ app.use(express.urlencoded({ extended: true }));
 app.use(flash());
 
 function debugMsg(input) { // Use this for debug messages, I got tired of doing a ton of if (debug) statements
-	if (debug) {
-		console.log(input);
-	}
+  if (debug) {
+    console.log(input);
+  }
 }
 
 //this piece of code is to pass the dropdown variables between routes
 app.locals.dropdownFilters = {
-	value: 'Filter', id: 'filter_options',
-	checkbox_option: ['Vegan', 'Gluten Free', 'Oven Required', 'Stove Required', 'Easy', 'Medium', 'Hard'],
-	radio_option: ['Calories Ascending', 'Calories Descending', 'Protein Ascending', 'Protein Descending', 'Fat Ascending', 'Fat Descending', 'Fiber Ascending', 'Fiber Descending']
+  value: 'Filter', id: 'filter_options',
+  checkbox_option: ['Vegan', 'Gluten Free', 'Oven Required', 'Stove Required', 'Easy', 'Medium', 'Hard'],
+  radio_option: ['Calories Ascending', 'Calories Descending', 'Protein Ascending', 'Protein Descending', 'Fat Ascending', 'Fat Descending', 'Fiber Ascending', 'Fiber Descending']
 };
 
 app.locals.dietaryRestrictions = {
-	value: 'Dietary Restrictions', id: 'dietary_restrictions',
-	checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']
+  value: 'Dietary Restrictions', id: 'dietary_restrictions',
+  checkbox_option: ['Vegan', 'Keto', 'Hala', 'Vegetarian', 'Pescatarian', 'Kosher']
 };
 
 app.locals.allergies = {
-	value: 'Allergies', id: 'allergies',
-	checkbox_option: ['Milk', 'Eggs', 'Fish', 'Crustacean Shellfish', 'Tree Nuts', 'Peanuts', 'Wheat', 'Soybeans']
+  value: 'Allergies', id: 'allergies',
+  checkbox_option: ['Milk', 'Eggs', 'Fish', 'Crustacean Shellfish', 'Tree Nuts', 'Peanuts', 'Wheat', 'Soybeans']
 };
 
 // Rendering recipes dynamically from the database
 app.get('/', async (req, res) => {
+  var styles = ['default.css', 'landingpage.css'];
+  var logosrc = 'images/logo_black.png';
+
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+      logosrc = 'images/logo_white.png';
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+      logosrc = 'images/logo_black.png'
+    }
+  }
 
   // Recipes
   const recipeQuery = `
@@ -133,74 +148,119 @@ app.get('/', async (req, res) => {
     `;
 
 	// Ingredients
-	const ingredientsQuery = `
-        SELECT s.ingredient_id, s.quantity, i.name, i.img_src
-        FROM store s
-        JOIN ingredient i ON s.ingredient_id = i.ingredient_id
+	let ingredientsQuery = `
+        SELECT i.name, i.img_src
+        FROM ingredient i
+		ORDER BY RAND()
         LIMIT 3
     `;
 
+	let isLoggedIn = false;
+	let userId = -1;
+
+	try {
+		if (req.session.user) {
+		userId = req.session.user.userId;
+		console.log(`User ID: ${userId}`);
+
+			isLoggedIn = true;
+			ingredientsQuery = `
+				SELECT DISTINCT s.store_id, i.*
+				FROM store s
+				JOIN ingredient i ON s.ingredient_id = i.ingredient_id
+				JOIN university u ON s.university_id = u.university_id
+				JOIN users usrs ON usrs.university = u.name
+				WHERE usrs.user_id = ?
+				LIMIT 3
+			`;
+			console.log(`User is LOGGED IN`);
+		}
+	} catch (err) {
+		console.error(err, 'User is logged out 152');
+	}
+
 	try {
 		const [recipeResults] = await connection.execute(recipeQuery);
+		let ingredientsResults = [];
 
-		const [ingredientsResults] = await connection.execute(ingredientsQuery);
+		if (isLoggedIn) {
+			[ingredientsResults] = await connection.execute(ingredientsQuery, [userId]);
+		} else {
+			[ingredientsResults] = await connection.execute(ingredientsQuery);
+		}
 
-		res.render('landingpage', {
-			style: ['default.css', 'landingpage.css'],
-			script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
-			dropdown1: app.locals.dropdownFilters,
-			recipes: recipeResults,
-			ingredients: ingredientsResults,
-			title: 'Landing Page'
-		});
-	} catch (err) {
-		console.error('Error fetching ingredients');
-		return res.status(500).send('Error fetching ingredients');
-	}
+    res.render('landingpage', {
+      logoSrc: logosrc,
+      style: styles,
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+      dropdown1: app.locals.dropdownFilters,
+      recipes: recipeResults,
+      ingredients: ingredientsResults,
+      title: 'Landing Page'
+    });
+  } catch (err) {
+    console.error('Error fetching ingredients');
+    return res.status(500).send('Error fetching ingredients');
+  }
 });
 
 // Add more routes here as needed
 app.route('/about')
-	.get((req, res) => {
-		var searchInput = req.query.searchInput;
-		res.render('index', {
-			script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-			style: ['default.css'],
-			dropdown1: app.locals.dropdownFilters,
-			title: 'Team\'s about page',
-			header: 'Team\'s about page'
-		})
-	});
+  .get(async (req, res) => {
+
+    var styles = ['default.css'];
+
+    //check if we should apply dark mode
+    if (res.locals.isLoggedIn) {
+      if (req.session.user.mode == 'darkmode') {
+        styles.push('darkmode.css');
+      } else {
+        if (styles.find((e) => e == 'darkmode.css')) {
+          styles.splice(styles.indexOf('darkmode.css'), 1);
+        }
+      }
+    }
+
+    res.render('index', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      style: styles,
+      dropdown1: app.locals.dropdownFilters,
+      title: 'Team\'s about page',
+      header: 'Team\'s about page'
+    })
+  });
 
 // serve login page
 app.route('/login')
-	.get((req, res) => {
-		res.render('login', {
-			script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-			style: ['default.css', 'login.css'],
-			dropdown1: app.locals.dropdownFilters,
-			title: 'Login'
-		})
-	});
+  .get((req, res) => {
+    res.render('login', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+      style: ['default.css', 'login.css'],
+      dropdown1: app.locals.dropdownFilters,
+      title: 'Login'
+    })
+  });
 
 // serve login page
 app.route('/adminlogin')
-	.get((req, res) => {
-		res.render('adminlogin', {
-			script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
-			style: ['default.css', 'login.css'],
-			dropdown1: app.locals.dropdownFilters,
-			title: 'Admin Login',
-			mode: 'login'
-		})
-	});
+  .get((req, res) => {
+    res.render('adminlogin', {
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+      style: ['default.css', 'login.css'],
+      dropdown1: app.locals.dropdownFilters,
+      title: 'Admin Login',
+      mode: 'login'
+    })
+  });
 
 
 // serve forgot password page
 app.get('/forgotpassword', (req, res) => {
+  var styles = ['default.css', 'landingpage.css'];
+
   res.render('forgotpassword', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'forgotpassword.css'],
+    style: styles,
     dropdown1: app.locals.dropdownFilters,
     title: 'Forgot Password'
   });
@@ -217,45 +277,82 @@ app.get('/resetPassword', (req, res) => {
 
 // serve privacy policy page
 app.get('/privacy_policy', (req, res) => {
-	res.render('privacy_policy', {
-		script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-		style: ['default.css'],
-		dropdown1: app.locals.dropdownFilters,
-		title: 'Privacy Policy'
-	});
+  var styles = ['default.css'];
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
+  res.render('privacy_policy', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: styles,
+    dropdown1: app.locals.dropdownFilters,
+    title: 'Privacy Policy'
+  });
 });
 
 // serve terms of service page
 app.get('/termsofservice', (req, res) => {
-	res.render('termsofservice', {
-		script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-		style: ['default.css'],
-		dropdown1: app.locals.dropdownFilters,
-		title: 'Terms of Service'
-	});
+  var styles = ['default.css'];
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
+  res.render('termsofservice', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: styles,
+    dropdown1: app.locals.dropdownFilters,
+    title: 'Terms of Service'
+  });
 });
 
 // serve contact us page
 app.get('/contact_us', (req, res) => {
-	const teamMembers = [
-		{ name: 'Angelo Arriaga', src: 'images/angelo.jpg', alt: 'angelo.jpg', role: 'Team Lead', email: 'aarriaga1@sfsu.edu' },
-		{ name: 'Donovan Taylor', src: 'images/donovan.jpg', alt: 'donovan.jpg', role: 'Frontend Lead', email: 'dvelasquez1@sfsu.edu' },
-		{ name: 'Hancun Guo', src: 'images/hancun.jpg', alt: 'hancun.jpg', role: 'Frontend', email: 'hguo4@sfsu.edu' },
-		{ name: 'Edward Mcdonald', src: 'images/edward.jpg', alt: 'edward.jpg', role: 'Backend Lead', email: 'emcdonald1@sfsu.edu' },
-		{ name: 'Karl Carsola', src: 'images/karl.jpg', alt: 'karl.jpg', role: 'Backend', email: 'kcarsola@mail.sfsu.edu' },
-		{ name: 'Sai Bavisetti', src: 'images/sai.jpg', alt: 'sai.jpg', role: 'Database', email: 'sbavisetti@sfsu.edu' },
-		{ name: 'Maeve Fitzpatrick', src: 'images/maeve.jpg', alt: 'maeve.jpg', role: 'Docs-Editor', email: 'mfitzpatrick@sfsu.edu' },
-		{ name: 'Sabrina Diaz-Erazo', src: 'images/sabrina.jpg', alt: 'sabrina.jpg', role: 'GitHub Master', email: 'sdiazerazo@sfsu.edu' },
-		{ name: 'Tina Chou', role: 'Frontend', src: 'images/tina.jpg', alt: 'tina.jpg', email: 'ychou@sfsu.edu' }
-	];
-	// add styling to contact_us page
-	res.render('contact_us', {
-		style: ['default.css'],
-		dropdown1: app.locals.dropdownFilters,
-		script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-		teamMembers,
-		title: 'Contact Us'
-	});
+
+  var styles = ['default.css'];
+
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
+
+  const teamMembers = [
+    { name: 'Angelo Arriaga', src: 'images/angelo.jpg', alt: 'angelo.jpg', role: 'Team Lead', email: 'aarriaga1@sfsu.edu' },
+    { name: 'Donovan Taylor', src: 'images/donovan.jpg', alt: 'donovan.jpg', role: 'Frontend Lead', email: 'dvelasquez1@sfsu.edu' },
+    { name: 'Hancun Guo', src: 'images/hancun.jpg', alt: 'hancun.jpg', role: 'Frontend', email: 'hguo4@sfsu.edu' },
+    { name: 'Edward Mcdonald', src: 'images/edward.jpg', alt: 'edward.jpg', role: 'Backend Lead', email: 'emcdonald1@sfsu.edu' },
+    { name: 'Karl Carsola', src: 'images/karl.jpg', alt: 'karl.jpg', role: 'Backend', email: 'kcarsola@mail.sfsu.edu' },
+    { name: 'Sai Bavisetti', src: 'images/sai.jpg', alt: 'sai.jpg', role: 'Database', email: 'sbavisetti@sfsu.edu' },
+    { name: 'Maeve Fitzpatrick', src: 'images/maeve.jpg', alt: 'maeve.jpg', role: 'Docs-Editor', email: 'mfitzpatrick@sfsu.edu' },
+    { name: 'Sabrina Diaz-Erazo', src: 'images/sabrina.jpg', alt: 'sabrina.jpg', role: 'GitHub Master', email: 'sdiazerazo@sfsu.edu' },
+    { name: 'Tina Chou', role: 'Frontend', src: 'images/tina.jpg', alt: 'tina.jpg', email: 'ychou@sfsu.edu' }
+  ];
+  // add styling to contact_us page
+  res.render('contact_us', {
+    style: styles,
+    dropdown1: app.locals.dropdownFilters,
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    teamMembers,
+    title: 'Contact Us'
+  });
+
 });
 
 // serve registration page
@@ -270,9 +367,23 @@ app.get('/register', (req, res) => {
 
 // add dark mode button here
 app.get('/accountmanagement', (req, res) => {
+
+  var styles = ['default.css', 'accountmanagement.css']
+
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
+
   res.render('accountManagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
-    style: ['default.css', 'accountmanagement.css'],
+    style: styles,
     dropdown1: app.locals.dropdownFilters,
     dropdown2: app.locals.dietaryRestrictions,
     dropdown3: app.locals.allergies,
@@ -282,11 +393,11 @@ app.get('/accountmanagement', (req, res) => {
 
 // 404 Error handling
 app.use((req, res, next) => {
-	res.status(404).send('404 Page Not Found');
+  res.status(404).send('404 Page Not Found');
 });
 
 // Start server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-	console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });

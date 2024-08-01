@@ -21,6 +21,18 @@ function debugMsg (input) { // Use this for debug messages, I got tired of doing
 router.get('/', async (req, res) => {
     var dropdownFilters = req.app.locals.dropdownFilters;
 
+    var styles = ['default.css', 'ingredients.css'];
+
+    if (res.locals.isLoggedIn) {
+      if (req.session.user.mode == 'darkmode') {
+        styles.push('darkmode.css');
+      } else {
+        if (styles.find((e) => e == 'darkmode.css')) {
+          styles.splice(styles.indexOf('darkmode.css'), 1);
+        }
+      }
+    }
+
     let isLoggedIn = false;
     let userId = -1 // "You have to initialize this variable, or you're gonna have a bad time" - That one guy from south park
                     // -1 is an invalid userId, but this shouldnt matter because the userId is only used when a user is logged in,
@@ -43,7 +55,7 @@ router.get('/', async (req, res) => {
     // if the user is logged out
     if (isLoggedIn) {
         ingredientQuery = `
-            SELECT s.*, i.*
+            SELECT DISTINCT s.ingredient_id, s.quantity, i.*
             FROM store s
             JOIN ingredient i ON s.ingredient_id = i.ingredient_id
             JOIN university u ON s.university_id = u.university_id
@@ -65,7 +77,7 @@ router.get('/', async (req, res) => {
             }));
 
             res.render('ingredients', {
-                style:      ['default.css', 'ingredients.css'],
+                style:      styles,
                 dropdown1:  dropdownFilters,
                 title:      'Ingredients',
                 script:     ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
@@ -84,7 +96,7 @@ router.get('/', async (req, res) => {
             }));
 
             res.render('ingredients', {
-                style:      ['default.css', 'ingredients.css'],
+                style:      styles,
                 dropdown1:  dropdownFilters,
                 title:      'Ingredients',
                 script:     ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],

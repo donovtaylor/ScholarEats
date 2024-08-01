@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    const themeSelector = document.getElementById('themeSelector');
     const changePasswordForm = document.getElementById('change-password-form');
     const changeUsernameForm = document.getElementById('change-username-form');
     const setDietaryRestrictionsForm = document.getElementById('change-dietary-restrictions');
@@ -31,6 +32,26 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    themeSelector.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const mode = document.getElementById('modeSelect').value;
+      
+      fetch('users/set-mode', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({mode})
+      })
+      .then(response => response.json())
+      .then(data => {
+        message.textContent = data.message;
+        message.classList.remove('hidden');
+        setTimeout(() => { location.reload(); }, 2000);
+      })
+      .catch(error=> {
+        console.error('Error: ', error);
+      })
+    });
+
     setPronouns.addEventListener('submit', function(event){
         event.preventDefault();
         const pronouns = document.getElementById('pronouns').value;
@@ -49,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function() {
             setTimeout(() => { location.reload(); }, 2000);
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error: ', error);
         });
     });
     // Allows us to change password

@@ -3,7 +3,7 @@
 * as well as displaying the "reserve" button for reserving a recipe
 *****************************************/ --}}
 
-<div class="leftSpacer"></div>
+<div id="leftSpacer"></div>
 {{>header}}
 <div class="container">
   <article>
@@ -38,7 +38,11 @@
             {{/each}}
         </ol>
     </div>
+
+    <button onclick="shareLink()">SHARE</button>
+    <script src="/js/shareRecipeButton_FE.js"></script>
+
   </article>
 </div>
 {{>footer}}
-<div class="rightSpacer"></div>
+<div id="rightSpacer"></div>

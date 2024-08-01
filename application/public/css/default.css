@@ -114,10 +114,6 @@ a span {
   position: relative;
 }
 
-a>div {
-  padding-left: 40px;
-  padding-top: 40px;
-}
 
 .navbar {
   grid-area: nav;

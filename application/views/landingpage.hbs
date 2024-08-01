@@ -2,7 +2,7 @@
 {{>header}}
 <div class="container">
   <div class="landing-page">
-    <img src="/images/logo_black.png" alt="logo.png" id="bannerLogo">
+    <img src="{{logoSrc}}" alt="logo.png" id="bannerLogo">
     <h1 id="blurb">ScholarEats is a way for Universities across America to provide better access to food-pantry programs to their student bodies</h1>
     <h2 id="subBlurb">Browse our wide selection of Recipes and Ingredients</h2>
     <section class="content-section">
@@ -12,7 +12,7 @@
 
           {{#each recipes}}
             <a href="/recipes/{{this.recipe_id}}" class="recipe">
-              <img src="{{this.img_src}}" alt="{{this.recipe_name}}" class="recipe-image">
+              <img src="{{this.img_src}}" alt="{{this.recipe_name}}" class="recipe-image" length="150px" height="150px">
               <h3 class="recipe-title">{{this.recipe_name}}</h3>
               <p class="recipe-description">{{this.Description}}</p>
             </a>
@@ -27,7 +27,7 @@
 
           {{#each ingredients}}
             <div class="ingredient">
-              <img src="{{this.img_src}}" alt="{{this.name}}" class="ingredient-image">
+              <img src="{{this.img_src}}" alt="{{this.name}}" class="ingredient-image" length="150px" height="150px">
               <h3 class="ingredient-title">{{this.name}}</h3>
               <p class="ingredient-description">{{this.Description}}</p>
             </div>
@@ -40,4 +40,3 @@
 </div>
 {{>footer}}
 <div id="rightSpacer"></div>
-<script src="/js/landing.js"></script>
