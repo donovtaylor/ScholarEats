@@ -1,13 +1,15 @@
 const express = require('express');
 const db = require('../db');
 const router = express.Router();
-const expiredProductsRoutes = require('./expiredProducts');
 const dotenv = require('dotenv').config();
 const mysql = require('mysql2/promise');
+const expiredProductsRoutes = require('./expiredProducts');
+const removeIngredientsRoutes = require('./remove');
 
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('../APIRequestAuthentication_BE');
 
 router.use('/expired-products', expiredProductsRoutes);
+router.use('/remove', removeIngredientsRoutes);
 
 const connection = mysql.createPool({
   host: process.env.DB_HOST,
