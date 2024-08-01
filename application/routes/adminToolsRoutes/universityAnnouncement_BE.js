@@ -1,9 +1,16 @@
+/*****************************************
+* Description: Backend methods and routes relating to admin-made university-wide announcements
+*****************************************/
+
 const express = require('express');
 const db = require('../db');
 const router = express.Router();
 const expiredProductsRoutes = require('./expiredProducts');
 const dotenv = require('dotenv').config();
 const mysql = require('mysql2/promise');
+const bodyParser = require('body-parser');
+
+router.use(express.json());
 
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('../APIRequestAuthentication_BE');
 
@@ -69,7 +76,7 @@ router.post('/announce', IS_ADMIN, async (req, res) => {
 
 	} catch (err) {
 		console.error('There was an error making your announcement:', err);
-		req.flash('error_msg', 'There was an error making your announcement');
+		return res.json({ message: 'There was an error making your announcement' });
 		res.redirect('/adminTools/inventory-management/add');
 	}
 });

@@ -130,17 +130,45 @@ app.get('/', async (req, res) => {
     `;
 
 	// Ingredients
-	const ingredientsQuery = `
-        SELECT s.ingredient_id, s.quantity, i.name, i.img_src
-        FROM store s
-        JOIN ingredient i ON s.ingredient_id = i.ingredient_id
+	let ingredientsQuery = `
+        SELECT i.name, i.img_src
+        FROM ingredient i
+		ORDER BY RAND()
         LIMIT 3
     `;
 
+	let isLoggedIn = false;
+	let userId = -1;
+
+	try {
+		userId = req.session.user.userId;
+		console.log(`User ID: ${userId}`);
+
+		if (req.session.user) {
+			isLoggedIn = true;
+			ingredientsQuery = `
+				SELECT s.*, i.*
+				FROM store s
+				JOIN ingredient i ON s.ingredient_id = i.ingredient_id
+				JOIN university u ON s.university_id = u.university_id
+				JOIN users usrs ON usrs.university = u.name
+				WHERE usrs.user_id = ?
+			`;
+			console.log(`User is LOGGED IN`);
+		}
+	} catch (err) {
+		console.error(err, 'User is logged out 152');
+	}
+
 	try {
 		const [recipeResults] = await connection.execute(recipeQuery);
+		let ingredientsResults = [];
 
-		const [ingredientsResults] = await connection.execute(ingredientsQuery);
+		if (isLoggedIn) {
+			[ingredientsResults] = await connection.execute(ingredientsQuery, [userId]);
+		} else {
+			[ingredientsResults] = await connection.execute(ingredientsQuery);
+		}
 
 		res.render('landingpage', {
 			style: ['default.css', 'landingpage.css'],
@@ -151,7 +179,7 @@ app.get('/', async (req, res) => {
 			title: 'Landing Page'
 		});
 	} catch (err) {
-		console.error('Error fetching ingredients');
+		console.error(err, 'Error fetching ingredients');
 		return res.status(500).send('Error fetching ingredients');
 	}
 });
