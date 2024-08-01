@@ -8,7 +8,7 @@ const exphbs = require('express-handlebars');
 const mysql = require('mysql');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
-
+const emailRoutes = require('./routes/emailRoutes_BE');
 const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
 const userRoutes = require('./routes/userRoutes_BE');                        // User
 const recipeRoutes = require('./routes/recipeRoutes_BE');                    // Recipe
@@ -59,6 +59,7 @@ app.use((req, res, next) => {
 });
 
 // Mount routes
+app.use("/email", emailRoutes);
 app.use("/recipes", recipeRoutes); // Recipe Routes
 app.use("/ingredients", inventoryRoutes); // Inventory Routes
 app.use("/users", userRoutes); // User Routes
@@ -157,6 +158,15 @@ app.get('/forgotpassword', (req, res) => {
     style: ['default.css', 'forgotpassword.css'],
     dropdown1: app.locals.dropdownFilters,
     title: 'Forgot Password'
+  });
+});
+
+app.get('/resetPassword', (req, res) => {
+  res.render('resetPassword', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'forgotpassword.css'],
+    dropdown1: app.locals.dropdownFilters,
+    title: 'Reset Password'
   });
 });
 
