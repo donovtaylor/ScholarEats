@@ -7,8 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => response.text())
         .then(data => {
-            
-            setTimeout(() => { window.location.href = '/'; }, 2000);
+            window.location.href = '/';
         })
         .catch(error => {
             console.error('Error:', error);

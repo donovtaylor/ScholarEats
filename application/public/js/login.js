@@ -3,13 +3,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const message = document.getElementById("message");
     const alertMessage = document.getElementById("alert-message");
 
-    
-
 
     loginForm.addEventListener("submit",function(event){
         event.preventDefault();
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
+
+        const token = grecaptcha.getResponse();
+        if (!token) {
+            alertMessage.textContent = ('Please Complete the reCaptcha!');
+            return;
+        }
+
         fetch('/users/login', {
             method: 'POST',
             headers: {
