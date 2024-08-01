@@ -26,6 +26,7 @@ const app = express();
 // app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true })); // for form data
+app.use(flash());
 
 const connection = require('./routes/db');
 
