@@ -25,17 +25,31 @@ router.get('/', async (req, res) => {
 
 	if (isLoggedIn) {
 		try {
+			const userId = req.session.user.userId;
 
-			let query = `
+			// Get the university
+			const universityIdQuery = `
+				SELECT u.university_id
+				FROM users AS usrs
+				JOIN university AS u
+				ON usrs.university = u.name
+				WHERE usrs.user_id = ?
+			`;
+			const [universityRow] = await connection.execute(universityIdQuery, [userId]);
+
+			const universityId = universityRow[0].university_id;
+
+			console.log(universityId);
+
+			let notificationQuery = `
 				SELECT *
 				FROM notifications
 				WHERE user_id = ?
+				OR university = ?
 				ORDER BY timestamp DESC
 			`;
 
-			const userId = req.session.user.userId;
-
-			const [results] = await connection.execute(query, [userId]);
+			const [results] = await connection.execute(notificationQuery, [userId, universityId]);
 
 			const notifications = results.map(row => ({
 				id: row.notification_id,

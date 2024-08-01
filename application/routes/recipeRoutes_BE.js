@@ -399,7 +399,7 @@ router.post('/:id', IS_LOGGED_IN, async (req, res) => {
     const [userInfo] = await connection.execute(userInfoQuery, [userId]);
 
     if (userInfo.length === 0) {
-      return res.status(400).json({ error: 'Error: User not found. Try logging out and logging back in.' })
+      return res.status(400).json({ error: 'Error: User not found. Try logging out and logging back in.' });
     }
 
     // Recipe name
@@ -411,7 +411,7 @@ router.post('/:id', IS_LOGGED_IN, async (req, res) => {
     const [recipeName] = await connection.execute(recipeNameQuery, [recipeId]);
 
     if (recipeName.length === 0) {
-      return res.status(400).json({ error: 'ERROR: recipe not fount. Try logging out and logging back in.' })
+      return res.status(400).json({ error: 'ERROR: recipe not fount. Try logging out and logging back in.' });
     }
 
     const recipe = recipeName[0].recipe_name;
@@ -469,10 +469,10 @@ router.post('/:id', IS_LOGGED_IN, async (req, res) => {
 				INSERT INTO notifications (user_id, message) VALUES (?, ?)
 			`;
 
-      await connection.execute(pushNotificaionQuery, [adminId, message])
-      await connection.execute(pushNotificaionQuery, [userId, userMessage])
+      await connection.execute(pushNotificaionQuery, [adminId, message]);
+      await connection.execute(pushNotificaionQuery, [userId, userMessage]);
 
-      debugMsg("Recipe reserved.")
+      debugMsg("Recipe reserved.");
 
       return res.json({ message: 'Successfully reserved recipe!' });
     }
