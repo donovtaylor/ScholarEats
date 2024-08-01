@@ -17,6 +17,17 @@ router.get('/', async (req, res) => {
 	let isLoggedIn = false;
 	let universityId = -1;
 
+  var styles = ['default.css', 'notifications.css'];
+
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
 
 	if (req.session.user) {
 		isLoggedIn = true;
@@ -38,7 +49,6 @@ router.get('/', async (req, res) => {
 
 			universityId = universityRow[0].university_id;
 
-			console.log(universityId);
 
 			let notificationQuery = `
 				SELECT *
@@ -61,7 +71,7 @@ router.get('/', async (req, res) => {
 
 			res.render('notifications', {
 				script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-				style: ['default.css', 'notifications.css'],
+				style: styles,
 				dropdown1: dropdownFilters,
 				notification: notifications,
 				title: 'Notifications'
