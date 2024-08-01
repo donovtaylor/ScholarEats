@@ -106,7 +106,7 @@ app.locals.allergies = {
 // Rendering recipes dynamically from the database
 app.get('/', async (req, res) => {
   var styles = ['default.css', 'landingpage.css'];
-  var logosrc = '';
+  var logosrc = 'images/logo_black.png';
 
   //check if we should apply dark mode
   if (res.locals.isLoggedIn) {
@@ -117,7 +117,7 @@ app.get('/', async (req, res) => {
       if (styles.find((e) => e == 'darkmode.css')) {
         styles.splice(styles.indexOf('darkmode.css'), 1);
       }
-      logosrc = 'images/logo_black.png';
+      logosrc = 'images/logo_black.png'
     }
   }
 
@@ -156,10 +156,10 @@ app.get('/', async (req, res) => {
 	let userId = -1;
 
 	try {
+		if (req.session.user) {
 		userId = req.session.user.userId;
 		console.log(`User ID: ${userId}`);
 
-		if (req.session.user) {
 			isLoggedIn = true;
 			ingredientsQuery = `
 				SELECT DISTINCT s.store_id, i.*
