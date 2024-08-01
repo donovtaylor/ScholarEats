@@ -11,7 +11,7 @@ const MySQLStore = require('express-mysql-session')(session);
 const dotenv = require('dotenv').config();
 const flash = require('connect-flash');
 
-const emailRoutes = require('./routes/emailRoutes_BE');
+const {router: emailRoutes} = require('./routes/emailRoutes_BE');
 const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
 const userRoutes = require('./routes/userRoutes_BE');                        // User
 const recipeRoutes = require('./routes/recipeRoutes_BE');                    // Recipe

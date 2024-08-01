@@ -17,6 +17,25 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+function sendEmail(fromEmail, toEmail, subject, body){
+    const mailOptions = {
+        from: fromEmail,
+        to: toEmail,
+        subject: subject,
+        text: body,
+      };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.log(error);
+            return res.json({ error: error });
+        }else{
+            console.log(info);
+            return res.json({ message: 'Successfully Sent Email!' });
+        }
+    });
+}
+
 
 
 router.post('/forgotpassword', IS_LOGGED_OUT, async (req, res) => {
@@ -47,8 +66,10 @@ router.post('/forgotpassword', IS_LOGGED_OUT, async (req, res) => {
 
     transporter.sendMail(mailOptions, function(error, info){
         if(error){
+            console.log(error);
             return res.json({ error: error });
         }else{
+            console.log(info);
             return res.json({ message: 'Successfully Sent Email!' });
         }
     });
@@ -91,5 +112,4 @@ router.post('/resetPassword',IS_LOGGED_OUT, async (req,res)=> {
     
 });
 
-
-  module.exports = router;
+module.exports = {sendEmail, router};
