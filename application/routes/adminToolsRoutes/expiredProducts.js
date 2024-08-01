@@ -45,10 +45,28 @@ router.get('/', IS_ADMIN, async (req, res) => {
 });
 
 // Route to remove an expired product
-router.post('/delete', IS_ADMIN, async (req, res) => {
+router.post('/admin-tools/inventory-management/expired-products/delete', IS_ADMIN, async (req, res) => {
   const { ingredient_id } = req.body;
+
+  const universityIdQuery = `
+			SELECT u.university_id
+			FROM users AS usrs
+			JOIN university AS u
+			ON usrs.university = u.name
+			WHERE usrs.user_id = ?
+		`;
+
+    console.log(`name: ${universityIdQuery}`);
+
   try {
-    await db.query('DELETE FROM expired_products WHERE ingredient_id = ?', [ingredient_id]);
+	  const [universityRow] = await connection.execute(universityIdQuery, [userId]);
+
+	  const universityId = universityRow[0].university_id;
+
+
+	  console.log(`Uni name: ${universityId}`);
+
+    await db.query('DELETE FROM store WHERE ingredient_id = ? AND university_id = ?', [ingredient_id, universityId]);
     req.flash('success_msg', 'Product removed successfully');
     res.redirect('admin-tools/inventory-management/expired-products');
   } catch (err) {

@@ -5,9 +5,32 @@ document.addEventListener("DOMContentLoaded", function() {
     const setDietaryRestrictionsForm = document.getElementById('change-dietary-restrictions');
     const setAllergies = document.getElementById('change-allergies-from');
     const setPronouns = document.getElementById('update-pronouns-form');
+    const setBio = document.getElementById('update-bio-form');
 
     const alertMessage = document.getElementById("alert-message");
     const message = document.getElementById("message");
+
+    setBio.addEventListener('submit', function(event){
+        event.preventDefault();
+        const bio = document.getElementById('bio').value;
+        console.log(bio);
+        fetch('users/set-bio', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ bio })
+        })
+        .then(response => response.json())
+        .then(data => {
+            message.textContent = data.message;
+            message.classList.remove('hidden');
+            setTimeout(() => { location.reload(); }, 2000);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
 
     themeSelector.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -30,8 +53,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     setPronouns.addEventListener('submit', function(event){
-        const pronouns = document.getElementById('pronouns');
-        
+        event.preventDefault();
+        const pronouns = document.getElementById('pronouns').value;
         fetch('users/set-pronouns', {
             method: 'POST',
             headers: {
@@ -41,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data.message);
             message.textContent = data.message;
             message.classList.remove('hidden');
             setTimeout(() => { location.reload(); }, 2000);

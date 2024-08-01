@@ -48,7 +48,7 @@ router.get('/add', IS_ADMIN, async (req, res) => {
 
     const [ingredients] = await db.execute(allIngredientQuery);
 
-    console.log(ingredients);
+    // console.log(ingredients);
 
     res.render('adminToolsViews/addIngredient', {
       ingredients: ingredients
@@ -105,11 +105,11 @@ router.post('/add', IS_ADMIN, async (req, res) => {
     await db.query('INSERT INTO store (store_id, ingredient_id, Name, expiration_date, quantity, university_id) VALUES (?, ?, ?, ?, ?, ?)', [store_id, ingredient_id, Name, expiration_date, quantity, universityId]);
 
     req.flash('success_msg', 'Ingredient added to store');
-    res.redirect('/adminTools/inventory-management/add');
+    res.redirect('/admin-tools/inventory-management/add');
   } catch (err) {
     console.error('Error adding product to store:', err);
     req.flash('error_msg', 'Error adding product to store');
-    res.redirect('/adminTools/inventory-management/add');
+    res.redirect('/admin-tools/inventory-management/add');
   }
 });
 

@@ -10,6 +10,7 @@ const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config();
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./APIRequestAuthentication_BE');
+const {sendEmail} = require('./emailRoutes_BE');
 
 const router = express.Router();
 
@@ -416,8 +417,9 @@ router.post('/:id', IS_LOGGED_IN, async (req, res) => {
 		const recipeId = req.params.id; // Recipe ID
 		debugMsg(`RecipeID 348: ${recipeId}`);
 
-		// get the username and university of the logged in user
-		const userId = req.session.user.userId;
+    // get the username and university of the logged in user
+    const userId = req.session.user.userId;
+    const userEmail = req.session.user.email;
 
 		const userInfoQuery = `
 			SELECT username, university
@@ -480,14 +482,17 @@ router.post('/:id', IS_LOGGED_IN, async (req, res) => {
 			}
 		} else {
 
-			adminId = adminInfo[0].user_id;
+      const [results] = await connection.execute('SELECT email FROM users WHERE user_id  = ?', [adminInfo[0].user_id]);  
+      adminEmail = results[0].email;
+      // Push a notifiation to the admins
+      const message = `${username} has reserved ${recipe}`;
+      debugMsg(message);
+      sendEmail('scholareats@gmail.com',adminEmail,'ScholarEats Reserved', message);
 
-			// Push a notifiation to the admins
-			const message = `${username} has reserved ${recipe}`;
-			debugMsg(message);
-
-			const userMessage = `You have reserved ${recipe}`;
-			debugMsg(userMessage);
+      const userMessage = `You have reserved ${recipe}`;
+      debugMsg(userMessage);
+      // Function to send an Email.
+      sendEmail('scholareats@gmail.com',userEmail,'ScholarEats Reserved', userMessage);
 
 			const pushNotificaionQuery = `
 				INSERT INTO notifications (user_id, message) VALUES (?, ?)
@@ -496,9 +501,9 @@ router.post('/:id', IS_LOGGED_IN, async (req, res) => {
 			const userPushNotification = `
 				INSERT INTO notifications (user_id, message) VALUES (?, ?)
 			`;
-
-			await connection.execute(pushNotificaionQuery, [adminId, message]);
-			await connection.execute(pushNotificaionQuery, [userId, userMessage]);
+      console.log(adminInfo[0].user_id)
+      await connection.execute(pushNotificaionQuery, [adminInfo[0].user_id, message])
+      await connection.execute(pushNotificaionQuery, [userId, userMessage])
 
 			debugMsg("Recipe reserved.");
 

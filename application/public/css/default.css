@@ -338,9 +338,9 @@ img {
 
 #message {
   font-size: 16px;
-  background-color: #ff5e00;
-  color: green;
-  
+  background-color: rgb(241, 175, 137);
+  color: rgb(0, 0, 0);
+  justify-self: center;
 }
 
 .hidden {

@@ -277,8 +277,21 @@ router.post('/set-pronouns', IS_LOGGED_IN, async (req, res) => {
 	const userId = req.session.user.userId;
 
 	try {
-		await connection.execute('UPDATE user_info SET pronouns = ? WHERE user_id ?', [pronouns, userId]);
+		await connection.execute('UPDATE user_info SET pronouns = ? WHERE user_id = ?', [pronouns, userId]);
 		return res.json({ message: 'Successfully Updated Pronouns' });
+	} catch (err){
+		console.log(err);
+		return res.json({ error: err });
+	}
+});
+
+router.post('/set-bio', IS_LOGGED_IN, async (req, res) => {
+	const bio = req.body.bio;
+	const userId = req.session.user.userId;
+
+	try {
+		await connection.execute('UPDATE user_info SET bio = ? WHERE user_id = ?', [bio, userId]);
+		return res.json({ message: 'Successfully Updated Bio' });
 	} catch (err) {
 		return res.json({ error: err });
 	}
