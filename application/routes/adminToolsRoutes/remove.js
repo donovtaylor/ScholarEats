@@ -20,6 +20,7 @@ const connection = mysql.createPool({
 // Route to remove an ingredient for the logged-in user's university
 router.post('/remove', IS_ADMIN, async (req, res) => {
   const { Name, expiration_date, quantity } = req.body;
+    const conn = await db.getConnection();
   try {
     const userId = req.session.user.userId; // Get the user ID from the session
 
@@ -39,7 +40,6 @@ router.post('/remove', IS_ADMIN, async (req, res) => {
 
     const university_id = universityRow[0].university_id;
 
-    const conn = await db.getConnection();
     await conn.beginTransaction();
 
     // Find and delete matching rows in store table
