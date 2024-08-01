@@ -29,9 +29,21 @@ router.route('/').get(async (req, res) => {
 	var dropdownFilters = req.app.locals.dropdownFilters;
 	const { dietary_restriction, cooking_aid, sort, searchInput } = req.query;
 
-	// Issue with IS_LOGGED_IN, use this instead
-	let isLoggedIn = false;
-	let userId = -1;
+  var styles = ['default.css', 'recipes.css'];
+
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
+
+  // Issue with IS_LOGGED_IN, use this instead
+  let isLoggedIn = false;
+  let userId = -1;
 	let userUniversity = ``;
 
 	try {		// get the info for the logged in user
@@ -49,19 +61,19 @@ router.route('/').get(async (req, res) => {
 			// Just covering my bases source-wise
 			const [userUniversityInfo] = await connection.execute(userUniversityQuery, [userId]);
 
-			if (userUniversityInfo == 0) { // No user info
-				return res.status(400).json({ error: 'There was an error retreving user data. Please try again later. Error code: 181847' }) // Error code refrences which line tripped
-			}
+      if (userUniversityInfo == 0) { // No user info
+        return res.status(400).json({ error: 'There was an error retreving user data. Please try again later. Error code: 181847' }) // Error code refrences which line tripped
+      }
 
-			userUniversity = userUniversityInfo[0].university; // User's university
+			const userUniversity = userUniversityInfo[0].university; // User's university
 
 			// Find the user's university ID from the univeristy name
 			const universityIdQuery = `SELECT university_id FROM university WHERE name = ?`;
 			const [universityIdInfo] = await connection.execute(universityIdQuery, [userUniversity]);
 
-			if (universityIdInfo === 0) {
-				return res.status(400).json({ error: 'There was an error retreving university data. Please try again later. Error code: 181857' }); // Error code refrences which line tripped
-			}
+      if (universityIdInfo === 0) {
+        return res.status(400).json({ error: 'There was an error retreving university data. Please try again later. Error code: 181857' }); // Error code refrences which line tripped
+      }
 
 			const universityId = universityIdInfo[0].university_id;
 		}
@@ -191,19 +203,19 @@ router.route('/').get(async (req, res) => {
 	debugMsg(`Query parameters: ${queryParams}`);
 	debugMsg(`Sorting method: ${sortOptions}`);
 
-	try {
+  try {
 
-		let results = [];
-		let resultCount;
+    let results = [];
+    let resultCount;
 
-		if (isLoggedIn) {
-			[results] = await connection.execute(query, [userId, ...queryParams]); // Execute the funal query
-			resultCount = results.length; // Number of results
-		} else {
-			[results] = await connection.execute(query, queryParams); // Execute the funal query
-			resultCount = results.length; // Number of results
-		}
-		debugMsg(`Result count: ${resultCount}`);
+    if (isLoggedIn) {
+      [results] = await connection.execute(query, [userId, ...queryParams]); // Execute the funal query
+      resultCount = results.length; // Number of results
+    } else {
+      [results] = await connection.execute(query, queryParams); // Execute the funal query
+      resultCount = results.length; // Number of results
+    }
+    debugMsg(`Result count: ${resultCount}`);
 
 		if (resultCount > 0) {
 			noResults = false;
@@ -220,7 +232,7 @@ router.route('/').get(async (req, res) => {
 
 			if (isLoggedIn) { // Results if the user is logged in
 				res.render('recipes', {
-					style: ['default.css', 'recipes.css'],
+					style: styles,
 					script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
 					noResults: noResults,
 					dropdown1: dropdownFilters,
@@ -231,7 +243,7 @@ router.route('/').get(async (req, res) => {
 				});
 			} else {
 				res.render('recipes', {
-					style: ['default.css', 'recipes.css'],
+					style: styles,
 					script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
 					logInPrompt: 'Log in to see recipes associalted with your university!',
 					noResults: noResults,
@@ -277,7 +289,7 @@ router.route('/').get(async (req, res) => {
 
 				if (isLoggedIn) {
 					res.render('recipes', {
-						style: ['default.css', 'recipes.css'],
+						style: styles,
 						script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
 						logInPrompt: 'No recipes match the current criteria. Try these instead!',
 						noResults: noResults,
@@ -289,7 +301,7 @@ router.route('/').get(async (req, res) => {
 					});
 				} else {
 					res.render('recipes', {
-						style: ['default.css', 'recipes.css'],
+						style: styles,
 						script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
 						logInPrompt: 'Log in to see recipes associated with your university!',
 						suggestedText: 'No recipes match the current criteria. Try these instead!',
@@ -320,6 +332,18 @@ router.route('/').get(async (req, res) => {
 * Serve each individual recipe page based on the recipe ID
 */
 router.get('/:id', async (req, res) => {
+
+  var styles = ['default.css', 'individualRecipe.css'];
+
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
 
 	var dropdownFilters = req.app.locals.dropdownFilters;
 
@@ -357,23 +381,23 @@ router.get('/:id', async (req, res) => {
 			const ingredients = ingredientsResult.map(ingredient => ingredient.name); // Map the ingredients to their name
 			const directions = recipe.directions.split('\n').filter(step => step.trim() !== ''); // Split the directions apart by \n, will probably change if we use AI to make another column with the directions
 
-			res.render('individual_recipes_view', {
-				style: ['default.css', 'individualRecipe.css'],
-				script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-				id: recipe.recipe_id,
-				dropdown1: dropdownFilters,
-				isLoggedIn: isLoggedIn,
-				title: recipe.recipe_name,
-				src: recipe.img_src,
-				prepTime: recipe.prep_time,
-				cookTime: recipe.cook_time,
-				servings: recipe.servings,
-				ingredients: ingredients,
-				instructions: directions
-			});
-		} else {
-			debugMsg('No results found.');
-		}
+      res.render('individual_recipes_view', {
+        style: styles,
+        script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+        id: recipe.recipe_id,
+        dropdown1: dropdownFilters,
+        isLoggedIn: isLoggedIn,
+        title: recipe.recipe_name,
+        src: recipe.img_src,
+        prepTime: recipe.prep_time,
+        cookTime: recipe.cook_time,
+        servings: recipe.servings,
+        ingredients: ingredients,
+        instructions: directions
+      });
+    } else {
+      debugMsg('No results found.');
+    }
 
 	} catch (err) {
 		console.error('Error executing query: ', err);

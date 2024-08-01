@@ -104,13 +104,37 @@ router.post('/login', IS_LOGGED_OUT, async (req, res) => {
       role = 'admin';
     }
 
+    var mode = '';
+
+    const modeQuery = `
+    SELECT ui.modes
+    FROM user_info ui
+    JOIN users u ON ui.user_id
+    = u.user_id
+    WHERE u.user_id = ?`;
+
+    try {
+      const [results] = await connection.execute(modeQuery, [user.user_id]);
+      if (results.length > 0) {
+        if (results[0].modes == 'darkmode') {
+          mode = 'darkmode';
+        } else {
+          mode = 'lightmode';
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching mode:', err);
+      return res.status(500).send('Error fetching mode');
+    }
+
     req.session.user = {
       email: user.email,
       username: user.username,
       uuid: user.uuid,
       sessionStart: new Date(),
       userId: user.user_id,
-      role: role
+      role: role,
+      mode: mode
     };
 
 
@@ -241,17 +265,14 @@ router.post("/set-mode", IS_LOGGED_IN, async (req, res) => {
   const mode = req.body.mode;
   const userId = req.session.user.userId;
 
-  // const modesJoin = modes.join(','); (dont need this, selecting 1 or 0)
-  // 1 is for dark mode and 0 is for light mode
-  // ?: is 'dark' the name of the .css sheet
-
   try {
     await connection.execute('UPDATE user_info SET modes = ? WHERE user_id = ?', [mode, userId]);
-
+    req.session.user.mode = mode;
     return res.json({ message: 'Successfully Updated Color Scheme' });
   } catch (err) {
     return res.json({ error: err });
   }
+
 });
 
 // get color scheme preference

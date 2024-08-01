@@ -9,7 +9,15 @@ head {
 
 .container {
     color: #eee;
-    background: #121212;
+    background: #3b3942;
+}
+
+.container div {
+  background: #3b3942;
+}
+
+.container h2 {
+  color: black;
 }
 
 body {
@@ -43,9 +51,6 @@ select {
     background: #121212;
 }
 
-.dropdown {
-    background: #121212;
-}
 
 .searchSubmit {
     background: #121212;
@@ -63,11 +68,11 @@ select {
 
 input {
     color: #eee;
-    background: #42414d;
+    background: #3b3942;
 }
 
 .dark-mode a {
-    fill: #42414d;
+    fill: #3b3942;
 }
 
 .forgot-password-form-container {
@@ -78,6 +83,9 @@ input {
     background: #121212;
 }
 
+.profilebadge .dropdown_content {
+  background: #121212;
+}
 .autocomplete-suggestion {
     background: #121212;
 }
@@ -91,14 +99,22 @@ input {
 }
 
 .recipe {
-    background: #42414d;
+    background: #3b3942;
 }
 
 .ingredient {
-    background: #42414d;
+    background: #3b3942;
 }
 
 .landing-page {
     background: #121212;
     border: 1px solid orange;
+}
+
+#leftSpacer {
+  background: #3b3942;
+}
+
+#rightSpacer {
+  background: #3b3942;
 }

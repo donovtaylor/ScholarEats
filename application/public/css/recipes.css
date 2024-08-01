@@ -14,14 +14,13 @@
 
 .refinedSearch {
   grid-area: rS;
-  border: 2px solid orange;
+  border: 1px solid orange;
   border-radius: 5px;
   padding: 10px;
-  margin-right: 50px;
+  margin-right: 20px;
 }
 
 .recipes{
-  border-radius: 5px;
   grid-area: recipes;
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -30,8 +29,8 @@
 .recipe {
   display: grid;
   grid-template-areas:
-  "recipeImg recipeName"
   "recipeImg recipeDesc";
+  grid-template-columns: 1fr 3fr;
   border: 1px solid;
   align-items: center;
   margin-bottom: 20px;
@@ -46,10 +45,6 @@
   object-fit: cover;
   border: 1px solid #ddd;
   margin-right: 20px;
-}
-
-.recipeName {
-  grid-area: recipeName;
 }
 
 .recipeDesc {
