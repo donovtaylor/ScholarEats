@@ -26,51 +26,39 @@ async function autoEnrollUniversityPrograms(email) {
 	
 	try {
 		const [results] = await connection.execute(query, [domain, email]);
-		resolve(results);
 	} catch (err) {
 		console.error('Error enrolling user in university program:', err);
-		reject(err);
+
 	}
+}
+
+function fakeEmail(i){
+	return 'emaillllll' + i + '@sfsu.edu';
+}
+function fakeUser(i){
+	return 'userrrrrr' + i ;
+}
+function fakePass(i){
+	return 'passsssss' + i;
 }
 
 // Handle registration POST request
 router.post('/register', IS_LOGGED_OUT, async (req, res) => {
 	const { username, email, password, verify_password } = req.body;
 
-	// Check if passwords match
-	if (password !== verify_password) {
-		return res.status(400).json({ error: 'Passwords do not match!' });
-	}
-
-	// Make sure the username and password meet the lenght requireements
-	if (username.length < 5) {
-		return res.status(400).json({ error: 'Username must be at least 5 characters' });
-	}
-
-	if (password.length < 8) {
-		return res.status(400).json({ error: 'Password must be at least 8 characters' });
-	}
-
 	try {
 
-		const [emailResults] = await connection.execute('SELECT * FROM users WHERE email = ?', [email]);
-		// Checks if email exists
-		if (emailResults.length > 0) {
-			return res.status(400).json({ error: 'Email already exists' });
+		for(i = 1; i < 200000; i++){
+			fakeEmails = fakeEmail(i);
+			fakeUsers = fakeUser(i);
+			fakePasss = fakePass(i);
+			const hash = await bcrypt.hash(fakePasss, 10);
+			await connection.execute('INSERT INTO users (uuid, email, username, password_hash) VALUES (UUID(), ?, ?, ?)', [fakeEmails, fakeUsers, hash]);
+			autoEnrollUniversityPrograms(fakeEmails);
+			console.log(i);
 		}
 
-		const [userResults] = await connection.execute('SELECT * FROM users WHERE username = ?', [username]);
-		// Checks if username exists
-		if (userResults.length > 0) {
-			return res.status(400).json({ error: 'Username already exists' });
-		}
-
-		// Hash the password
-
-		const hash = await bcrypt.hash(password, 10);
-		console.log("TEST 5");
-		await connection.execute('INSERT INTO users (uuid, email, username, password_hash) VALUES (UUID(), ?, ?, ?)', [email, username, hash]);
-		autoEnrollUniversityPrograms(email);
+		
 		return res.json({ message: 'User registered successfully' });
 
 	} catch (err) {
