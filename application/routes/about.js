@@ -9,10 +9,22 @@ let router = express.Router();
 // server angelo's page dynamically using handlebars
 router.get('/angelo', (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
+  var styles = ['default.css', 'about.css'];
+
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
   //uses the 'about.hbs' template
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'about.css'],
+    style: styles,
     dropdown1: dropdownFilters,
     fName: 'Angelo',
     title: 'About Angelo',
@@ -25,9 +37,20 @@ router.get('/angelo', (req, res) => {
 // serve donovan's page
 router.get('/donovan', (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
+  var styles = ['default.css', 'about.css'];
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'about.css'],
+    style: styles,
     dropdown1: dropdownFilters,
     fName: 'Donovan',
     title: 'About Donovan',
@@ -40,9 +63,20 @@ router.get('/donovan', (req, res) => {
 // serve hancun's page
 router.get('/hancun', (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
+  var styles = ['default.css', 'about.css'];
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'about.css'],
+    style: styles,
     dropdown1: dropdownFilters,
     fName: 'Hancun',
     title: 'About Hancun',
@@ -55,9 +89,20 @@ router.get('/hancun', (req, res) => {
 // serve edward's page
 router.get('/edward', (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
+  var styles = ['default.css', 'about.css'];
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'about.css'],
+    style: styles,
     dropdown1: dropdownFilters,
     fName: 'Edward',
     title: 'About Edward',
@@ -70,9 +115,20 @@ router.get('/edward', (req, res) => {
 // serve karl's page
 router.get('/karl', (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
+  var styles = ['default.css', 'about.css'];
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'about.css'],
+    style: styles,
     dropdown1: dropdownFilters,
     fName: 'Karl',
     title: 'About Karl',
@@ -85,9 +141,20 @@ router.get('/karl', (req, res) => {
 // serve sai's page
 router.get('/sai', (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
+  var styles = ['default.css', 'about.css'];
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'about.css'],
+    style: styles,
     dropdown1: dropdownFilters,
     fName: 'Sai',
     title: 'About Sai',
@@ -100,9 +167,20 @@ router.get('/sai', (req, res) => {
 // serve maeve's page
 router.get('/maeve', (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
+  var styles = ['default.css', 'about.css'];
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'about.css'],
+    style: styles,
     dropdown1: dropdownFilters,
     fName: 'Maeve',
     title: 'About Maeve',
@@ -115,9 +193,20 @@ router.get('/maeve', (req, res) => {
 // serve sabrina's page
 router.get('/sabrina', (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
+  var styles = ['default.css', 'about.css'];
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'about.css'],
+    style: styles,
     dropdown1: dropdownFilters,
     fName: 'Sabrina',
     title: 'About Sabrina',
@@ -130,9 +219,20 @@ router.get('/sabrina', (req, res) => {
 // serve tina's page
 router.get('/tina', (req, res) => {
   var dropdownFilters = req.app.locals.dropdownFilters;
+  var styles = ['default.css', 'about.css'];
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
   res.render('about', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'about.css'],
+    style: styles,
     dropdown1: dropdownFilters,
     fName: 'Tina',
     title: 'About Tina',

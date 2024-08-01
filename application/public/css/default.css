@@ -101,7 +101,6 @@ h4, select {
 a:not(.no-style) {
   display: grid;
   text-decoration: none;
-  font-size: 1.3em;
   color: orange;
   border: 1px solid orange;
   border-radius: 5px;

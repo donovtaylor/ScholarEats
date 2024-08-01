@@ -105,11 +105,21 @@ app.locals.allergies = {
 
 // Rendering recipes dynamically from the database
 app.get('/', async (req, res) => {
+  var styles = ['default.css', 'landingpage.css'];
+  var logosrc = '';
 
-
-  // const darkmode = req.session.user_info.modes == 'darkmode' ? 1 : 0;
-
-  // console.log(darkmode);
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+      logosrc = 'images/logo_white.png';
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+      logosrc = 'images/logo_black.png';
+    }
+  }
 
   // Recipes
   const recipeQuery = `
@@ -176,45 +186,37 @@ app.get('/', async (req, res) => {
 			[ingredientsResults] = await connection.execute(ingredientsQuery);
 		}
 
-		res.render('landingpage', {
-			style: ['default.css', 'landingpage.css'],
-			script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
-			dropdown1: app.locals.dropdownFilters,
-			recipes: recipeResults,
-			ingredients: ingredientsResults,
-			title: 'Landing Page'
-		});
-	} catch (err) {
-		console.error(err, 'Error fetching ingredients');
-		return res.status(500).send('Error fetching ingredients');
-	}
+    res.render('landingpage', {
+      logoSrc: logosrc,
+      style: styles,
+      script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
+      dropdown1: app.locals.dropdownFilters,
+      recipes: recipeResults,
+      ingredients: ingredientsResults,
+      title: 'Landing Page'
+    });
+  } catch (err) {
+    console.error('Error fetching ingredients');
+    return res.status(500).send('Error fetching ingredients');
+  }
 });
 
 // Add more routes here as needed
 app.route('/about')
   .get(async (req, res) => {
-    const userId = req.session.user.userId;
 
     var styles = ['default.css'];
 
-    const query = `
-    SELECT ui.modes
-    FROM user_info ui
-    JOIN users u ON ui.user_id
-    = u.user_id
-    WHERE u.user_id = ?`;
-
-    try {
-      const [results] = await connection.execute(query, [userId]);
-      if (results.length > 0 && results[0].modes == 'darkmode') {
+    //check if we should apply dark mode
+    if (res.locals.isLoggedIn) {
+      if (req.session.user.mode == 'darkmode') {
         styles.push('darkmode.css');
+      } else {
+        if (styles.find((e) => e == 'darkmode.css')) {
+          styles.splice(styles.indexOf('darkmode.css'), 1);
+        }
       }
-    } catch (err) {
-      console.error('Error fetching mode:', err);
-      return res.status(500).send('Error fetching mode');
     }
-
-    //console.log(mode);
 
     res.render('index', {
       script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
@@ -251,9 +253,11 @@ app.route('/adminlogin')
 
 // serve forgot password page
 app.get('/forgotpassword', (req, res) => {
+  var styles = ['default.css', 'landingpage.css'];
+
   res.render('forgotpassword', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css', 'forgotpassword.css'],
+    style: styles,
     dropdown1: app.locals.dropdownFilters,
     title: 'Forgot Password'
   });
@@ -261,9 +265,20 @@ app.get('/forgotpassword', (req, res) => {
 
 // serve privacy policy page
 app.get('/privacy_policy', (req, res) => {
+  var styles = ['default.css'];
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
   res.render('privacy_policy', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css'],
+    style: styles,
     dropdown1: app.locals.dropdownFilters,
     title: 'Privacy Policy'
   });
@@ -271,9 +286,20 @@ app.get('/privacy_policy', (req, res) => {
 
 // serve terms of service page
 app.get('/termsofservice', (req, res) => {
+  var styles = ['default.css'];
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
   res.render('termsofservice', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-    style: ['default.css'],
+    style: styles,
     dropdown1: app.locals.dropdownFilters,
     title: 'Terms of Service'
   });
@@ -281,6 +307,20 @@ app.get('/termsofservice', (req, res) => {
 
 // serve contact us page
 app.get('/contact_us', (req, res) => {
+
+  var styles = ['default.css'];
+
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
+
   const teamMembers = [
     { name: 'Angelo Arriaga', src: 'images/angelo.jpg', alt: 'angelo.jpg', role: 'Team Lead', email: 'aarriaga1@sfsu.edu' },
     { name: 'Donovan Taylor', src: 'images/donovan.jpg', alt: 'donovan.jpg', role: 'Frontend Lead', email: 'dvelasquez1@sfsu.edu' },
@@ -294,12 +334,13 @@ app.get('/contact_us', (req, res) => {
   ];
   // add styling to contact_us page
   res.render('contact_us', {
-    style: ['default.css'],
+    style: styles,
     dropdown1: app.locals.dropdownFilters,
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
     teamMembers,
     title: 'Contact Us'
   });
+
 });
 
 // serve registration page
@@ -315,9 +356,18 @@ app.get('/register', (req, res) => {
 // add dark mode button here
 app.get('/accountmanagement', (req, res) => {
 
-  const styles = ['default.css', 'accountmanagement.css']
+  var styles = ['default.css', 'accountmanagement.css']
 
-
+  //check if we should apply dark mode
+  if (res.locals.isLoggedIn) {
+    if (req.session.user.mode == 'darkmode') {
+      styles.push('darkmode.css');
+    } else {
+      if (styles.find((e) => e == 'darkmode.css')) {
+        styles.splice(styles.indexOf('darkmode.css'), 1);
+      }
+    }
+  }
 
   res.render('accountManagement', {
     script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js', 'mode.js'],
