@@ -15,7 +15,7 @@ function shareLink() {
     var link = window.location.href; // Link to be copied
     navigator.clipboard.writeText(link);
 
-    alert('Successfully reserved recipe!');
+    alert('Link copied to clipboard.');
     debugMsg(`Link copied`);
 }
 // SOURCE: https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
