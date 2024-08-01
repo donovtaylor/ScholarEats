@@ -4,3 +4,23 @@
   border-radius: 5px;
   padding: 20px;
 }
+
+.reserveButton {
+  background-color: orange;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px 20px;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.reserveButton:hover {
+  background-color: #f7f7f7;
+  color: #000;
+}

@@ -5,13 +5,11 @@
   grid-template-columns: 1fr 4fr;
   grid-template-areas:
   "rS recipes";
-  background-color: darkslategray;
 }
 
 .refinedSearch {
   grid-area: rS;
-  background-color: darkslategrey;
-  border: 1px solid #ddd;
+  border: 2px solid orange;
   border-radius: 5px;
   padding: 10px;
   margin-right: 50px;
@@ -22,7 +20,6 @@
   grid-area: recipes;
   display:grid;
   grid-template-columns: 1fr 1fr;
-  background-color: darkslategrey;
 }
 
 .recipe {
@@ -30,7 +27,7 @@
   grid-template-areas:
   "recipeImg recipeName"
   "recipeImg recipeDesc";
-  border: 1px solid #ddd;
+  border: 1px solid;
   align-items: center;
   margin-bottom: 20px;
   padding: 10px;

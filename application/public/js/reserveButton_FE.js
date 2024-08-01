@@ -8,7 +8,7 @@ function debugMsg(input) { // Use this for debug messages, I got tired of doing 
 	if (debug) {
 		console.log(input);
 	}
-}
+} // NOTE: For some reason console logs do not appear on event listeners. Debug using reserveRecipeButton_BE.js instead
 
 document.addEventListener('DOMContentLoaded', function () {
 	const reserveRecipeButton = document.getElementById('reserveRecipeButton');
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						alert(data.error);
 					} else {
 						alert(data.message);
-						window.location.href = `/recipes/${recipeId}`;
+						window.location.href = `/recipes/${recipeId}`; // Gets the user back to the recipe page
 					}
 				})
 				.catch(error => {

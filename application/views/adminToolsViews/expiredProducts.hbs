@@ -15,6 +15,7 @@
         {{#if error_msg}}
         <div class="alert alert-danger">{{error_msg}}</div>
         {{/if}}
+        <button class="btn btn-secondary" onclick="window.location.href='/admin-tools/inventory-management'">Go Back</button>
         <table class="table">
             <thead>
                 <tr>
@@ -29,7 +30,7 @@
                 {{#each expiredProducts}}
                 <tr>
                     <td>{{this.ingredient_id}}</td>
-                    <td>{{this.Name}}</td> <!-- Ensure this matches the column name in your database -->
+                    <td>{{this.name}}</td> <!-- Ensure this matches the column name in your database -->
                     <td>{{this.expiration_date}}</td>
                     <td>{{this.quantity}}</td>
                     <td>
@@ -42,7 +43,6 @@
                 {{/each}}
             </tbody>
         </table>
-        <button class="btn btn-secondary" onclick="window.location.href='/admin-tools/inventory-management'">Go Back</button>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
