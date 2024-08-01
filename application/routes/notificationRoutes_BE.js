@@ -15,6 +15,7 @@ const connection = require('./db');
 router.get('/', async (req, res) => {
 	var dropdownFilters = req.app.locals.dropdownFilters;
 	let isLoggedIn = false;
+	let universityId = -1;
 
 
 	if (req.session.user) {
@@ -35,7 +36,7 @@ router.get('/', async (req, res) => {
 			`;
 			const [universityRow] = await connection.execute(universityIdQuery, [userId]);
 
-			const universityId = universityRow[0].university_id;
+			universityId = universityRow[0].university_id;
 
 			console.log(universityId);
 
