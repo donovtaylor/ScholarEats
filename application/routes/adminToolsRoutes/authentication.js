@@ -20,15 +20,15 @@ router.post('/authenticate', IS_ADMIN, async (req, res) => {
       const user = users[0];
       await db.query('INSERT INTO user_info (user_id) VALUES (?)', [user.user_id]);
       await db.query('UPDATE users SET verification_status = 1 WHERE user_id = ?', [user_id]);
-      req.flash('success_msg', 'User request verified');
+      return res.json({ message: 'User request verified' });
       res.redirect('/authentication/authenticate');
     } else {
-      req.flash('error_msg', 'User not found or already verified');
+      return res.json({ message: 'User not found or already verified' });
       res.redirect('/authentication/authenticate');
     }
   } catch (err) {
     console.error('Error authenticating user:', err);
-    req.flash('error_msg', 'Error authenticating user');
+    return res.json({ message: 'Error authenticating user' });
     res.redirect('/authentication/authenticate');
   }
 });
@@ -38,11 +38,11 @@ router.post('/disapprove', IS_ADMIN, async (req, res) => {
   const { user_id } = req.body;
   try {
     await db.query('DELETE FROM users WHERE user_id = ?', [user_id]);
-    req.flash('success_msg', 'User request disapproved');
+    return res.json({ message: 'User request disapproved' });
     res.redirect('/authentication/authenticate');
   } catch (err) {
     console.error('Error disapproving user:', err);
-    req.flash('error_msg', 'Error disapproving user');
+    return res.json({ message: 'Error disapproving user' });
     res.redirect('/authentication/authenticate');
   }
 });

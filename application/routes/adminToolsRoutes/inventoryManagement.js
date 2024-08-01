@@ -38,12 +38,31 @@ router.get('/', IS_ADMIN, (req, res) => {
 });
 
 // Route to display the add ingredient form
-router.get('/add', IS_ADMIN, (req, res) => {
-  res.render('adminToolsViews/addIngredient');
+router.get('/add', IS_ADMIN, async (req, res) => {
+  // fetch the ingredients for the dropdown
+  try {
+    const allIngredientQuery = `
+      SELECT name FROM ingredient
+      ORDER BY name
+    `;
+
+    const [ingredients] = await db.execute(allIngredientQuery);
+
+    console.log(ingredients);
+
+    res.render('adminToolsViews/addIngredient', {
+      ingredients: ingredients
+    });
+
+  } catch (err) {
+    console.log('Error fetching ingredients');
+
+  }
 });
 
 // Route to add an ingredient to the store
 router.post('/add', IS_ADMIN, async (req, res) => {
+
   const { Name, expiration_date, quantity } = req.body;
   try {
 
