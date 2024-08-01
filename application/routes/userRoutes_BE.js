@@ -234,6 +234,37 @@ router.post('/set-pronouns', IS_LOGGED_IN, async (req, res) => {
 		return res.json({ error: err });
 	}
 });
+// set color scheme preference
+router.post("/set-modes", IS_LOGGED_IN, async (req, res) => {
+	const modes = req.body.modes;
+	//const userId = req.session.user.userId;
+	const userId = req.body.userId;
+	// const modesJoin = modes.join(','); (dont need this, selecting 1 or 0)
+	// 1 is for dark mode and 0 is for light mode
+	// ?: is 'dark' the name of the .css sheet
+	const colorScheme = modes === 'darkmode' ? 1 : 0;
+
+	try {
+		await connection.execute('INSERT INTO user_info (user_id, modes) VALUES (?, ?) ON DUPLICATE KEY UPDATE theme = ?',
+		[userId, colorScheme, colorScheme]);
+		return res.json({ message: 'Successfully Updated Color Scheme' });
+	} catch (err) {
+		return res.json({ error: err });
+	}
+});
+
+// get color scheme preference
+router.get("/get-modes", IS_LOGGED_IN, async (req, res) => {
+	const userId = req.execute.userId;
+	try {
+		await connection.execute('SELECT modes FROM user_info WHERE user_id = ?', [userId]);
+		return res.json({ message: 'Successfully Retrieved Color Scheme' });
+	} catch (err) {
+		return res.json( {error: err });
+	}
+});
+
+
 
 
 module.exports = router;
