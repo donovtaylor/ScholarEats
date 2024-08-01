@@ -11,6 +11,7 @@ const MySQLStore = require('express-mysql-session')(session);
 const dotenv = require('dotenv').config();
 const flash = require('connect-flash');
 
+const {router: emailRoutes} = require('./routes/emailRoutes_BE');
 const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
 const userRoutes = require('./routes/userRoutes_BE');                        // User
 const recipeRoutes = require('./routes/recipeRoutes_BE');                    // Recipe
@@ -25,6 +26,7 @@ const app = express();
 // app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true })); // for form data
+app.use(flash());
 
 const connection = require('./routes/db');
 
@@ -54,6 +56,7 @@ app.use((req, res, next) => {
 });
 
 // Mount routes
+app.use("/email", emailRoutes);
 app.use("/recipes", recipeRoutes); // Recipe Routes
 app.use("/ingredients", inventoryRoutes); // Inventory Routes
 app.use("/users", userRoutes); // User Routes
@@ -195,12 +198,21 @@ app.route('/adminlogin')
 
 // serve forgot password page
 app.get('/forgotpassword', (req, res) => {
-	res.render('forgotpassword', {
-		script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
-		style: ['default.css', 'forgotpassword.css'],
-		dropdown1: app.locals.dropdownFilters,
-		title: 'Forgot Password'
-	});
+  res.render('forgotpassword', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'forgotpassword.css'],
+    dropdown1: app.locals.dropdownFilters,
+    title: 'Forgot Password'
+  });
+});
+
+app.get('/resetPassword', (req, res) => {
+  res.render('resetPassword', {
+    script: ['dropdown.js', 'unfinished_button.js', 'autocomplete.js'],
+    style: ['default.css', 'forgotpassword.css'],
+    dropdown1: app.locals.dropdownFilters,
+    title: 'Reset Password'
+  });
 });
 
 // serve privacy policy page

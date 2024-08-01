@@ -6,6 +6,7 @@
   <div class="login-form-container">
     <header>Login</header>
     <form class="login-form" action="/index" method="POST" id="login-form" onsubmit="return validateForm()">
+      <div id="message"></div>
       <input type="text" name="username" id="username" placeholder="Username" required pattern=".{5,}"
         title="Username must be at least 5 characters long">
       <input type="password" name="password" id="password" placeholder="Password" required pattern=".{8,}"
@@ -17,7 +18,7 @@
       <input type="submit" id="login-submit" value="Login">
       <div id="error-message" class="error-message"></div>
       <a href="/register">Register</a>
-      <a href="/forgotpassword">Forgot Username/Password</a>
+      <a href="/forgotpassword">Forgot Password</a>
       <a href="/adminlogin">Admin Login</a>
     </form>
     <div id="alert-message"></div>
