@@ -8,31 +8,36 @@ const exphbs = require('express-handlebars');
 const mysql = require('mysql2/promise');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv');
 const flash = require('connect-flash');
+
+// Load environment variables from the specified path
+dotenv.config({ path: path.resolve(__dirname, '../process.env') });
 
 const inventoryRoutes = require('./routes/inventoryRoutes_BE');              // Inventory
 const userRoutes = require('./routes/userRoutes_BE');                        // User
 const recipeRoutes = require('./routes/recipeRoutes_BE');                    // Recipe
 const about = require('./routes/about');                                     // About
 const autocomplete = require('./routes/autocomplete');
-const notificationRoutes = require('./routes/notificationRoutes_BE');                   // Landing Page
+const notificationRoutes = require('./routes/notificationRoutes_BE');        // Landing Page
 const adminTools = require('./routes/adminToolsRoutes/adminTools');
+const removeAllRoutes = require('./routes/adminToolsRoutes/removeAll'); // Remove All Ingredients
+const removeRoutes = require('./routes/adminToolsRoutes/remove'); //certain ingredieints
 const { IS_LOGGED_IN, IS_ADMIN, IS_USER, IS_LOGGED_OUT } = require('./routes/APIRequestAuthentication_BE');
 
 const app = express();
 
-// app.use(express.static('public'));
+// Set static folder
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true })); // for form data
 
+// Database connection
 const connection = require('./routes/db');
-
 const sessionStore = new MySQLStore({}, connection);
 
 app.use(session({
 	key: 'cookie_id',
-	secret: 'secret-key',
+	secret: process.env.SESSION_SECRET || 'secret-key', // Ensure you use the session secret from the environment variables
 	store: sessionStore,
 	resave: false,
 	saveUninitialized: false,
@@ -48,20 +53,8 @@ app.use((req, res, next) => {
 	} else {
 		res.locals.isAdmin = false;
 	}
-	//console.log('isLoggedIn:' + res.locals.isLoggedIn);
-	//console.log('isAdmin:' + res.locals.isAdmin);
 	next();
 });
-
-// Mount routes
-app.use("/recipes", recipeRoutes); // Recipe Routes
-app.use("/ingredients", inventoryRoutes); // Inventory Routes
-app.use("/users", userRoutes); // User Routes
-app.use("/about", about);
-app.use("/suggestions", autocomplete);
-app.use("/notifications", notificationRoutes);
-app.use("/admin-tools", adminTools);
-
 
 // Middleware to configure Handlebars
 const hbs = exphbs.create({
@@ -72,21 +65,25 @@ const hbs = exphbs.create({
 });
 
 app.engine('hbs', hbs.engine);
-
 app.set('view engine', 'hbs');
 
-//Middleware Functions to parse json
+// Middleware Functions to parse json
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(flash());
 
-function debugMsg(input) { // Use this for debug messages, I got tired of doing a ton of if (debug) statements
-	if (debug) {
-		console.log(input);
-	}
-}
+// Route Mounting
+app.use("/recipes", recipeRoutes); // Recipe Routes
+app.use("/ingredients", inventoryRoutes); // Inventory Routes
+app.use("/users", userRoutes); // User Routes
+app.use("/about", about);
+app.use("/suggestions", autocomplete);
+app.use("/notifications", notificationRoutes);
+app.use("/admin-tools", adminTools);
+app.use("/admin-tools/inventory-management", removeAllRoutes); // Mount the remove all ingredients route
+app.use("/admin-tools/inventory-management", removeRoutes); // New
 
-//this piece of code is to pass the dropdown variables between routes
+// this piece of code is to pass the dropdown variables between routes
 app.locals.dropdownFilters = {
 	value: 'Filter', id: 'filter_options',
 	checkbox_option: ['Vegan', 'Gluten Free', 'Oven Required', 'Stove Required', 'Easy', 'Medium', 'Hard'],
@@ -192,7 +189,6 @@ app.route('/adminlogin')
 		})
 	});
 
-
 // serve forgot password page
 app.get('/forgotpassword', (req, res) => {
 	res.render('forgotpassword', {
@@ -278,3 +274,5 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
 	console.log(`Server is running on http://localhost:${port}`);
 });
+
+module.exports = app;
